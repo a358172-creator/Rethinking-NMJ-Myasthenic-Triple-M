@@ -235,15 +235,21 @@ test('anatomy and comparison satisfy automated WCAG accessibility checks', async
   }
 });
 
-test('upcoming modules are labeled previews without inert controls or patient records', async ({ page }) => {
+test('laboratory is available and the patient-level atlas remains an upcoming preview', async ({ page }) => {
+  const laboratoryLink = page.locator('#modules .module-available[href="#laboratory"]');
+  await expect(laboratoryLink).toHaveCount(1);
+  await expect(laboratoryLink.getByText('Available', { exact: true })).toBeVisible();
+  await laboratoryLink.click();
+  await expect(page).toHaveURL(/#laboratory$/);
+  await expect(page.locator('#laboratory')).toBeInViewport();
   const upcoming = page.locator('#modules article.module-preview');
-  await expect(upcoming).toHaveCount(2);
+  await expect(upcoming).toHaveCount(1);
   for (const preview of await upcoming.all()) {
     await expect(preview.getByText('Upcoming', { exact: true })).toBeVisible();
     await expect(preview.locator('a, button, input, [role="button"]')).toHaveCount(0);
   }
-  await expect(upcoming.nth(0)).toContainText('Phase 2 has not been implemented');
-  await expect(upcoming.nth(1)).toContainText('No patient records loaded');
+  await expect(upcoming).toContainText('Planned for Phase 3');
+  await expect(upcoming).toContainText('No patient records loaded');
 });
 
 test('mobile menu exposes its destination and closes after navigation', async ({ page }, testInfo) => {

@@ -115,21 +115,28 @@ export function AnatomicalFigure({ selected, onSelect, compact = false }: Anatom
           <text className="anatomy-label" x="388" y="180" fill={navy} fontSize="16" fontWeight="600">Skeletal muscle</text>
           {selected === 'muscle' && <text x="599" y="198" textAnchor="end" fill={navy} fontSize="10" fontWeight="600">SELECTED</text>}
           <g transform="translate(371 221) scale(.82)">
+            {/* Tendons converge on a fusiform belly enclosed by connective tissue. */}
             <path d="M10 64 C25 64 34 63 47 60 L52 83 C37 81 25 80 10 80Z M235 60 C248 64 257 64 272 64 V80 C257 80 247 81 235 83Z" fill="#E8E6DF" stroke="#9B9D99" strokeWidth="1.3" />
+            <path d="M42 61 C69 52 74 20 126 15 C176 10 213 43 240 60 L240 81 C211 96 179 124 126 126 C74 129 69 94 42 82Z" fill="none" stroke="#DFEAE5" strokeWidth="6" />
             <path d="M42 61 C69 52 74 20 126 15 C176 10 213 43 240 60 L240 81 C211 96 179 124 126 126 C74 129 69 94 42 82Z" fill={selected === 'muscle' ? '#A7C9C3' : '#D0E1DC'} stroke={teal} strokeWidth={selected === 'muscle' ? 2.5 : 1.8} />
             <g fill="none" stroke={teal} strokeWidth="1.15" clipPath={`url(#${instanceId}-muscle-clip)`}>
-              <path d="M44 64 C88 33 136 16 183 42 L239 63" />
-              <path d="M44 67 C90 45 142 31 185 49 L239 66" />
-              <path d="M44 70 C92 56 144 46 189 58 L239 69" />
-              <path d="M44 73 C90 72 142 63 190 69 L239 73" />
-              <path d="M44 76 C91 88 144 90 190 82 L239 76" />
-              <path d="M44 79 C91 102 146 106 188 93 L239 79" />
-              <path d="M49 83 C93 119 146 124 185 105 L235 83" />
-              {[82, 96, 110, 124, 138, 152, 166, 180, 194, 208].map(x => <path key={x} d={`M${x} 15 L${x + 4} 127`} stroke="#EEF5F1" strokeWidth="2" opacity=".8" />)}
+              {/* Layered parallel fascicles taper toward each tendon. */}
+              <path d="M44 63 C88 30 136 17 184 40 L239 62" strokeWidth="3.7" opacity=".6" />
+              <path d="M44 66 C90 42 141 31 185 49 L239 65" />
+              <path d="M44 69 C91 53 143 44 188 59 L239 68" strokeWidth="3.7" opacity=".6" />
+              <path d="M44 73 C91 68 143 62 190 70 L239 72" />
+              <path d="M44 77 C91 84 144 85 190 81 L239 76" strokeWidth="3.7" opacity=".6" />
+              <path d="M44 80 C91 99 145 105 188 94 L239 79" />
+              <path d="M49 84 C93 115 146 122 185 106 L235 83" strokeWidth="3.7" opacity=".6" />
+              {[78, 88, 98, 108, 118, 128, 138, 148, 158, 168, 178, 188, 198, 208].map(x => <path key={x} d={`M${x} 15 L${x + 2} 127`} stroke="#EEF5F1" strokeWidth="1" opacity=".65" />)}
             </g>
-            <path d="M46 59 C90 26 132 3 183 33 M48 85 C89 112 134 139 184 110" fill="none" stroke={teal} strokeWidth=".8" />
+            <path d="M46 59 C90 26 132 3 183 33 M48 85 C89 112 134 139 184 110" fill="none" stroke={teal} strokeWidth=".8" opacity=".65" />
+            {/* Small cutaway: longitudinal fibers terminate in a fascicle cross-section. */}
+            <path d="M166 54 Q184 49 206 53 V89 Q185 94 166 90Z" fill="#DEECE6" stroke={teal} strokeWidth="1.1" />
+            <path d="M168 59 L201 58 M168 67 L201 66 M168 75 L201 74 M168 83 L201 82" fill="none" stroke={teal} strokeWidth="1" />
+            {[174, 181, 188, 195].map(x => <path key={x} d={`M${x} 55 V89`} fill="none" stroke="#FFFFFF" strokeWidth=".8" />)}
             <ellipse cx="206" cy="71" rx="11" ry="18" fill="#F3F8F5" stroke={teal} strokeWidth="1.2" />
-            {[[203, 62], [209, 64], [202, 71], [210, 73], [204, 81]].map(([cx, cy], index) => <ellipse key={index} cx={cx} cy={cy} rx="2.8" ry="4" fill="#B7D2CE" stroke={teal} strokeWidth=".7" />)}
+            {[[203, 61], [209, 63], [201, 69], [208, 71], [202, 77], [210, 79], [205, 84]].map(([cx, cy], index) => <ellipse key={index} cx={cx} cy={cy} rx="2.5" ry="3.7" fill="#B7D2CE" stroke={teal} strokeWidth=".7" />)}
             {!compact && selected === 'muscle' && <g>
               {/* Generic immune cells and focal fiber disruption are conceptual, not N=38 histology. */}
               {[[116, 37], [133, 47]].map(([cx, cy], index) => <g key={index}>

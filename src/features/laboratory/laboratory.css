@@ -1,0 +1,183 @@
+.laboratory-section { background: var(--white); border-bottom: 1px solid var(--line); }
+.lab-section-heading { max-width: 900px; }
+.lab-section-heading > .eyebrow { color: var(--teal-text); margin-bottom: 16px; }
+.lab-section-heading h2 { font-size: clamp(33px, 3.6vw, 48px); line-height: 1.2; max-width: 840px; }
+.lab-subtitle { font-family: var(--font-display); color: var(--teal-text); font-size: 26px; font-style: italic; margin-top: 14px; }
+.lab-introduction { color: var(--muted); max-width: 790px; margin-top: 17px; font-size: 13px; line-height: 1.9; }
+.laboratory-navigation { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); margin-top: 32px; }
+.laboratory-navigation button { border: 0; border-right: 1px solid var(--line); padding: 20px 16px; background: var(--background); display: flex; text-align: left; align-items: flex-start; gap: 11px; min-width: 0; }
+.laboratory-navigation button:last-child { border-right: 0; }
+.laboratory-navigation button[aria-pressed='true'] { background: var(--navy); color: white; }
+.lab-navigation-number { font-family: var(--font-display); font-size: 21px; line-height: 1; }
+.laboratory-navigation strong { font-size: 12px; font-weight: 600; display: block; }
+.laboratory-navigation small { display: block; font-size: 9px; margin-top: 6px; line-height: 1.6; color: var(--muted); }
+.laboratory-navigation button[aria-pressed='true'] small { color: #c8d8e4; }
+.lab-navigation-selected { margin-left: auto; font-size: 17px; line-height: 1; }
+.laboratory-navigation button:not([aria-pressed='true']):hover { background: var(--teal-light); }
+#laboratory-view { padding-top: 35px; }
+.lab-view-heading { display: flex; gap: 40px; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; }
+.lab-view-heading h3 { font-size: 32px; line-height: 1.25; max-width: 510px; }
+.lab-view-heading p { color: var(--muted); font-size: 12px; line-height: 1.9; max-width: 440px; }
+.lab-option-controls { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 23px; }
+.lab-option-controls button { background: white; border: 1px solid var(--line); padding: 10px 14px; font-size: 11px; line-height: 1.5; }
+.lab-option-controls button[aria-pressed='true'] { background: var(--teal-light); border-color: var(--teal-text); box-shadow: inset 0 -2px var(--teal-text); font-weight: 600; }
+.lab-option-controls button:not([aria-pressed='true']):hover { border-color: var(--slate); }
+.laboratory-split { display: grid; grid-template-columns: 1.04fr 1fr; align-items: start; gap: 28px; }
+.phenotype-illustration { background: var(--background); border: 1px solid var(--line); padding: 18px; }
+.phenotype-figure { display: block; width: 100%; height: auto; max-height: 660px; }
+.phenotype-illustration figcaption { padding: 13px 8px 0; border-top: 1px solid var(--line); font-size: 10px; color: var(--muted); }
+.phenotype-hit-target { cursor: pointer; }
+.phenotype-hit-target:focus-visible .phenotype-region, .phenotype-hit-target:hover .phenotype-region { stroke: var(--navy); stroke-width: 3; }
+.phenotype-region { transition: fill .2s, stroke .2s; }
+.lab-result-panel { border: 1px solid var(--line); background: white; padding: 25px 27px; min-width: 0; }
+.lab-result-panel > .eyebrow { color: var(--teal-text); font-size: 9px; }
+.lab-result-panel .lab-panel-title { font-family: var(--font-display); font-size: 28px; font-weight: 400; line-height: 1.2; letter-spacing: -.02em; margin-top: 10px; }
+.lab-panel-summary { color: var(--muted); font-size: 12px; line-height: 1.9; margin-top: 12px; }
+.lab-domain-descriptions { display: grid; gap: 16px; margin-top: 23px; }
+.lab-domain-descriptions dt { font-size: 11px; font-weight: 650; margin-bottom: 5px; }
+.lab-domain-descriptions dd { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.85; }
+.lab-result-panel .mechanistic-evidence { margin-top: 24px; }
+.lab-result-panel .evidence-row p { font-size: 11px; line-height: 1.85; }
+.serology-visual { border: 1px solid var(--line); padding: 20px; background: var(--background); }
+.serology-visual .nmj-detail { margin-top: 0; }
+.serology-domains { display: grid; grid-template-columns: 1fr 30px 1fr; align-items: center; gap: 8px; text-align: center; margin-top: 23px; font-size: 12px; line-height: 1.6; }
+.serology-domains > span:nth-child(2) { color: var(--teal-text); font-size: 25px; }
+.lab-cohort-callout { background: var(--teal-light); border-left: 2px solid var(--teal); padding: 23px; color: var(--slate); }
+.lab-cohort-callout > .eyebrow { font-size: 9px; color: var(--teal-text); }
+.serology-visual .lab-cohort-callout { margin-top: 25px; }
+.lab-cohort-callout p { font-size: 12px; line-height: 1.9; margin-top: 10px; }
+.lab-cohort-callout .lab-cohort-value { font-family: var(--font-display); font-size: 48px; line-height: 1.2; margin-top: 15px; color: var(--navy); }
+.lab-cohort-value small { font-family: var(--font-body); font-size: 13px; margin-left: 12px; color: var(--teal-text); }
+.lab-cohort-callout .lab-paired-gap { padding-top: 14px; border-top: 1px solid #c3d9d6; margin-top: 17px; font-size: 11px; }
+.modality-controls { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); margin-bottom: 20px; }
+.modality-controls button { padding: 16px 20px; background: var(--background); text-align: left; border: 0; border-right: 1px solid var(--line); }
+.modality-controls button:last-child { border-right: 0; }
+.modality-controls button strong { font-size: 12px; font-weight: 600; display: block; }
+.modality-controls button small { color: var(--muted); font-size: 10px; margin-top: 4px; display: block; }
+.modality-controls button[aria-pressed='true'] { background: white; box-shadow: inset 0 -3px var(--teal-text); }
+.modality-controls button:hover { background: var(--teal-light); }
+.trace-workbench { border: 1px solid var(--line); padding: 25px 30px; background: var(--background); }
+.trace-workbench-header { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 19px; }
+.trace-workbench-header > .eyebrow { font-size: 9px; color: var(--muted); }
+.educational-tooltip { position: relative; display: inline-block; }
+.tooltip-trigger { display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid var(--line); font-size: 11px; padding: 6px 9px; }
+.tooltip-trigger > span { background: var(--teal-light); color: var(--teal-text); border-radius: 50%; width: 17px; height: 17px; font-size: 11px; }
+.tooltip-content { position: absolute; top: calc(100% + 9px); right: 0; padding: 16px; width: min(310px, 72vw); background: var(--navy); color: white; border: 1px solid var(--slate); font-size: 12px; line-height: 1.8; z-index: 3; }
+.tooltip-content[hidden] { display: none; }
+.trace-state-controls { margin-bottom: 15px; }
+.blocking-control { display: flex; gap: 9px; align-items: center; font-size: 12px; margin-bottom: 15px; color: var(--slate); }
+.blocking-control input { width: 17px; height: 17px; accent-color: var(--teal-text); }
+.waveform-display { background: white; border: 1px solid var(--line); }
+.trace-figure { margin: 0; padding: 10px 10px 0; }
+.trace-diagram-scroll { overflow-x: auto; }
+.trace-scroll-hint { display: none; }
+.electrophysiology-svg { display: block; width: 100%; height: auto; max-height: 450px; }
+.trace-caption { padding: 13px 16px; border-top: 1px solid var(--line); font-size: 11px; line-height: 1.7; color: var(--amber-text); background: var(--amber-light); }
+.trace-factors { margin-top: 19px; display: flex; gap: 15px; align-items: flex-start; }
+.trace-factors > span { font-size: 10px; color: var(--muted); white-space: nowrap; padding-top: 4px; }
+.trace-factors ul { display: flex; gap: 6px; flex-wrap: wrap; list-style: none; }
+.trace-factors li { font-size: 10px; border: 1px solid var(--line); padding: 4px 7px; background: white; }
+.electrophysiology-bottom { display: grid; grid-template-columns: 1.7fr 1fr; gap: 25px; margin-top: 25px; align-items: start; }
+.electrophysiology-bottom .lab-cohort-callout { padding: 26px; }
+.lab-data-boundary { display: block; font-size: 10px; margin-top: 20px; border-top: 1px solid #c3d9d6; padding-top: 14px; }
+.electrophysiology-bottom .lab-result-panel .evidence-list { grid-template-columns: 1fr 1fr; gap: 20px; }
+.evidence-board-grid { display: grid; grid-template-columns: .85fr 1.5fr; gap: 28px; align-items: start; }
+.finding-list { border: 1px solid var(--line); background: var(--background); }
+.finding-list > .eyebrow { padding: 16px; color: var(--muted); font-size: 9px; }
+.finding-list button { display: flex; gap: 11px; align-items: flex-start; width: 100%; border: 0; border-top: 1px solid var(--line); background: transparent; text-align: left; padding: 14px 16px; }
+.finding-list button > span:first-child { color: var(--muted); font-size: 10px; min-width: 19px; padding-top: 2px; }
+.finding-list strong { font-size: 12px; font-weight: 500; display: block; line-height: 1.5; }
+.finding-list small { font-size: 9px; color: var(--muted); line-height: 1.6; margin-top: 3px; display: block; }
+.finding-list button > span:last-child { margin-left: auto; font-size: 15px; }
+.finding-list button[aria-pressed='true'] { background: white; box-shadow: inset 3px 0 var(--teal-text); }
+.finding-list button[aria-pressed='true'] strong { font-weight: 650; }
+.finding-list button:hover { background: var(--teal-light); }
+.interpretation-perspectives { margin-top: 30px; }
+.interpretation-perspectives > .eyebrow { color: var(--muted); font-size: 9px; margin-bottom: 15px; }
+.perspective-controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+.perspective-controls button { background: white; border: 1px solid var(--line); font-size: 12px; padding: 14px; text-align: left; }
+.perspective-controls button[aria-pressed='true'] { background: var(--navy); color: white; border-color: var(--navy); box-shadow: inset 0 -3px #b9ccdc; }
+.perspective-panel { border: 1px solid var(--line); padding: 25px 28px; background: var(--background); margin-top: 15px; }
+.perspective-panel > h4 { font-family: var(--font-display); font-size: 27px; font-weight: 400; letter-spacing: -.02em; line-height: 1.3; }
+.perspective-panel > p { margin-top: 12px; font-size: 13px; color: var(--muted); max-width: 900px; line-height: 1.9; }
+.perspective-panel .evidence-list { grid-template-columns: 1fr 1fr; gap: 22px; }
+.lab-boundaries { margin-top: 30px; }
+.lab-boundaries > .evidence-key { max-width: 700px; }
+.lab-boundaries > p { font-size: 11px; color: var(--muted); max-width: 960px; line-height: 1.9; margin-top: 18px; }
+.lab-boundaries .lab-urgent-note { border-left: 2px solid var(--amber); background: var(--amber-light); color: #5c4527; padding: 17px 20px; max-width: none; }
+.lab-urgent-note > strong { display: block; margin-bottom: 5px; }
+@media (max-width: 1100px) {
+  .laboratory-navigation button { padding: 17px 12px; gap: 8px; }
+  .laboratory-navigation strong { font-size: 11px; }
+  .lab-navigation-number { font-size: 18px; }
+  .lab-navigation-selected { display: none; }
+  .laboratory-split { gap: 22px; }
+  .lab-result-panel { padding: 23px; }
+}
+@media (max-width: 850px) {
+  .laboratory-navigation { grid-template-columns: 1fr 1fr; }
+  .laboratory-navigation button { border-bottom: 1px solid var(--line); }
+  .laboratory-navigation button:nth-child(even) { border-right: 0; }
+  .laboratory-navigation button:nth-child(n+3) { border-bottom: 0; }
+  .laboratory-navigation strong { font-size: 12px; }
+  .lab-navigation-number { font-size: 22px; }
+  .lab-view-heading { display: block; }
+  .lab-view-heading p { margin-top: 13px; max-width: 680px; }
+  .laboratory-split { grid-template-columns: 1fr; }
+  .phenotype-figure { max-height: 720px; }
+  .serology-visual .nmj-detail { max-height: 440px; }
+  .electrophysiology-bottom { grid-template-columns: 1fr; }
+  .evidence-board-grid { grid-template-columns: 1fr; }
+  .finding-list { display: grid; grid-template-columns: 1fr 1fr; }
+  .finding-list > .eyebrow { grid-column: 1 / -1; }
+  .finding-list button:nth-child(even) { border-right: 1px solid var(--line); }
+  .trace-factors { display: block; }
+  .trace-factors ul { margin-top: 8px; }
+}
+@media (max-width: 620px) {
+  .lab-section-heading h2 { font-size: 33px; }
+  .lab-subtitle { font-size: 22px; line-height: 1.45; }
+  .lab-introduction { font-size: 12px; }
+  .laboratory-navigation button { padding: 15px 12px; gap: 7px; }
+  .laboratory-navigation strong { font-size: 11px; }
+  .laboratory-navigation small { font-size: 8px; }
+  .lab-navigation-number { font-size: 18px; }
+  .lab-view-heading h3 { font-size: 29px; }
+  .lab-view-heading p { font-size: 12px; }
+  .lab-option-controls button { font-size: 10px; padding: 9px 11px; }
+  .phenotype-illustration { padding: 9px; }
+  .phenotype-illustration figcaption { font-size: 9px; }
+  .lab-result-panel { padding: 21px 19px; }
+  .lab-result-panel .lab-panel-title { font-size: 27px; }
+  .lab-domain-descriptions dd { font-size: 12px; }
+  .serology-visual { padding: 12px; }
+  .serology-domains { font-size: 11px; grid-template-columns: 1fr 20px 1fr; gap: 6px; }
+  .lab-cohort-callout { padding: 20px; }
+  .lab-cohort-callout > .eyebrow { font-size: 8px; }
+  .modality-controls { grid-template-columns: 1fr; }
+  .modality-controls button { border-right: 0; border-bottom: 1px solid var(--line); padding: 12px 15px; }
+  .modality-controls button:last-child { border-bottom: 0; }
+  .modality-controls button strong { font-size: 12px; }
+  .modality-controls button small { font-size: 9px; }
+  .modality-controls button[aria-pressed='true'] { box-shadow: inset 3px 0 var(--teal-text); }
+  .trace-workbench { padding: 18px 10px; }
+  .trace-workbench-header { gap: 8px; margin-bottom: 15px; }
+  .trace-workbench-header > .eyebrow { font-size: 8px; }
+  .trace-figure { padding: 0; }
+  .trace-diagram-scroll .electrophysiology-svg { min-width: 620px; }
+  .trace-scroll-hint { display: block; padding: 9px 12px; color: var(--muted); font-size: 10px; }
+  .trace-caption { font-size: 10px; padding: 12px; }
+  .electrophysiology-bottom .lab-result-panel .evidence-list, .perspective-panel .evidence-list { grid-template-columns: 1fr; gap: 17px; }
+  .finding-list { grid-template-columns: 1fr; }
+  .finding-list button:nth-child(even) { border-right: 0; }
+  .finding-list button { padding: 13px 15px; }
+  .perspective-controls { grid-template-columns: 1fr; gap: 7px; }
+  .perspective-controls button { font-size: 11px; padding: 12px 14px; }
+  .perspective-panel { padding: 22px 18px; }
+  .perspective-panel > p { font-size: 12px; }
+  .lab-boundaries > p { font-size: 11px; }
+}
+@media print {
+  .laboratory-navigation { display: none; }
+  .lab-result-panel, .trace-workbench { break-inside: avoid; }
+}

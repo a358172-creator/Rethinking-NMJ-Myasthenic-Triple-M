@@ -2,6 +2,17 @@ export type StructureId = 'heart' | 'muscle' | 'nmj'
 
 export type EvidenceKind = 'physiology' | 'literature' | 'proposed' | 'cohort'
 
+/** Frozen aggregates shared by every module. No patient-level records. */
+export const frozenStudy = {
+  cohort: { n: 38, sources: 27, phenotype: '38/38' },
+  achr: { result: '11/30', percentage: '36.7%', positive: 11, tested: 30 },
+  formalNmj: { tested: 4, evaluated: '4/38', abnormal: '0/4', ci: '0–60.2%' },
+  sfemg: { tested: 1, nested: true },
+  needleEmg: { result: '6/11', percentage: '54.5%' },
+  pairedAchrNmj: { documented: 0, achrPositive: 11 },
+  mortality: { result: '16/38', percentage: '42.1%' },
+} as const
+
 export interface EvidenceItem {
   kind: EvidenceKind
   text: string
@@ -150,31 +161,31 @@ export const mechanisms: Record<StructureId, MechanismContent> = {
 export const studyStats: { id: string; value: string; label: string; detail: string }[] = [
   {
     id: 'cohort',
-    value: 'N=38',
+    value: `N=${frozenStudy.cohort.n}`,
     label: 'Published patients',
     detail: '27 source publications; a clinically defined MG-like phenotype in 38/38. Literature-derived individual patient-level pooled analysis.',
   },
   {
     id: 'achr',
-    value: '11/30',
+    value: frozenStudy.achr.result,
     label: 'AChR-positive',
     detail: '36.7% among 30 evaluated; exact 95% CI 19.9–56.1%. Seropositivity is not physiological confirmation of transmission failure.',
   },
   {
     id: 'nmj',
-    value: '0/4',
+    value: frozenStudy.formalNmj.abnormal,
     label: 'Objective NMJ abnormality',
     detail: 'Formal RNS and/or SFEMG in 4/38; exact 95% CI 0–60.2%. SFEMG in one patient is a subset of these four, not a fifth case.',
   },
   {
     id: 'needle-emg',
-    value: '6/11',
+    value: frozenStudy.needleEmg.result,
     label: 'Myopathic needle EMG',
     detail: '54.5% among 11 evaluated; exact 95% CI 23.4–83.3%. A myopathic pattern does not independently prove inflammatory myositis.',
   },
   {
     id: 'mortality',
-    value: '16/38',
+    value: frozenStudy.mortality.result,
     label: 'Documented mortality',
     detail: '42.1% of the full analytical cohort; exact 95% CI 26.3–59.2%. Follow-up varies by source; one vital status was unreported.',
   },
@@ -252,6 +263,51 @@ export const references: ScientificReference[] = [
     publication: 'International Journal of Molecular Sciences. 2023;24(13):10919.',
     doi: '10.3390/ijms241310919',
     url: 'https://www.mdpi.com/1422-0067/24/13/10919',
+    status: 'verified',
+  },
+  {
+    id: 'stalberg-2019',
+    authors: 'Stålberg E, van Dijk H, Falck B, et al.',
+    title: 'Standards for quantification of EMG and neurography',
+    publication: 'Clinical Neurophysiology. 2019;130(9):1688–1729.',
+    doi: '10.1016/j.clinph.2019.05.008',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/31213353/',
+    status: 'verified',
+  },
+  {
+    id: 'stalberg-1974',
+    authors: 'Stålberg E, Ekstedt J, Broman A.',
+    title: 'Neuromuscular transmission in myasthenia gravis studied with single fibre electromyography',
+    publication: 'Journal of Neurology, Neurosurgery & Psychiatry. 1974;37(5):540–547.',
+    doi: '10.1136/jnnp.37.5.540',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC494698/',
+    status: 'verified',
+  },
+  {
+    id: 'skolka-2022',
+    authors: 'Skolka M, Lamb CJ, Rubin DI, Klein CJ, Laughlin RS.',
+    title: 'Electrodiagnostic Characteristics Suggestive of Muscle-Specific Kinase Myasthenia Gravis',
+    publication: 'Neurology: Clinical Practice. 2022;12(3):211–217.',
+    doi: '10.1212/CPJ.0000000000001166',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9208421/',
+    status: 'verified',
+  },
+  {
+    id: 'kouyoumdjian-2020',
+    authors: 'Kouyoumdjian JA, Ronchi LG, de Faria FO.',
+    title: 'Jitter evaluation in denervation and reinnervation in 32 cases of chronic radiculopathy',
+    publication: 'Clinical Neurophysiology Practice. 2020;5:165–172.',
+    doi: '10.1016/j.cnp.2020.07.006',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7479254/',
+    status: 'verified',
+  },
+  {
+    id: 'muller-jensen-2023',
+    authors: 'Müller-Jensen L, Knauss S, Ginesta Roque L, et al.',
+    title: 'Autoantibody profiles in patients with immune checkpoint inhibitor-induced neurological immune related adverse events',
+    publication: 'Frontiers in Immunology. 2023;14:1108116.',
+    doi: '10.3389/fimmu.2023.1108116',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/36845122/',
     status: 'verified',
   },
 ]

@@ -10,6 +10,7 @@ import { StudyStats } from './features/evidence/StudyStats';
 import { ResearchOverview } from './features/evidence/ResearchOverview';
 import { ScientificReferences } from './features/evidence/ScientificReferences';
 import { UpcomingModules } from './features/UpcomingModules';
+import { DiagnosticLaboratory } from './features/laboratory/DiagnosticLaboratory';
 
 export default function App() {
   const [selected, setSelected] = useState<StructureId>('heart');
@@ -28,6 +29,7 @@ export default function App() {
       <section className="context-band" aria-labelledby="context-title"><div className="container context-inner"><div><span className="eyebrow">THE CLASSIC TRIAD</span><h2 id="context-title">Reconsidering the “myasthenic” component.</h2></div><div><p>ICI-associated Triple M describes the overlap of <strong>myocarditis</strong>, <strong>myositis</strong> and <strong>myasthenia gravis or MG-like manifestations</strong>. The conventional clinical label does not establish NMJ transmission failure.</p><p className="context-boundary">Muscle injury and genuine NMJ dysfunction may occur together.</p></div></div></section>
       <StudyStats />
       <MechanismExplorer selected={selected} onSelect={setSelected} />
+      <DiagnosticLaboratory />
       <ResearchOverview />
       <UpcomingModules />
       <ScientificReferences />

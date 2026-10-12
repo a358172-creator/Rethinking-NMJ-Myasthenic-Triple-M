@@ -6,6 +6,7 @@ export const en = {
   educationalNote: 'A scientific and educational companion. Not a diagnostic tool or treatment guide.',
   navigation: [
     { href: '#explorer', label: 'Mechanism Explorer' },
+    { href: '#laboratory', label: 'Diagnostic Laboratory' },
     { href: '#study', label: 'About the Study' },
     { href: '#references', label: 'References' },
   ],

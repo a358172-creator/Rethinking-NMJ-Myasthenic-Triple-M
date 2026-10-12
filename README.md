@@ -4,7 +4,7 @@
 
 A React, TypeScript and Vite scientific companion to *Rethinking the “Myasthenic” Component of Immune Checkpoint Inhibitor-Associated Triple M Syndrome: An Individual Patient-Level Pooled Analysis*.
 
-Phase 1 asks whether an MG-like clinical phenotype establishes primary neuromuscular-junction (NMJ) transmission dysfunction. It distinguishes clinical phenotype, serology, muscle physiology, and objective NMJ evidence while retaining the possibility that muscle injury and genuine NMJ disease coexist. It is educational, not a diagnostic tool, treatment recommender, or substitute for specialist assessment.
+The atlas asks whether an MG-like clinical phenotype establishes primary neuromuscular-junction (NMJ) transmission dysfunction. Phases 1 and 2 distinguish clinical phenotype, serology, muscle physiology, and objective NMJ evidence while retaining the possibility that muscle injury and genuine NMJ disease coexist. It is educational, not a diagnostic tool, treatment recommender, or substitute for specialist assessment.
 
 ## Implemented
 
@@ -14,7 +14,22 @@ Phase 1 asks whether an MG-like clinical phenotype establishes primary neuromusc
 - A normal NMJ illustration and an explicitly conceptual possible-impairment state, with vesicles, acetylcholine release, cleft, ACh receptors, postsynaptic folds and muscle membrane.
 - Side-by-side mechanism comparison with primary NMJ, muscle-predominant injury and potential-overlap interpretations. All converge on overlapping possible manifestations without classifying a patient.
 - Responsive layouts, reduced-motion handling, a mobile navigation menu, source links and an accessible evidence key.
-- Informational upcoming previews for Phase 2 and Phase 3. No diagnostic simulator, patient records, backend or externally hosted image assets.
+- A complete Phase 2 **Virtual Neuromuscular Diagnostic Laboratory**, with clinical muscle-region exploration, serological evidence, three electrophysiology views, and a comparative evidence board.
+- Informational upcoming preview for Phase 3. No patient records, backend or externally hosted image assets.
+
+## Phase 2 laboratory
+
+The laboratory is linked from the main navigation and module overview at `#laboratory`.
+
+**Clinical phenotype:** five selectable regions cover extraocular muscles/eyelids, bulbar musculature, cervical muscles, proximal limbs, and respiratory muscles/diaphragm. Each contrasts possible muscle and NMJ mechanisms without assigning an exclusive cause.
+
+**Serology:** AChR, MuSK, and pretreatment/correlation views distinguish antibody detection from measured transmission. The context view also describes anti-titin as an additional immune marker, without a new cohort proportion or a functional NMJ claim. AChR results preserve the tested denominator and the absence of documented formal NMJ testing in the seropositive subset.
+
+**Electrophysiology:** deterministic editable SVGs compare serial RNS responses, paired-fiber timing variability and possible blocking on SFEMG, and motor-unit morphology/recruitment on needle EMG. Every trace states **“Illustrative educational waveform — not a patient recording.”** Axes are qualitative; no numerical jitter or patient measurements are generated. On phones, the waveform diagram scrolls within its own keyboard-accessible region to preserve readable labels; the page and caption fit the viewport. SFEMG initially exposes the variable second potential on narrow screens.
+
+**Evidence board:** nine findings expose what each measures, what it may support, what it cannot independently establish, and a complementary domain. A manually chosen NMJ, muscle, or overlap perspective updates contextual interpretation. Findings do not select the perspective automatically, and there are no diagnostic scores, probabilities or treatment outputs.
+
+The refined NMJ anatomy is shared between the Phase 1 explorer and Phase 2 serology. Phase 1 changes are limited to useful muscle/NMJ refinements, navigation integration, and shared frozen-number references. Heart anatomy and other deferred work are recorded in [VISUAL_REFINEMENT_BACKLOG.md](VISUAL_REFINEMENT_BACKLOG.md). No hypothetical patient scenarios were added.
 
 ## Development and local preview
 
@@ -55,8 +70,12 @@ src/
   components/ui/             Small reusable UI primitives
   features/mechanisms/       Anatomical SVGs, explorer, scientific panels, comparison
   features/evidence/         Study overview, stats, evidence key and references
-  features/UpcomingModules  Phase 2/3 informational previews
-  data/science.ts            Typed, curated English scientific content and references
+  features/laboratory/       Four laboratory views, trace graphics and scoped styles
+  features/UpcomingModules  Available module links and Phase 3 preview
+  components/anatomy/        Shared editable NMJ geometry
+  data/science.ts            Shared frozen aggregates, Phase 1 content and references
+  data/laboratory.ts         Typed Phase 2 scientific content and evidence declarations
+  data/laboratoryUi.ts       Laboratory interface copy and glossary
   data/locale.ts             Interface copy prepared for future localization
   styles/                   Palette, typography, spacing and responsive behavior
 public/                     Original favicon only
@@ -97,11 +116,11 @@ The tested subsets differ. Untested cases are not counted as negative, proportio
 
 ### References
 
-Public content links to verified publications by **Guidon (2021), Plomp (2025), Ucem (2026), Wei (2026), Brahmer/SITC (2021), and Giovannini (2023)**. The [source review](docs/scientific-review.md#publication-checks) records links, DOIs and their appropriate use. The unverified ENMC workshop and unidentified Neurology study are excluded. Arthritis-specific experimental pathways and a universal shared autoantigen are not presented as proven Triple M mechanisms.
+Public content links to verified publications by **Guidon (2021), Plomp (2025), Ucem (2026), Wei (2026), Brahmer/SITC (2021), and Giovannini (2023)**. Phase 2 adds verified methodology and original electrophysiological observations by **Stålberg and colleagues (1974, 2019), Skolka and colleagues (2022), and Kouyoumdjian and colleagues (2020)**. The [Phase 1 source review](docs/scientific-review.md#publication-checks) and [Phase 2 scientific review](docs/phase2-scientific-review.md) record exact metadata, claim support and access limitations. The unverified ENMC workshop and unidentified Neurology study are excluded. Arthritis-specific experimental pathways and a universal shared autoantigen are not presented as proven Triple M mechanisms.
 
 ## GitHub Pages deployment
 
-Deployment is configured, **not performed**. No commits or pushes were made by this implementation.
+The existing GitHub Pages workflow and repository settings are preserved. No commits, pushes or deployment operations were performed during the Phase 2 implementation. An authorized push can trigger the existing workflow.
 
 The intended repository name is `triple-m-neuromuscular-atlas`; the default Vite base is `/triple-m-neuromuscular-atlas/`. The existing workspace remote is named `Rethinking-NMJ-Myasthenic-Triple-M`. It was not renamed. The workflow takes `base_path` from `actions/configure-pages`, so it builds assets and tests under the actual repository/custom-domain path rather than assuming the local default.
 
@@ -128,8 +147,8 @@ Deployment configuration follows the [official Vite Pages guidance](https://vite
 
 Automated tests cannot establish clinical validity, exact anatomical fidelity or complete assistive-technology usability. The drawings simplify anatomy and are not to scale. They illustrate normal function and possible injury; they do not assert a universal antigen, antibody mechanism or histopathology in every patient. Suspected cardiac, bulbar or respiratory compromise requires clinical/specialist assessment; this site does not sequence a workup or recommend treatment.
 
-Before publication, the scientific author/clinician should review the drawings, attribution, missing-data language and public content. Complete a manual screen-reader/keyboard review. The absent SfN abstract can be incorporated after source review, without changing frozen values. Future public patient-level data require independent de-identification and validation.
+Before publication, the scientific author/clinician should review the drawings, attribution, missing-data language and public content. Complete a manual screen-reader/keyboard review, including the mobile diagram scrolling regions. The absent SfN abstract can be incorporated after source review, without changing frozen values. The laboratory states that urgent cardiac, bulbar or respiratory assessment should not wait for completion of every test. Future public patient-level data require independent de-identification and validation.
 
-**Phase 2** can add educational comparisons of examination, CK, AChR/MuSK, RNS, SFEMG, needle EMG and related modalities. Preserve the distinctions between what each measures and what it can establish; no automated diagnosis or prescribing logic is planned.
+**Phase 2 is implemented.** Its diagrams are schematic and do not reproduce raw cohort recordings. Laboratory view controls are browser-local educational state; switching views starts the selected view at its default state. They do not collect clinical input or retain patient information. See [Phase 2 delivery report](docs/phase2-report.md) for files, executed validation and limitations.
 
 **Phase 3** can add a separately validated, publication-safe patient-level evidence representation. Model unperformed, unreported, indeterminate and negative testing separately; retain source provenance and confirm reuse/publication permissions. No records or mock patients have been created in Phase 1.

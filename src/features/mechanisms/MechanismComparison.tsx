@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { mechanisms, sharedManifestations } from '../../data/science';
+import { mechanisms, sharedManifestations, frozenStudy } from '../../data/science';
 import { EvidencePanel } from '../evidence/EvidencePanel';
 import type { EvidenceItem } from '../../data/science';
 
@@ -13,7 +13,7 @@ const comparisonEvidence: EvidenceItem[] = [
   { kind: 'physiology', text: 'Muscle contraction depends on both neuromuscular transmission and the integrity of the muscle fiber.' },
   { kind: 'literature', text: 'Published ICI-associated myositis observations support an MG-like distribution of muscle injury and the possibility of coexisting NMJ disease.', referenceIds: ['plomp-2025', 'ucem-2026'] },
   { kind: 'proposed', text: 'The relative contribution of each mechanism in individual Triple M patients remains unresolved. A universal shared autoantigen is not established.' },
-  { kind: 'cohort', text: 'The phenotype was present in 38/38. Formal NMJ abnormalities were documented in 0/4 evaluated patients (exact 95% CI, 0–60.2%); the result does not exclude NMJ disease.' },
+  { kind: 'cohort', text: `The phenotype was present in ${frozenStudy.cohort.phenotype}. Formal NMJ abnormalities were documented in ${frozenStudy.formalNmj.abnormal} evaluated patients (exact 95% CI, ${frozenStudy.formalNmj.ci}); the result does not exclude NMJ disease.` },
 ];
 
 export function MechanismComparison() {
