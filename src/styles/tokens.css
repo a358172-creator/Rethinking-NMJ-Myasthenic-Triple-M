@@ -1,0 +1,19 @@
+:root {
+  --navy: #14283F;
+  --slate: #243B53;
+  --teal: #338A8A;
+  --teal-text: #246c6c;
+  --burgundy: #93485A;
+  --amber: #BD8A42;
+  --amber-text: #805a22;
+  --background: #F7F9FA;
+  --white: #FFFFFF;
+  --muted: #566879;
+  --line: #dce3e8;
+  --teal-light: #eaf3f2;
+  --burgundy-light: #f7edf0;
+  --amber-light: #f8f1e6;
+  --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+  --font-display: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  --page-width: 1264px;
+}

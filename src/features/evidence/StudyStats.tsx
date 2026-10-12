@@ -1,0 +1,9 @@
+import { studyStats } from '../../data/science';
+
+export function StudyStats() {
+  return <section className="study-glance container" id="study-at-a-glance" aria-labelledby="glance-title">
+    <div className="glance-heading"><h2 id="glance-title">The study at a glance</h2><span>FROZEN AGGREGATE FINDINGS</span></div>
+    <dl className="stats-grid">{studyStats.map((stat) => <div className="stat" key={stat.id} data-testid={`stat-${stat.id}`}><dt>{stat.label}</dt><dd className="stat-value">{stat.value}</dd><dd className="stat-detail">{stat.detail}</dd></div>)}</dl>
+    <p className="denominator-note"><strong>Read the denominators.</strong> The evaluated subsets differ; these proportions are not direct comparisons. No objective NMJ abnormality among four evaluated patients does not exclude true NMJ pathology (exact 95% CI, 0–60.2%).</p>
+  </section>;
+}

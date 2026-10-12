@@ -1,0 +1,20 @@
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+
+# Unpublished research: never commit or deploy original source material.
+/research_sources/
+/esearch_sources/
+*.docx
+*.xlsx
+*.xls
+*.pdf
+~$*
+
