@@ -15,7 +15,8 @@ The atlas asks whether an MG-like clinical phenotype establishes primary neuromu
 - Side-by-side mechanism comparison with primary NMJ, muscle-predominant injury and potential-overlap interpretations. All converge on overlapping possible manifestations without classifying a patient.
 - Responsive layouts, reduced-motion handling, a mobile navigation menu, source links and an accessible evidence key.
 - A complete Phase 2 **Virtual Neuromuscular Diagnostic Laboratory**, with clinical muscle-region exploration, serological evidence, three electrophysiology views, and a comparative evidence board.
-- Informational upcoming preview for Phase 3. No patient records, backend or externally hosted image assets.
+- A Phase 3A workbook-processing foundation, executed numerical report, data dictionary and independently reviewed source mapping.
+- Reusable patient-atlas components prepared without loading records. The main navigation links to the validation/review status at `#patients`. Patient exploration remains blocked by unresolved troponin normalization. No patient dataset is bundled.
 
 ## Phase 2 laboratory
 
@@ -62,6 +63,23 @@ Linux hosts without browser system libraries may require `npx playwright install
 
 `npm run build` executes TypeScript validation, Vite compilation and the publication-boundary check. `npm run verify:publication` rejects tracked research documents, raw document files in `dist`, internal source paths and known patient-record markers. The workflow uploads **only `dist/`**. This check supplements author review; it is not a general-purpose privacy scanner.
 
+## Phase 3A data validation
+
+The unchanged authoritative workbook is now available in the ignored `esearch_sources/` directory. Install the local Python environment with **Python 3.12 or newer**:
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r scripts/atlas/requirements.txt
+npm run data:validate
+npm run data:test
+```
+
+On the current workbook, `data:validate` exits **1**: **44/48** required checks pass, with four troponin checks unresolved. All categorical cohort, cross-domain, age and LVEF checks pass. A conservative exact single-assay calculation cannot reproduce the frozen troponin n/median/IQR/range. Its diagnostic results must not replace the frozen analysis. See [executed validation report](DATA_VALIDATION_REPORT.md), [data dictionary](DATA_DICTIONARY.md), [independent review](docs/phase3-source-review.md) and [restricted review procedure](docs/atlas-data-review.md).
+
+Private audit details and the source crosswalk remain in ignored `esearch_sources/_processed/`, with owner-only file permissions. No browser-facing `atlas.review.json` is generated until **every** required frozen check passes. A failed rerun removes a stale review artifact. Validation success would still require a separate review before public inclusion. No patient rows, record filters or profiles are currently mounted, and there is no development data endpoint. The production boundary also rejects restricted export files and checks all source identifiers available in the private crosswalk.
+
+The source owner must document the troponin peak/assay selection and unit handling, or explicitly authorize a justified source amendment. No source correction has been made. Once reconciled, the remaining Phase 3A work is to run validation again, inspect the concrete minimal export, connect a restricted local preview and test actual-record interactions. [Phase 3A delivery status](docs/phase3-report.md) records completed and blocked work.
+
 ## Project structure
 
 ```text
@@ -71,16 +89,19 @@ src/
   features/mechanisms/       Anatomical SVGs, explorer, scientific panels, comparison
   features/evidence/         Study overview, stats, evidence key and references
   features/laboratory/       Four laboratory views, trace graphics and scoped styles
+  features/atlas/            Unmounted patient evidence components; no patient data
   features/UpcomingModules  Available module links and Phase 3 preview
   components/anatomy/        Shared editable NMJ geometry
   data/science.ts            Shared frozen aggregates, Phase 1 content and references
   data/laboratory.ts         Typed Phase 2 scientific content and evidence declarations
   data/laboratoryUi.ts       Laboratory interface copy and glossary
   data/locale.ts             Interface copy prepared for future localization
+  data/atlasModel.ts         Minimal categorical types and filter/summary functions
+  data/atlasCopy.ts          Evidence category labels and interpretation text
   styles/                   Palette, typography, spacing and responsive behavior
 public/                     Original favicon only
 tests/                      Playwright desktop/mobile checks
-scripts/                    Publication-boundary verification
+scripts/                    Publication-boundary verification and Python atlas pipeline/tests
 docs/                       Scientific source review and verification record
 .github/workflows/           Build, test and GitHub Pages deployment
 ```
@@ -89,14 +110,14 @@ The SVGs are React source, editable by path and label. Scientific content is sep
 
 ## Scientific source hierarchy
 
-1. Frozen N=38 manuscript and numerical audit: methods, cohort numbers, denominators and uncertainty.
+1. Frozen N=38 workbook: individual source records. The manuscript and numerical audit provide methods and independently frozen validation targets; aggregate values never substitute for source records.
 2. Verified original publications and consensus definitions: established physiology and published clinical/pathological observations.
 3. Supplied Spanish narrative review: secondary explanatory context, not independent mechanism validation.
 4. Guardrails and conceptual schematics: identify boundaries; hypotheses are visibly labeled and never promoted to cohort findings.
 
-The four available documents were found in **`esearch_sources/`**, rather than the requested `research_sources/`. Both directories, original DOCX/spreadsheet/PDF documents, build output and test artifacts are ignored. Original documents were not modified or copied into public assets.
+The source documents and subsequently supplied workbook were found in **`esearch_sources/`**, rather than the requested `research_sources/`. Both directories, original DOCX/spreadsheet/PDF documents, restricted derived artifacts, build output and test artifacts are ignored. Original documents were not modified or copied into public assets.
 
-The requested SfN late-breaking abstract was absent and was **not reviewed**. The audit’s underlying spreadsheet was also absent, so this implementation preserves the provided frozen results without claiming a fresh dataset recalculation. The clean v3 manuscript has references that the earlier audit described as missing. See the [scientific source review](docs/scientific-review.md) for availability, verification, discrepancies and claim boundaries.
+The requested SfN late-breaking abstract was absent and was **not reviewed**. The spreadsheet was unavailable during Phases 1/2; Phase 3A has now recalculated the workbook and documented the troponin discrepancy without changing frozen public aggregates. The clean v3 manuscript has references that the earlier audit described as missing. The [Phase 1 source review](docs/scientific-review.md) records that phase's historical availability; the [Phase 3A independent review](docs/phase3-source-review.md) records the current workbook findings.
 
 ### Frozen values
 
@@ -151,4 +172,4 @@ Before publication, the scientific author/clinician should review the drawings, 
 
 **Phase 2 is implemented.** Its diagrams are schematic and do not reproduce raw cohort recordings. Laboratory view controls are browser-local educational state; switching views starts the selected view at its default state. They do not collect clinical input or retain patient information. See [Phase 2 delivery report](docs/phase2-report.md) for files, executed validation and limitations.
 
-**Phase 3** can add a separately validated, publication-safe patient-level evidence representation. Model unperformed, unreported, indeterminate and negative testing separately; retain source provenance and confirm reuse/publication permissions. No records or mock patients have been created in Phase 1.
+**Phase 3A remains incomplete under its scientific stop condition.** Its pipeline and reusable interface components are prepared, but the full validation gate has not passed. Troponin adjudication, real-record local preview, patient-dependent browser tests and publication review remain outstanding. [Phase 3A delivery status](docs/phase3-report.md) lists the remaining work and subsequent Phase 3B objectives. No patient records or mock patients are included in the website.

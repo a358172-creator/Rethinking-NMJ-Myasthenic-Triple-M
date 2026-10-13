@@ -1,4 +1,4 @@
-# Phase 1 and Phase 2 verification
+# Phase 1, Phase 2 and Phase 3A verification
 
 Run `npm run typecheck`, `npm run lint`, and `npm run build`, then install Chromium with `npx playwright install chromium` and run `npm test`. The Playwright suite serves the production bundle beneath `/triple-m-neuromuscular-atlas/`, the configured GitHub Pages path.
 
@@ -39,3 +39,11 @@ Automated checks do not establish scientific correctness, comprehensive screen-r
 The production build also executes `npm run verify:publication` to check that unpublished documents and patient records are excluded from deployment. Browser tests inspect link targets and DOI formatting; they do not assert that remote publisher sites are continuously available.
 
 Test results must be reported from executed commands. The presence of this plan or test file does not imply a successful run.
+
+## Phase 3A scope while validation is blocked
+
+`npm run data:validate` processes the actual private workbook with openpyxl and produces the numerical report. A nonzero exit on the current troponin discrepancy is required; it must not be described as a passed frozen validation. `npm run data:test` uses stdlib unittest to check strict missingness, exact intervals, supported unit conversions, rejection of ambiguous peaks/assays, invalid spreadsheets/formulas, stale-export revocation, the authoritative categorical/age/LVEF invariants, duplicate-ID and cross-variable failures, and separation of the six-field representation from private provenance. In-memory schema checks do not authorize a browser export.
+
+The `phase3-gate.spec.ts` browser case verifies keyboard navigation to `#patients`, the visible validation/publication status, absence of patient rows/filters/profiles and source-data requests, responsive page containment and axe accessibility. It runs in both existing viewport projects. The rest of the suite continues to exercise Phases 1/2 against the production bundle.
+
+All combinations of patient filters, the actual 38-row table, row profiles and missingness highlights require a fully passed source validation and restricted preview. Those browser checks are **not executed or claimed** while the scientific stop condition holds. Generic atlas components are typechecked/linted without being mounted or supplied substitute patients.

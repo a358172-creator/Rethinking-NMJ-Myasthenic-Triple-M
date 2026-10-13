@@ -8,6 +8,14 @@ test-results/
 !.env.example
 .DS_Store
 *.log
+.venv/
+__pycache__/
+*.pyc
+/data_review/
+/src/data/atlas.approved.json
+
+# Restricted local evidence-atlas artifacts and provenance are never public by default.
+*.xlsm
 
 # Unpublished research: never commit or deploy original source material.
 /research_sources/

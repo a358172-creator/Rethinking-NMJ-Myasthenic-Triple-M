@@ -11,6 +11,7 @@ import { ResearchOverview } from './features/evidence/ResearchOverview';
 import { ScientificReferences } from './features/evidence/ScientificReferences';
 import { UpcomingModules } from './features/UpcomingModules';
 import { DiagnosticLaboratory } from './features/laboratory/DiagnosticLaboratory';
+import { PatientAtlasAvailability } from './features/evidence/PatientAtlasAvailability';
 
 export default function App() {
   const [selected, setSelected] = useState<StructureId>('heart');
@@ -30,6 +31,7 @@ export default function App() {
       <StudyStats />
       <MechanismExplorer selected={selected} onSelect={setSelected} />
       <DiagnosticLaboratory />
+      <PatientAtlasAvailability />
       <ResearchOverview />
       <UpcomingModules />
       <ScientificReferences />

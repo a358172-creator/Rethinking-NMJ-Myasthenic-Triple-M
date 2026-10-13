@@ -7,6 +7,7 @@ export const en = {
   navigation: [
     { href: '#explorer', label: 'Mechanism Explorer' },
     { href: '#laboratory', label: 'Diagnostic Laboratory' },
+    { href: '#patients', label: 'Patient Evidence Atlas' },
     { href: '#study', label: 'About the Study' },
     { href: '#references', label: 'References' },
   ],

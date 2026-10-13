@@ -202,7 +202,7 @@ export const sharedManifestations: string[] = [
 
 export const sourceLimitations: string[] = [
   'Four supplied documents were reviewed: the frozen N=38 manuscript, numerical audit, Spanish narrative review, and scientific guardrails. The referenced conference abstract was not supplied and has not been reviewed.',
-  'The audit’s source spreadsheet was not supplied. No independent spreadsheet recalculation was performed for this website; aggregate results follow the manuscript and audit.',
+  'The source workbook is available and its categorical cohort findings have been independently reproduced. Patient-level exploration remains on hold pending reconciliation of descriptive validation discrepancies and publication review.',
   'This literature-derived analysis includes 38 published patients from 27 sources. Targeted case ascertainment, publication bias, and reporting bias limit generalizability; it is not a prospective cohort or a formal PRISMA-compliant systematic review.',
   'Only 4/38 had evaluable formal NMJ testing. The 0/4 result (exact 95% CI 0–60.2%) does not establish absence of NMJ disease; missing testing is not a negative result.',
   'None of the 11 AChR-positive patients had documented RNS/SFEMG. This is absence of paired evidence, not evidence of normal transmission in seropositive cases.',
