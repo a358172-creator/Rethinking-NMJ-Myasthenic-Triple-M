@@ -1,4 +1,4 @@
-# Phase 1, Phase 2 and Phase 3A verification
+# Phase 1, Phase 2 and Phase 3B public verification
 
 Run `npm run typecheck`, `npm run lint`, and `npm run build`, then install Chromium with `npx playwright install chromium` and run `npm test`. The Playwright suite serves the production bundle beneath `/triple-m-neuromuscular-atlas/`, the configured GitHub Pages path.
 
@@ -39,6 +39,18 @@ Automated checks do not establish scientific correctness, comprehensive screen-r
 The production build also executes `npm run verify:publication` to check that unpublished documents and patient records are excluded from deployment. Browser tests inspect link targets and DOI formatting; they do not assert that remote publisher sites are continuously available.
 
 Test results must be reported from executed commands. The presence of this plan or test file does not imply a successful run.
+
+## Phase 3B current public scope
+
+Phase 3B replaces the patient-availability notice with the aggregate-only Scientific Evidence Explorer at `#evidence`. Earlier Phase 3A preview plans below are retained as historical/private scope; they are not active public functionality or a current patient-publication plan. All three module-directory links now work. The duplicate static clinical figure is unmounted; the conceptual mechanism figure retains its geometry with an adapted light palette.
+
+`npm run test:aggregates` compares the centralized typed values against the executed aggregate audit JSON and numerical report, including every requested count, exact interval and AChR/formal-NMJ cell. Six tests verify margins, missingness, nested SFEMG, evaluated distributions, mortality denominator/unknowns, provisional source limitations, unchanged scientific FAIL states and absence of record/biochemical fields. The public build does not import these research reports.
+
+The evidence explorer browser suite exercises every availability, serology, NMJ-category and needle-category control with native keyboard operation and exclusive pressed states. Selected panels must retain exact full/selected denominators, keep 34 unavailable formal tests distinct from 32 undocumented objective-evidence records, and keep 27 undocumented needle examinations outside the 11 evaluated. It checks the wide 0/4 interval, explanatory boundaries, explicit Siu/Gómez uncertainty, secondary mortality context and absence of unsupported troponin summaries.
+
+Desktop/mobile checks cover default and selected-state axe accessibility, existing Phase 1/2 behavior, working global/module/chart anchors, all retained SVG scroll controls, absence of private requests/records/downloads and no page/chart overflow at 320, 390, 768 and 1440 px. Screenshots capture the full aggregate module, focused serology comparison and retained conceptual mechanism figures for visual inspection. Automated axe checks do not replace manual screen-reader or scientific review.
+
+`npm run build` still runs the existing publication verifier. Research manuscripts/workbooks/private crosswalks cannot enter deployed assets. Preserve original research/documentation digests and do not activate the legacy patient exporter. No clinical or release validation changes from FAIL to PASS because the public module excludes biochemical data.
 
 ## Phase 3A scope while validation is blocked
 

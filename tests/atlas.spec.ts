@@ -235,21 +235,24 @@ test('anatomy and comparison satisfy automated WCAG accessibility checks', async
   }
 });
 
-test('laboratory is available and the patient-level atlas remains an upcoming preview', async ({ page }) => {
+test('three complementary scientific modules are available through working navigation', async ({ page }) => {
   const laboratoryLink = page.locator('#modules .module-available[href="#laboratory"]');
   await expect(laboratoryLink).toHaveCount(1);
   await expect(laboratoryLink.getByText('Available', { exact: true })).toBeVisible();
   await laboratoryLink.click();
   await expect(page).toHaveURL(/#laboratory$/);
   await expect(page.locator('#laboratory')).toBeInViewport();
-  const upcoming = page.locator('#modules article.module-preview');
-  await expect(upcoming).toHaveCount(1);
-  for (const preview of await upcoming.all()) {
-    await expect(preview.getByText('Upcoming', { exact: true })).toBeVisible();
-    await expect(preview.locator('a, button, input, [role="button"]')).toHaveCount(0);
+  const modules = page.locator('#modules .module-available');
+  await expect(modules).toHaveCount(3);
+  await expect(page.locator('#modules article.module-preview, #modules .upcoming-status')).toHaveCount(0);
+  for (const destination of ['explorer', 'laboratory', 'evidence']) {
+    const link = page.locator(`#modules .module-available[href="#${destination}"]`);
+    await expect(link.getByText('Available', { exact: true })).toBeVisible();
+    await link.click();
+    await expect(page).toHaveURL(new RegExp(`#${destination}$`));
+    await expect(page.locator(`#${destination}`)).toBeInViewport();
   }
-  await expect(upcoming).toContainText('Planned for Phase 3');
-  await expect(upcoming).toContainText('No patient records loaded');
+  await expect(page.locator('#modules')).not.toContainText('Patient-Level');
 });
 
 test('mobile menu exposes its destination and closes after navigation', async ({ page }, testInfo) => {

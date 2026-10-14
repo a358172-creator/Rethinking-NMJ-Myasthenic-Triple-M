@@ -1,19 +1,47 @@
+import { aggregateEvidence, formatExactInterval, formatPercent, formatRatio } from './aggregateEvidence'
+
 export type StructureId = 'heart' | 'muscle' | 'nmj'
 
 export type EvidenceKind = 'physiology' | 'literature' | 'proposed' | 'cohort'
 
-/** Frozen aggregates shared by every module. No patient-level records.
- * Core categorical counts reproduce the Phase 3A.2 report; source attribution remains unresolved.
+/** Compatibility view for the established Phase 1/2 modules.
+ * Counts and displays derive from the aggregate-only source of truth.
+ * Numerical reproduction does not resolve outstanding source attribution.
  */
 export const frozenStudy = {
-  cohort: { n: 38, sources: 27, phenotype: '38/38' },
-  achr: { result: '11/30', percentage: '36.7%', positive: 11, tested: 30 },
-  formalNmj: { tested: 4, evaluated: '4/38', abnormal: '0/4', ci: '0–60.2%' },
-  nmjEvidence: { formalPositive: 0, formalNegative: 4, indeterminateQualitative: 2, notDocumented: 32 },
-  sfemg: { tested: 1, nested: true },
-  needleEmg: { result: '6/11', percentage: '54.5%', tested: 11, myopathic: 6, neuropathic: 1, normal: 1, indeterminate: 3, notDocumented: 27, ci: '23.4–83.3%' },
-  pairedAchrNmj: { documented: 0, achrPositive: 11 },
-  mortality: { result: '16/38', percentage: '42.1%' },
+  cohort: {
+    n: aggregateEvidence.study.patients,
+    sources: aggregateEvidence.study.publications,
+    phenotype: formatRatio(aggregateEvidence.study.phenotypeCount, aggregateEvidence.study.patients),
+  },
+  achr: {
+    ...aggregateEvidence.achr,
+    result: formatRatio(aggregateEvidence.achr.positive, aggregateEvidence.achr.tested),
+    percentage: formatPercent(aggregateEvidence.achr.positive, aggregateEvidence.achr.tested),
+    ci: formatExactInterval(aggregateEvidence.achr.summary),
+  },
+  formalNmj: {
+    tested: aggregateEvidence.formalNmj.tested,
+    evaluated: formatRatio(aggregateEvidence.formalNmj.tested, aggregateEvidence.study.patients),
+    abnormal: formatRatio(aggregateEvidence.formalNmj.abnormal, aggregateEvidence.formalNmj.tested),
+    ci: formatExactInterval(aggregateEvidence.formalNmj.summary),
+  },
+  nmjEvidence: aggregateEvidence.nmjEvidence,
+  sfemg: { tested: aggregateEvidence.formalNmj.sfemgTested, nested: aggregateEvidence.formalNmj.sfemgNested },
+  needleEmg: {
+    ...aggregateEvidence.needleEmg,
+    tested: aggregateEvidence.needleEmg.evaluated,
+    result: formatRatio(aggregateEvidence.needleEmg.myopathic, aggregateEvidence.needleEmg.evaluated),
+    percentage: formatPercent(aggregateEvidence.needleEmg.myopathic, aggregateEvidence.needleEmg.evaluated),
+    ci: formatExactInterval(aggregateEvidence.needleEmg.summary),
+  },
+  pairedAchrNmj: { documented: aggregateEvidence.achrFormalNmj[0].formalDocumented, achrPositive: aggregateEvidence.achr.positive },
+  mortality: {
+    ...aggregateEvidence.mortality,
+    result: formatRatio(aggregateEvidence.mortality.death, aggregateEvidence.study.patients),
+    percentage: formatPercent(aggregateEvidence.mortality.death, aggregateEvidence.study.patients),
+    ci: formatExactInterval(aggregateEvidence.mortality.summary),
+  },
 } as const
 
 export interface EvidenceItem {
@@ -57,7 +85,7 @@ export const evidenceLevels: Record<EvidenceKind, { label: string; description: 
   },
   cohort: {
     label: 'Present N=38 analysis',
-    description: 'Frozen aggregate findings from 38 published patients in 27 source publications, with evaluable denominators preserved.',
+    description: `Provisional aggregate findings from ${frozenStudy.cohort.n} published patients in ${frozenStudy.cohort.sources} source publications, with evaluable denominators preserved and source provenance pending reconciliation.`,
   },
 }
 
@@ -123,7 +151,7 @@ export const mechanisms: Record<StructureId, MechanismContent> = {
       },
       {
         kind: 'cohort',
-        text: 'A myopathic pattern was documented in 6/11 needle-EMG-tested patients (54.5%). This muscle finding is distinct from formal RNS/SFEMG evidence and from biopsy-confirmed inflammatory myositis.',
+        text: `A myopathic pattern was documented in ${frozenStudy.needleEmg.result} needle-EMG-tested patients (${frozenStudy.needleEmg.percentage}). This muscle finding is distinct from formal RNS/SFEMG evidence and from biopsy-confirmed inflammatory myositis.`,
       },
     ],
   },
@@ -155,7 +183,7 @@ export const mechanisms: Record<StructureId, MechanismContent> = {
       },
       {
         kind: 'cohort',
-        text: 'Formal RNS and/or SFEMG was documented in 4/38; objective abnormality was 0/4 (exact 95% CI 0–60.2%). SFEMG in one patient is included within the four. None of the 11 AChR-positive patients had RNS/SFEMG documented.',
+        text: `Formal RNS and/or SFEMG was documented in ${frozenStudy.formalNmj.evaluated}; objective abnormality was ${frozenStudy.formalNmj.abnormal} (exact 95% CI ${frozenStudy.formalNmj.ci}). SFEMG in ${frozenStudy.sfemg.tested} patient is included within the ${frozenStudy.formalNmj.tested}. None of the ${frozenStudy.achr.positive} AChR-positive patients had RNS/SFEMG documented.`,
       },
     ],
   },
@@ -166,31 +194,31 @@ export const studyStats: { id: string; value: string; label: string; detail: str
     id: 'cohort',
     value: `N=${frozenStudy.cohort.n}`,
     label: 'Published patients',
-    detail: '27 source publications; a clinically defined MG-like phenotype in 38/38. Literature-derived individual patient-level pooled analysis.',
+    detail: `${frozenStudy.cohort.sources} source publications, pending provenance reconciliation; a clinically defined MG-like phenotype in ${frozenStudy.cohort.phenotype} as an inclusion characteristic.`,
   },
   {
     id: 'achr',
     value: frozenStudy.achr.result,
     label: 'AChR-positive',
-    detail: '36.7% among 30 evaluated; exact 95% CI 19.9–56.1%. Seropositivity is not physiological confirmation of transmission failure.',
+    detail: `${frozenStudy.achr.percentage} among ${frozenStudy.achr.tested} evaluated; exact 95% CI ${frozenStudy.achr.ci}. Seropositivity is not physiological confirmation of transmission failure.`,
   },
   {
     id: 'nmj',
     value: frozenStudy.formalNmj.abnormal,
     label: 'Objective NMJ abnormality',
-    detail: 'Formal RNS and/or SFEMG in 4/38; exact 95% CI 0–60.2%. SFEMG in one patient is a subset of these four, not a fifth case.',
+    detail: `Formal RNS and/or SFEMG in ${frozenStudy.formalNmj.evaluated}; exact 95% CI ${frozenStudy.formalNmj.ci}. The ${frozenStudy.sfemg.tested} SFEMG examination is nested within this tested subset.`,
   },
   {
     id: 'needle-emg',
     value: frozenStudy.needleEmg.result,
     label: 'Myopathic needle EMG',
-    detail: '54.5% among 11 evaluated; exact 95% CI 23.4–83.3%. A myopathic pattern does not independently prove inflammatory myositis.',
+    detail: `${frozenStudy.needleEmg.percentage} among ${frozenStudy.needleEmg.tested} evaluated; exact 95% CI ${frozenStudy.needleEmg.ci}. A myopathic pattern does not independently prove inflammatory myositis.`,
   },
   {
     id: 'mortality',
     value: frozenStudy.mortality.result,
     label: 'Documented mortality',
-    detail: '42.1% of the full analytical cohort; exact 95% CI 26.3–59.2%. Follow-up varies by source; one vital status was unreported.',
+    detail: `${frozenStudy.mortality.percentage} of the full working cohort; exact 95% CI ${frozenStudy.mortality.ci}. Follow-up varies by source; ${frozenStudy.mortality.unknown} vital status was unknown. This is not a population-level fatality risk.`,
   },
 ]
 
@@ -204,11 +232,11 @@ export const sharedManifestations: string[] = [
 ]
 
 export const sourceLimitations: string[] = [
-  'Four supplied documents were reviewed: the frozen N=38 manuscript, numerical audit, Spanish narrative review, and scientific guardrails. The referenced conference abstract was not supplied and has not been reviewed.',
-  'The source workbook is available and its categorical totals have been independently reproduced. Numerical agreement does not resolve patient-to-source attribution or category discrepancies. Patient-level exploration remains on hold pending source validation and separate author review; the full biochemical analysis is unresolved.',
-  'This literature-derived analysis includes 38 published patients from 27 sources. Targeted case ascertainment, publication bias, and reporting bias limit generalizability; it is not a prospective cohort or a formal PRISMA-compliant systematic review.',
-  'Only 4/38 had evaluable formal NMJ testing. The 0/4 result (exact 95% CI 0–60.2%) does not establish absence of NMJ disease; missing testing is not a negative result.',
-  'None of the 11 AChR-positive patients had documented RNS/SFEMG. This is absence of paired evidence, not evidence of normal transmission in seropositive cases.',
+  aggregateEvidence.limitations.synthesis,
+  aggregateEvidence.limitations.provenance,
+  aggregateEvidence.limitations.biochemical,
+  `Only ${frozenStudy.formalNmj.evaluated} had evaluable formal NMJ testing. The ${frozenStudy.formalNmj.abnormal} result (exact 95% CI ${frozenStudy.formalNmj.ci}) does not establish absence of NMJ disease; missing testing is not a negative result.`,
+  `None of the ${frozenStudy.achr.positive} AChR-positive patients had documented RNS/SFEMG. This is absence of paired evidence, not evidence of normal transmission in seropositive cases.`,
   'The serology, needle-EMG, and formal NMJ subsets differ. Their proportions should not be interpreted as direct comparisons or as patient-level mechanism assignments.',
   'Diagnostic methods, assay types, test timing, prior treatment, pathology availability, and follow-up varied. Muscle injury and primary NMJ dysfunction can coexist.',
 ]

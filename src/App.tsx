@@ -9,9 +9,9 @@ import { MechanismExplorer } from './features/mechanisms/MechanismExplorer';
 import { StudyStats } from './features/evidence/StudyStats';
 import { ResearchOverview } from './features/evidence/ResearchOverview';
 import { ScientificReferences } from './features/evidence/ScientificReferences';
-import { UpcomingModules } from './features/UpcomingModules';
+import { ScientificModules } from './features/ScientificModules';
 import { DiagnosticLaboratory } from './features/laboratory/DiagnosticLaboratory';
-import { PatientAtlasAvailability } from './features/evidence/PatientAtlasAvailability';
+import { ScientificEvidenceExplorer } from './features/evidenceExplorer/ScientificEvidenceExplorer';
 
 export default function App() {
   const [selected, setSelected] = useState<StructureId>('heart');
@@ -31,9 +31,9 @@ export default function App() {
       <StudyStats />
       <MechanismExplorer selected={selected} onSelect={setSelected} />
       <DiagnosticLaboratory />
-      <PatientAtlasAvailability />
+      <ScientificEvidenceExplorer />
       <ResearchOverview />
-      <UpcomingModules />
+      <ScientificModules />
       <ScientificReferences />
     </main>
     <Footer />

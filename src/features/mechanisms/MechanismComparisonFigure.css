@@ -17,22 +17,19 @@
 .mechanism-figure-panel {
   display: flex;
   flex-direction: column;
-  transition: border-color 180ms ease, box-shadow 180ms ease;
+  transition: border-color 180ms ease;
 }
 
 .mechanism-figure-panel--nmj {
   --mechanism-accent: var(--sfn-accent-cyan);
-  background: linear-gradient(160deg, #0f172a, #172337);
 }
 
 .mechanism-figure-panel--muscle {
-  --mechanism-accent: #fb7185;
-  background: linear-gradient(160deg, #18181b, #27171c);
+  --mechanism-accent: var(--burgundy);
 }
 
 .mechanism-figure-panel--emphasized {
   border-color: var(--mechanism-accent);
-  box-shadow: inset 0 0 0 1px var(--mechanism-accent);
 }
 
 .mechanism-figure-panel .sfn-panel-kicker {
@@ -57,14 +54,14 @@
   width: 100%;
   min-width: 560px;
   height: auto;
-  font-family: Inter, 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-body);
 }
 
 .mechanism-figure-evaluation {
   margin: 0.5rem 0 0.9rem;
   padding-top: 0.75rem;
-  border-top: 1px solid rgba(148, 163, 184, 0.2);
-  color: #cbd5e1;
+  border-top: 1px solid var(--line);
+  color: var(--slate);
   font-size: 0.82rem;
   line-height: 1.6;
 }

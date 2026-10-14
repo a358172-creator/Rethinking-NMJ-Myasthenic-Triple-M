@@ -1,39 +1,8 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('./');
   await page.emulateMedia({ reducedMotion: 'reduce' });
-});
-
-test('clinical figure preserves distinct evidence denominators and unresolved scientific findings', async ({ page }, testInfo) => {
-  const figure = page.getByRole('figure', { name: 'Clinical phenotype and the NMJ evidence gap', exact: true });
-  const nmj = figure.getByRole('region', { name: 'Transmission evidence', exact: true });
-  const needle = figure.getByRole('region', { name: 'Needle EMG and serum markers', exact: true });
-  await expect(nmj.locator('.sfn-metric-value')).toHaveText('0/4');
-  await expect(nmj).toContainText('0–60.2%');
-  await expect(nmj).toContainText('4/38');
-  await expect(nmj).toContainText(/single SFEMG patient.*included within those four/);
-  await expect(nmj).toContainText('Missing testing is not a negative result.');
-  await expect(nmj.locator('.clinical-category-row dt strong')).toHaveText([
-    'Formal test positive', 'Formal test negative', 'Indeterminate qualitative evidence', 'Not documented',
-  ]);
-  await expect(nmj.locator('.clinical-category-row dd')).toHaveText(['00.0%', '410.5%', '25.3%', '3284.2%']);
-  await expect(needle.locator('.sfn-metric-value')).toHaveText('6/11');
-  await expect(needle).toContainText('27/38');
-  await expect(needle).toContainText('23.4–83.3%');
-  await expect(needle).toContainText(/does not independently prove inflammatory myositis/);
-  await expect(needle.locator('.clinical-needle-patterns dt')).toHaveText(['Myopathic', 'Neuropathic', 'Normal', 'Indeterminate']);
-  await expect(needle.locator('.clinical-needle-patterns dd')).toHaveText(['6/1154.5%', '1/119.1%', '1/119.1%', '3/1127.3%']);
-  await expect(figure).toContainText('Under scientific review');
-  await expect(figure).toContainText(/attribution and category disagreements remain unresolved/);
-  await expect(figure).not.toContainText(/1,506|1,028|3,891|162,000|97\.4%|37\/38/);
-  const accessibility = await new AxeBuilder({ page }).include('.clinical-evidence-figure').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
-  expect(accessibility.violations).toEqual([]);
-  await testInfo.attach(`Clinical evidence figure — ${testInfo.project.name}`, {
-    body: await figure.screenshot({ path: testInfo.outputPath('clinical-evidence-figure.png'), style: '.site-header { visibility: hidden; }' }),
-    contentType: 'image/png',
-  });
 });
 
 test('adapted mechanism figures preserve readable diagrams and keyboard inspection at narrow widths', async ({ page }, testInfo) => {
@@ -59,7 +28,7 @@ test('adapted mechanism figures preserve readable diagrams and keyboard inspecti
   }
   await page.setViewportSize({ width: testInfo.project.name === 'mobile' ? 390 : 1440, height: 1000 });
   await testInfo.attach(`Adapted mechanism figure — ${testInfo.project.name}`, {
-    body: await figure.screenshot({ path: testInfo.outputPath('adapted-mechanism-figure.png'), style: '.site-header { visibility: hidden; }' }),
+    body: await figure.screenshot({ path: testInfo.outputPath('adapted-mechanism-figure.png'), style: '.site-header, .skip-link { visibility: hidden; }' }),
     contentType: 'image/png',
   });
 });
