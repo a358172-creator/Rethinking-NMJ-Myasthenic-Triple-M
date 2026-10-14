@@ -1,0 +1,278 @@
+.clinical-evidence-figure .clinical-evidence-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.clinical-evidence-figure .clinical-frequency-list,
+.clinical-evidence-figure .clinical-manifestations ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.clinical-evidence-figure .clinical-frequency-list {
+  display: grid;
+  gap: 1.3rem;
+  margin-top: 1.35rem;
+}
+
+.clinical-evidence-figure .clinical-frequency-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.clinical-evidence-figure .clinical-frequency-heading strong {
+  flex-shrink: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.clinical-evidence-figure .clinical-frequency-heading small,
+.clinical-evidence-figure .clinical-category-row small,
+.clinical-evidence-figure .clinical-needle-patterns small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--sfn-text-muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.clinical-evidence-figure .clinical-frequency-track {
+  height: 0.5rem;
+  margin-top: 0.55rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: #1e293b;
+}
+
+.clinical-evidence-figure .clinical-frequency-track > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: currentColor;
+}
+
+.clinical-evidence-figure .clinical-tone-cyan { color: var(--sfn-accent-cyan); }
+.clinical-evidence-figure .clinical-tone-rose { color: var(--sfn-accent-rose); }
+.clinical-evidence-figure .clinical-tone-amber { color: var(--sfn-accent-amber); }
+.clinical-evidence-figure .clinical-tone-emerald { color: var(--sfn-accent-emerald); }
+.clinical-evidence-figure .clinical-tone-muted { color: var(--sfn-text-muted); }
+
+.clinical-evidence-figure .clinical-inclusion-note {
+  margin-top: 0.8rem;
+}
+
+.clinical-evidence-figure .clinical-manifestations {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--sfn-border);
+}
+
+.clinical-evidence-figure h5 {
+  margin: 0 0 0.75rem;
+  color: var(--sfn-text-main);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.clinical-evidence-figure .clinical-manifestations ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.9rem;
+}
+
+.clinical-evidence-figure .clinical-manifestations li {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--sfn-border);
+  border-radius: 0.4rem;
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.clinical-evidence-figure .clinical-nmj-panel {
+  border-color: rgb(251 191 36 / 45%);
+}
+
+.clinical-evidence-figure .clinical-highlight-metric,
+.clinical-evidence-figure .clinical-needle-metric {
+  margin: 0.55rem 0 0.9rem;
+  padding: 1.1rem;
+  border: 1px solid rgb(56 189 248 / 40%);
+  border-radius: 0.65rem;
+  background: #0f172a;
+}
+
+.clinical-evidence-figure .clinical-highlight-metric .sfn-metric-value {
+  color: var(--sfn-accent-cyan);
+}
+
+.clinical-evidence-figure .clinical-needle-metric {
+  border-color: rgb(16 185 129 / 40%);
+}
+
+.clinical-evidence-figure .clinical-needle-metric .sfn-metric-value {
+  color: var(--sfn-accent-emerald);
+}
+
+.clinical-evidence-figure .clinical-metric-detail {
+  display: block;
+  margin-top: 0.55rem;
+  color: var(--sfn-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.clinical-evidence-figure .clinical-category-list {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.clinical-evidence-figure .clinical-category-denominator {
+  margin: 1.25rem 0 0;
+  font-size: 0.8rem;
+  color: var(--sfn-text-main);
+}
+
+.clinical-evidence-figure .clinical-category-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.65rem;
+  padding: 0.75rem;
+  border: 1px solid var(--sfn-border);
+  border-radius: 0.5rem;
+  background: #0f172a;
+}
+
+.clinical-evidence-figure .clinical-category-row dt {
+  display: flex;
+  align-items: start;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.clinical-evidence-figure .clinical-category-letter {
+  display: grid;
+  flex-shrink: 0;
+  width: 1.45rem;
+  height: 1.45rem;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-weight: 700;
+}
+
+.clinical-evidence-figure .clinical-category-row dd {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.clinical-evidence-figure .clinical-needle-patterns {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0 0 0.8rem;
+}
+
+.clinical-evidence-figure .clinical-needle-patterns > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgb(148 163 184 / 15%);
+  font-size: 0.82rem;
+}
+
+.clinical-evidence-figure .clinical-needle-patterns dt {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.clinical-evidence-figure .clinical-pattern-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.clinical-evidence-figure .clinical-needle-patterns dd {
+  margin: 0;
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.clinical-evidence-figure .clinical-needle-patterns small {
+  display: inline;
+  margin-left: 0.4rem;
+}
+
+.clinical-evidence-figure .clinical-biomarker-review {
+  margin-top: 1.2rem;
+  padding: 0.95rem;
+  border: 1px solid rgb(251 191 36 / 45%);
+  border-radius: 0.5rem;
+  background: rgb(251 191 36 / 5%);
+}
+
+.clinical-evidence-figure .clinical-review-status {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  color: var(--sfn-accent-amber);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.clinical-evidence-figure .clinical-biomarker-review h5 {
+  margin-bottom: 0.45rem;
+}
+
+.clinical-evidence-figure .clinical-biomarker-review p {
+  margin: 0;
+  color: var(--sfn-text-muted);
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.clinical-evidence-figure .clinical-boundary-note {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.clinical-evidence-figure .clinical-pairing-note {
+  margin-top: 1.2rem;
+  padding: 0.95rem;
+  border: 1px solid var(--sfn-border);
+  border-radius: 0.5rem;
+  background: #0f172a;
+}
+
+.clinical-evidence-figure .clinical-pairing-note h5 {
+  color: var(--sfn-accent-amber);
+  margin-bottom: 0;
+}
+
+@media (max-width: 480px) {
+  .clinical-evidence-figure .clinical-category-row {
+    padding: 0.65rem;
+  }
+
+  .clinical-evidence-figure .clinical-frequency-heading {
+    gap: 0.65rem;
+  }
+}

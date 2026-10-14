@@ -2,13 +2,16 @@ export type StructureId = 'heart' | 'muscle' | 'nmj'
 
 export type EvidenceKind = 'physiology' | 'literature' | 'proposed' | 'cohort'
 
-/** Frozen aggregates shared by every module. No patient-level records. */
+/** Frozen aggregates shared by every module. No patient-level records.
+ * Core categorical counts reproduce the Phase 3A.2 report; source attribution remains unresolved.
+ */
 export const frozenStudy = {
   cohort: { n: 38, sources: 27, phenotype: '38/38' },
   achr: { result: '11/30', percentage: '36.7%', positive: 11, tested: 30 },
   formalNmj: { tested: 4, evaluated: '4/38', abnormal: '0/4', ci: '0–60.2%' },
+  nmjEvidence: { formalPositive: 0, formalNegative: 4, indeterminateQualitative: 2, notDocumented: 32 },
   sfemg: { tested: 1, nested: true },
-  needleEmg: { result: '6/11', percentage: '54.5%' },
+  needleEmg: { result: '6/11', percentage: '54.5%', tested: 11, myopathic: 6, neuropathic: 1, normal: 1, indeterminate: 3, notDocumented: 27, ci: '23.4–83.3%' },
   pairedAchrNmj: { documented: 0, achrPositive: 11 },
   mortality: { result: '16/38', percentage: '42.1%' },
 } as const

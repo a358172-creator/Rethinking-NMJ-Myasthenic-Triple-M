@@ -1,5 +1,6 @@
 import { sourceLimitations, frozenStudy } from '../../data/science';
 import { EvidenceKey } from './EvidenceKey';
+import { ClinicalEvidenceFigure } from './ClinicalEvidenceFigure';
 
 export function ResearchOverview() {
   return <section className="research-section container section-space" id="study" aria-labelledby="study-title">
@@ -17,5 +18,6 @@ export function ResearchOverview() {
       <EvidenceKey />
       <details className="study-limitations"><summary>Source availability and review<span aria-hidden="true">+</span></summary><ul>{sourceLimitations.map((item) => <li key={item}>{item}</li>)}</ul></details>
     </div>
+    <ClinicalEvidenceFigure />
   </section>;
 }

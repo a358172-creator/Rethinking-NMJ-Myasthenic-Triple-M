@@ -1,0 +1,89 @@
+.mechanism-figure-panels {
+  align-items: stretch;
+}
+
+.mechanism-figure-scroll-hint { display: none; }
+
+@media (max-width: 620px) {
+  .mechanism-figure-scroll-hint {
+    display: block;
+    margin: -8px 0 18px;
+    color: var(--sfn-accent-cyan);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+}
+
+.mechanism-figure-panel {
+  display: flex;
+  flex-direction: column;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.mechanism-figure-panel--nmj {
+  --mechanism-accent: var(--sfn-accent-cyan);
+  background: linear-gradient(160deg, #0f172a, #172337);
+}
+
+.mechanism-figure-panel--muscle {
+  --mechanism-accent: #fb7185;
+  background: linear-gradient(160deg, #18181b, #27171c);
+}
+
+.mechanism-figure-panel--emphasized {
+  border-color: var(--mechanism-accent);
+  box-shadow: inset 0 0 0 1px var(--mechanism-accent);
+}
+
+.mechanism-figure-panel .sfn-panel-kicker {
+  color: var(--mechanism-accent);
+}
+
+.mechanism-figure-panel .sfn-panel-heading {
+  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+}
+
+.mechanism-figure-intro {
+  min-height: 5.4em;
+  margin-bottom: 0.75rem;
+}
+
+.mechanism-figure-scroll {
+  margin-inline: -0.25rem;
+}
+
+.mechanism-figure-svg {
+  display: block;
+  width: 100%;
+  min-width: 560px;
+  height: auto;
+  font-family: Inter, 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.mechanism-figure-evaluation {
+  margin: 0.5rem 0 0.9rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.mechanism-figure-metric {
+  margin-top: auto;
+  border-color: var(--mechanism-accent);
+}
+
+.mechanism-figure-metric .sfn-metric-value {
+  color: var(--mechanism-accent);
+}
+
+.mechanism-figure-caution {
+  margin: 0.75rem 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mechanism-figure-panel {
+    transition: none;
+  }
+}
