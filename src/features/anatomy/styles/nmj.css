@@ -1,0 +1,84 @@
+.nmj-explorer { padding: 26px; background: var(--white); border: 1px solid var(--line); }
+.nmj-explorer-heading { display: flex; align-items: start; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+.nmj-explorer-heading h3 { margin: 7px 0 0; color: var(--navy); font-family: var(--font-display); font-size: clamp(25px, 3vw, 34px); font-weight: 500; }
+.nmj-explorer-heading > p { max-width: 330px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+.nmj-explorer .nmj-advanced-state-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.nmj-explorer .nmj-advanced-state-controls button, .nmj-compartment-controls button, .nmj-sequence-controls button { background: var(--white); border: 1px solid var(--line); color: var(--slate); font: inherit; font-size: 12px; line-height: 1.5; cursor: pointer; min-height: 44px; }
+.nmj-explorer .nmj-advanced-state-controls button { padding: 9px 16px; border-radius: 4px; }
+.nmj-explorer .nmj-advanced-state-controls button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--white); font-weight: 600; }
+.nmj-explorer-grid { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 24px; align-items: start; }
+.nmj-artwork-panel { min-width: 0; border: 1px solid var(--line); background: #fafcfb; }
+.nmj-artwork-toolbar { display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 10px; }
+.nmj-artwork-viewport { width: 100%; overflow-x: auto; }
+.nmj-artwork-viewport.is-enlarged .nmj-illustration { min-width: 720px; max-width: none; }
+.nmj-enlarge-control { display: none; margin: 10px 12px 0; padding: 8px 10px; min-height: 36px; border: 1px solid var(--line); border-radius: 4px; background: var(--white); color: var(--slate); font: inherit; font-size: 12px; cursor: pointer; }
+.nmj-enlarge-control[aria-pressed="true"] { border-color: var(--teal-text); background: var(--teal-light); color: var(--navy); }
+.nmj-evidence-tier { display: block; padding: 12px 16px 0; color: var(--teal-text); font-size: 10px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; }
+.nmj-evidence-tier--transmission-impaired { color: var(--amber-text); }
+.nmj-evidence-tier--muscle-injury { color: var(--burgundy); }
+.nmj-illustration { display: block; width: 100%; height: auto; }
+.nmj-symbol-key { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 12px 16px; border-top: 1px solid var(--line); color: var(--slate); font-size: 11px; }
+.nmj-symbol-key > span { display: flex; gap: 7px; align-items: center; }
+.nmj-symbol-key i { display: inline-block; flex-shrink: 0; }
+.nmj-key-ach { width: 6px; height: 6px; background: var(--amber); border-radius: 50%; }
+.nmj-key-ache { width: 11px; height: 11px; background: #E5DFC9; border: 1px solid #8F815D; border-radius: 4px; }
+.nmj-key-lamina { width: 17px; border-top: 2px dotted #8F8E75; }
+.nmj-scale-note { padding: 0 16px 13px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.65; }
+.nmj-compartment-panel > h4 { margin: 0 0 10px; font-size: 13px; font-weight: 650; color: var(--navy); }
+.nmj-compartment-controls { display: grid; gap: 7px; }
+.nmj-compartment-controls button { display: flex; gap: 10px; align-items: center; padding: 8px 11px; text-align: left; border-radius: 4px; }
+.nmj-compartment-controls button > span, .nmj-detail-legend li > span { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--navy); color: var(--navy); flex-shrink: 0; font-weight: 600; }
+.nmj-compartment-controls button[aria-pressed="true"] { border-color: var(--teal); background: var(--teal-light); color: var(--navy); }
+.nmj-compartment-controls button[aria-pressed="true"] > span { background: var(--navy); color: var(--white); }
+.nmj-compartment-explanation { margin-top: 16px; padding: 14px; border-left: 2px solid var(--teal); background: var(--background); }
+.nmj-compartment-explanation h4 { margin: 0 0 6px; color: var(--navy); font-size: 14px; }
+.nmj-compartment-explanation p { margin: 0; color: var(--slate); font-size: 12px; line-height: 1.75; }
+.nmj-explorer .nmj-state-description { margin: 18px 0; padding-left: 14px; border-left: 2px solid var(--line); color: var(--slate); font-size: 13px; line-height: 1.75; }
+.nmj-compartment-hit { cursor: pointer; }
+.nmj-selection-outline { stroke: transparent; stroke-width: 2; transition: stroke .15s ease; }
+.nmj-compartment-hit.is-selected .nmj-selection-outline { stroke: var(--teal-text); stroke-dasharray: 5 4; }
+.nmj-compartment-hit:focus-visible { outline: none; }
+.nmj-compartment-hit:focus-visible .nmj-selection-outline { stroke: var(--navy); stroke-width: 3; stroke-dasharray: none; }
+.nmj-transmission-sequence { border-top: 1px solid var(--line); padding-top: 18px; }
+.nmj-sequence-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin-bottom: 12px; }
+.nmj-sequence-heading h4 { margin: 0; font-size: 14px; color: var(--navy); }
+.nmj-sequence-heading > span { font-size: 11px; color: var(--muted); }
+.nmj-sequence-controls { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.nmj-sequence-controls button { display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 4px; text-align: left; }
+.nmj-sequence-controls button > span { font-size: 11px; color: var(--teal-text); font-weight: 700; }
+.nmj-sequence-controls button[aria-pressed="true"] { background: var(--teal-light); border-color: var(--teal-text); color: var(--navy); }
+.nmj-step-description { min-height: 2em; margin: 12px 0 0; font-size: 12px; line-height: 1.7; color: var(--slate); }
+.nmj-anatomical-sources { border-top: 1px solid var(--line); margin-top: 20px; padding-top: 14px; font-size: 12px; line-height: 1.75; color: var(--muted); }
+.nmj-anatomical-sources summary { cursor: pointer; color: var(--navy); font-weight: 600; min-height: 32px; }
+.nmj-anatomical-sources p { margin: 8px 0; }
+.nmj-anatomical-sources ul { margin: 8px 0 0; padding-left: 18px; }
+.nmj-anatomical-sources a { color: var(--teal-text); text-decoration: underline; text-underline-offset: 2px; }
+.nmj-detail.nmj-detail { width: 100%; margin: 10px 0 0; background: var(--white); border: 1px solid var(--line); }
+.serology-visual figure.nmj-detail { max-height: none; }
+.nmj-detail-tier { margin: 0; padding: 14px 16px 0; color: var(--teal-text); font-size: 10px; line-height: 1.6; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
+.nmj-detail-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; list-style: none; padding: 12px 16px; margin: 0; border-top: 1px solid var(--line); }
+.nmj-detail-legend li { display: flex; align-items: center; gap: 8px; font-size: 11px; line-height: 1.5; color: var(--slate); }
+.nmj-detail-legend li > span { width: 22px; height: 22px; }
+.nmj-assay-note { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--line); background: var(--background); }
+.nmj-assay-note > svg { width: 60px; height: 48px; flex-shrink: 0; }
+.nmj-assay-note strong { display: block; font-size: 12px; line-height: 1.6; color: var(--navy); }
+.nmj-assay-note p { margin: 4px 0 0; font-size: 11px; line-height: 1.6; color: var(--muted); }
+.nmj-detail figcaption { padding: 10px 16px 14px; color: var(--muted); font-size: 10px; line-height: 1.7; }
+@media (max-width: 1050px) {
+  .nmj-enlarge-control { display: block; }
+  .nmj-explorer-grid { grid-template-columns: minmax(0, 1fr); }
+  .nmj-compartment-controls { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .nmj-sequence-controls { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .nmj-explorer { padding: 18px 12px; }
+  .nmj-explorer-heading { display: block; }
+  .nmj-explorer-heading > p { margin-top: 10px; }
+  .nmj-explorer .nmj-advanced-state-controls button { flex: 1 1 130px; padding-inline: 9px; }
+  .nmj-compartment-controls, .nmj-sequence-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nmj-direct-labels { display: none; }
+  .nmj-artwork-viewport.is-enlarged .nmj-direct-labels { display: inline; }
+  .nmj-detail.nmj-detail { max-height: none; }
+  .nmj-detail-legend { gap: 8px; padding-inline: 12px; }
+  .nmj-assay-note { padding-inline: 12px; }
+}

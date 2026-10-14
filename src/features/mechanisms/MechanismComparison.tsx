@@ -26,7 +26,7 @@ export function MechanismComparison() {
       <button aria-pressed={focus === 'overlap'} onClick={() => setFocus('overlap')}>Potential overlap</button>
     </div>
     <MechanismComparisonFigure focus={focus} />
-    <div className="shared-phenotype"><span className="eyebrow">OVERLAPPING POSSIBLE MANIFESTATIONS</span><ul>{sharedManifestations.map((symptom) => <li key={symptom}>{symptom}</li>)}</ul><p>Similar clinical manifestations do not necessarily imply the same physiological mechanism.</p></div>
+    <div className="shared-phenotype"><span className="eyebrow">OVERLAPPING POSSIBLE MANIFESTATIONS</span><ul>{sharedManifestations.map((symptom) => <li key={symptom}>{symptom}</li>)}</ul><p>Similar clinical manifestations may reflect different or overlapping physiological mechanisms.</p></div>
     <div className="comparison-interpretation" aria-live="polite"><span className="interpretation-mark" aria-hidden="true">↳</span><div><h4>{interpretation[focus].title}</h4><p>{interpretation[focus].text}</p></div></div>
     <EvidencePanel items={comparisonEvidence} />
     <p className="comparison-caption">Conceptual comparison · No patient classification or numerical diagnostic probabilities. {mechanisms.nmj.caution}</p>

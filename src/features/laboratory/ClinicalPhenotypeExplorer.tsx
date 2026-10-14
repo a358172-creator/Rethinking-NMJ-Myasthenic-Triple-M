@@ -4,6 +4,8 @@ import type { PhenotypeRegionId } from '../../data/laboratory';
 import { laboratoryUi } from '../../data/laboratoryUi';
 import { PhenotypeFigure } from './PhenotypeFigure';
 import { ScientificResultPanel } from './ScientificResultPanel';
+import { SkeletalMuscleTissue } from '../anatomy/components/SkeletalMuscleTissue';
+import '../anatomy/styles/anatomy.css';
 
 export function ClinicalPhenotypeExplorer() {
   const [selected, setSelected] = useState<PhenotypeRegionId>('ocular');
@@ -23,6 +25,13 @@ export function ClinicalPhenotypeExplorer() {
           { label: 'What distribution cannot establish', text: region.boundary },
         ]} evidence={region.evidence} />
       </div>
+      <details className="phenotype-tissue-detail">
+        <summary>Explore muscle tissue behind the clinical distribution</summary>
+        <div className="phenotype-tissue-content">
+          <p><strong>{region.label}:</strong> {region.muscleMechanism} The tissue example below illustrates a possible injury process. It does not show the anatomy of a specific muscle or measured involvement of this region in the N=38 cohort.</p>
+          <figure><SkeletalMuscleTissue state="injury" compact /><figcaption>Longitudinal fiber cutaways show peripheral nuclei and ordered myofibrils. The central fiber has a focal membrane injury beside conceptual T-cell and macrophage symbols. Selected published pathology supports this model; a myopathic needle-EMG pattern alone does not prove inflammatory myositis. Clinical distribution cannot distinguish muscle injury from NMJ dysfunction.</figcaption></figure>
+        </div>
+      </details>
     </section>
   );
 }

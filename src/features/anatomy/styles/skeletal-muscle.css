@@ -1,0 +1,50 @@
+.muscle-explorer { padding: 26px; background: var(--white); border: 1px solid var(--line); }
+.muscle-explorer-heading { display: flex; align-items: start; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+.muscle-explorer-heading h3 { margin: 7px 0 0; color: var(--navy); font-family: var(--font-display); font-size: clamp(25px, 3vw, 34px); font-weight: 500; }
+.muscle-explorer-heading > p { max-width: 330px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+.muscle-state-controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.muscle-state-controls button, .muscle-structure-controls button { background: var(--white); border: 1px solid var(--line); color: var(--slate); font: inherit; font-size: 12px; line-height: 1.5; cursor: pointer; min-height: 44px; }
+.muscle-state-controls button { padding: 9px 16px; border-radius: 4px; }
+.muscle-state-controls button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: white; }
+.muscle-state-summary { margin: 16px 0; max-width: 930px; color: var(--slate); font-size: 13px; line-height: 1.7; }
+.muscle-detail-grid { display: grid; grid-template-columns: minmax(0, 1fr) 265px; gap: 24px; align-items: start; }
+.muscle-tissue-figure { margin: 0; min-width: 0; background: #f7f9f7; border: 1px solid var(--line); }
+.skeletal-muscle-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.muscle-detail-scroll { overflow-x: auto; border-radius: 2px; }
+.muscle-detail-scroll .skeletal-muscle-svg { min-width: 510px; }
+.muscle-tissue-figure figcaption { border-top: 1px solid var(--line); margin: 0; padding: 12px 16px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.muscle-structure-controls { display: grid; gap: 7px; }
+.muscle-structure-controls button { display: flex; gap: 10px; align-items: center; padding: 8px 11px; text-align: left; border-radius: 4px; }
+.muscle-structure-controls button > span { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--navy); color: var(--navy); flex-shrink: 0; font-weight: 600; }
+.muscle-structure-controls button[aria-pressed="true"] { border-color: var(--teal); background: var(--teal-light); color: var(--navy); }
+.muscle-structure-controls button[aria-pressed="true"] > span { background: var(--navy); color: var(--white); }
+.muscle-structure-description { margin-top: 16px; padding: 14px; border-left: 2px solid var(--teal); background: var(--background); }
+.muscle-structure-description h4 { font-size: 14px; margin: 0 0 6px; }
+.muscle-structure-description p { font-size: 12px; line-height: 1.75; margin: 0; color: var(--slate); }
+.muscle-marker.is-interactive { cursor: pointer; }
+.muscle-marker:focus-visible { outline: none; }
+.muscle-marker:focus-visible .muscle-marker-hit { fill: #eaf3f2; stroke: var(--navy); stroke-width: 2; }
+.muscle-cell-key { display: flex; flex-wrap: wrap; gap: 10px 26px; padding: 13px 0; color: var(--slate); font-size: 12px; }
+.muscle-cell-key > span { display: flex; gap: 8px; align-items: center; }
+.muscle-cell-key i { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--burgundy); border-radius: 50%; background: #e4cbd0; }
+.muscle-cell-key .muscle-key-m { background: #ead8bb; border-color: #9d793e; border-radius: 5px; }
+.muscle-scientific-note { margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.75; color: var(--muted); }
+.muscle-scientific-note strong { color: var(--navy); }
+.muscle-scientific-note a { color: var(--teal-text); text-decoration: underline; text-underline-offset: 2px; }
+.muscle-inflammatory-focus.is-emphasized { filter: drop-shadow(0 0 2px #93485a66); }
+.muscle-anatomical-sources { margin-top: 16px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.muscle-anatomical-sources summary { cursor: pointer; color: var(--navy); padding-block: 10px; }
+.muscle-anatomical-sources ul { padding-left: 20px; }
+.muscle-anatomical-sources li + li { margin-top: 6px; }
+.muscle-anatomical-sources a { color: var(--teal-text); text-underline-offset: 2px; }
+@media (max-width: 900px) {
+  .muscle-detail-grid { grid-template-columns: minmax(0, 1fr); }
+  .muscle-structure-controls { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .muscle-explorer { padding: 18px 12px; }
+  .muscle-explorer-heading { display: block; }
+  .muscle-explorer-heading > p { margin-top: 10px; }
+  .muscle-structure-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .muscle-state-controls button { flex: 1; padding-inline: 9px; }
+}

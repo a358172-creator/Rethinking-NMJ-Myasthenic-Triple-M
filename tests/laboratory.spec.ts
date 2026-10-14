@@ -181,7 +181,8 @@ test('serology preserves the evaluated denominator and distinguishes missing pai
     await expect(lab.locator('.lab-paired-gap')).toContainText('missing paired physiological evidence, not normal formal testing');
     await expect(lab.locator('.serology-domains')).toContainText('Antibody detection');
     await expect(lab.locator('.serology-domains')).toContainText('Demonstrated transmission failure');
-    await expect(lab.locator('.serology-visual svg')).toHaveCount(1);
+    await expect(lab.locator('.serology-visual svg.nmj-illustration')).toHaveCount(1);
+    await expect(lab.getByRole('img', { name: 'Separate generic antibody-binding schematic', exact: true })).toBeVisible();
   }
 });
 

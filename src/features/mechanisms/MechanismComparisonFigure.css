@@ -45,6 +45,8 @@
   margin-bottom: 0.75rem;
 }
 
+.mechanism-model-state { display: block; margin-bottom: 10px; font-size: 12px; font-weight: 600; line-height: 1.6; color: var(--mechanism-accent); }
+
 .mechanism-figure-scroll {
   margin-inline: -0.25rem;
 }
@@ -56,6 +58,9 @@
   height: auto;
   font-family: var(--font-body);
 }
+
+.mechanism-figure-scroll > .skeletal-muscle-svg { min-width: 560px; min-height: 358px; }
+.mechanism-figure-scroll > .nmj-illustration { min-width: 560px; }
 
 .mechanism-figure-evaluation {
   margin: 0.5rem 0 0.9rem;

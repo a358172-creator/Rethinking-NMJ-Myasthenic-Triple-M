@@ -1,0 +1,16 @@
+.anatomy-workbench { margin-top: 32px; scroll-margin-top: 112px; }
+.anatomy-workbench > [hidden] { display: none; }
+.atlas-figure figcaption a { color: var(--teal-text); text-decoration: underline; text-underline-offset: 3px; }
+.anatomical-figure .nmj-number-marker { display: none; }
+.phenotype-tissue-detail { margin-top: 24px; border: 1px solid var(--line); background: var(--white); }
+.phenotype-tissue-detail summary { padding: 16px 20px; color: var(--navy); font-weight: 600; cursor: pointer; }
+.phenotype-tissue-content { padding: 0 20px 20px; }
+.phenotype-tissue-content > p { max-width: 850px; font-size: 13px; line-height: 1.8; color: var(--slate); }
+.phenotype-tissue-content figure { max-width: 760px; margin: 20px auto 0; background: var(--background); border: 1px solid var(--line); }
+.phenotype-tissue-content figcaption { padding: 12px 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; line-height: 1.7; }
+.comparison-anatomy-key { display: flex; flex-wrap: wrap; gap: 8px 16px; list-style: none; padding: 12px 0; margin: 0; color: var(--slate); font-size: 12px; line-height: 1.6; }
+.comparison-anatomy-key b { color: var(--navy); margin-right: 4px; }
+@media (max-width: 600px) {
+  .anatomy-workbench { margin-top: 24px; }
+  .phenotype-tissue-content { padding-inline: 12px; }
+}

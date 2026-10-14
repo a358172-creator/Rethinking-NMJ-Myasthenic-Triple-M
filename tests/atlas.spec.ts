@@ -115,7 +115,7 @@ test('all text anatomy controls update interpretation and visibly distinguish ev
 
 test('original anatomy SVG responds to mouse selection and hero activation', async ({ page }) => {
   const explorer = page.locator('#explorer');
-  const targets = explorer.locator('svg [role="button"]');
+  const targets = explorer.locator('.atlas-figure svg [role="button"]');
   for (const index of [1, 2, 0]) {
     await targets.nth(index).click();
     await expect(targets.nth(index)).toHaveAttribute('aria-pressed', 'true');
@@ -130,7 +130,7 @@ test('original anatomy SVG responds to mouse selection and hero activation', asy
 
 test('anatomical SVG supports Enter and Space selection with synchronized pressed states', async ({ page }) => {
   const explorer = page.locator('#explorer');
-  const targets = explorer.locator('svg [role="button"]');
+  const targets = explorer.locator('.atlas-figure svg [role="button"]');
   await expect(targets).toHaveCount(3);
   for (let index = 0; index < structureNames.length; index += 1) {
     const target = targets.nth(index);
@@ -149,23 +149,23 @@ test('NMJ defaults to normal physiology and allows a clearly hypothetical impair
   await explorer.getByRole('button', { name: 'Neuromuscular junction', exact: true }).click();
   const normal = explorer.getByRole('button', { name: 'Normal physiology', exact: true });
   const impairment = explorer.getByRole('button', { name: 'Possible impairment', exact: true });
-  const description = page.locator('#mechanism-panel .nmj-state-description');
+  const description = page.locator('#anatomy-detail .nmj-state-description');
   await expect(normal).toHaveAttribute('aria-pressed', 'true');
   await expect(impairment).toHaveAttribute('aria-pressed', 'false');
   await expect(description).toContainText('vesicular acetylcholine release');
   await expect(description).toContainText('postsynaptic AChRs');
-  await expect(page.getByRole('img', { name: 'Normal neuromuscular transmission', exact: false })).toBeVisible();
+  await expect(page.locator('#anatomy-detail').getByRole('group', { name: 'Normal neuromuscular transmission', exact: false })).toBeVisible();
   await impairment.click();
   await expect(impairment).toHaveAttribute('aria-pressed', 'true');
   await expect(normal).toHaveAttribute('aria-pressed', 'false');
   await expect(description).toContainText('Conceptual possibility');
   await expect(description).toContainText('reduced transmission safety margin');
-  await expect(description).toContainText('not a cohort finding or a specific antibody attack');
-  await expect(page.getByRole('img', { name: /Possible impairment of neuromuscular transmission/ })).toBeVisible();
+  await expect(description).toContainText('not a demonstrated finding in the N=38 study or a specific antibody attack');
+  await expect(page.locator('#anatomy-detail').getByRole('group', { name: /Possible impairment of neuromuscular transmission/ })).toBeVisible();
   await normal.click();
   await expect(normal).toHaveAttribute('aria-pressed', 'true');
   await expect(impairment).toHaveAttribute('aria-pressed', 'false');
-  await expect(description).toContainText('muscle activation');
+  await expect(description).toContainText('muscle action potential');
 });
 
 test('comparison presents three nonexclusive interpretations and changes explanatory content', async ({ page }) => {
@@ -175,7 +175,7 @@ test('comparison presents three nonexclusive interpretations and changes explana
   await compare.click();
   await expect(compare).toHaveAttribute('aria-pressed', 'true');
   await expect(anatomy).toHaveAttribute('aria-pressed', 'false');
-  await expect(explorer).toContainText('Similar clinical manifestations do not necessarily imply the same physiological mechanism.');
+  await expect(explorer).toContainText('Similar clinical manifestations may reflect different or overlapping physiological mechanisms.');
   for (const manifestation of ['Ptosis', 'Diplopia', 'Bulbar weakness', 'Neck weakness', 'Proximal weakness', 'Respiratory muscle weakness']) {
     await expect(explorer).toContainText(manifestation);
   }
@@ -297,7 +297,7 @@ test('captures normal NMJ and comparison artifacts for visual review', async ({ 
   });
   const explorer = page.locator('#explorer');
   await explorer.getByRole('button', { name: 'Neuromuscular junction', exact: true }).click();
-  await expect(page.locator('#mechanism-panel .nmj-state-description')).toContainText('Normal physiology');
+  await expect(page.locator('#anatomy-detail .nmj-state-description')).toContainText('Normal physiology');
   for (const mode of ['Explore anatomy', 'Compare Mechanisms']) {
     await explorer.getByRole('button', { name: mode, exact: true }).click();
     await checkMechanisticEvidence(page);
