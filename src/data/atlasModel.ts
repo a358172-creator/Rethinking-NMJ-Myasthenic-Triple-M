@@ -8,7 +8,7 @@ export interface PatientEvidenceRecord {
   vitalStatus: 'death' | 'survival' | 'unknown';
 }
 
-export interface AtlasDataset {
+export interface FullStudyAtlasDataset {
   schemaVersion: 1;
   /** true is permitted only after every mandatory source-workbook check passes. */
   validation: {
@@ -18,6 +18,21 @@ export interface AtlasDataset {
   };
   records: readonly PatientEvidenceRecord[];
 }
+
+/** Proposed private schema only. Core PASS does not certify the full manuscript. */
+export interface CoreAtlasDataset {
+  schemaVersion: 2;
+  validation: {
+    scope: 'CORE_NEUROMUSCULAR_ATLAS';
+    specificationVersion: '1.0.0';
+    status: 'PASS';
+    sourceSha256: string;
+    validatedAt: string;
+  };
+  records: readonly PatientEvidenceRecord[];
+}
+
+export type AtlasDataset = FullStudyAtlasDataset | CoreAtlasDataset;
 
 export type EvidenceDomain = Exclude<keyof PatientEvidenceRecord, 'label'>;
 export type AtlasFilters = {

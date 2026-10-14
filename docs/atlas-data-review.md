@@ -21,7 +21,7 @@ The pipeline opens the workbook in read-only value and formula modes, checks inp
 
 ## Current adjudication required
 
-The source includes a concentration explicitly labeled ng/mL, which literally converts to a maximum of 2,484,000 ng/L and conflicts with the audit's 162,000 ng/L upper range. Other entries are intervals, lower bounds, an unqualified peak, or paired quantitative troponin T and I values without a documented selection rule. The conservative fully supported single-assay subset is n=25, median 1,786 ng/L, IQR 1,241–4,783 ng/L. These are discrepancy diagnostics, not replacement frozen results. Exact source rows, IDs and raw entries requiring adjudication appear only in `validation.audit.private.json`.
+The source includes a concentration explicitly labeled ng/mL, which literally converts to a maximum of 2,484,000 ng/L and conflicts with the audit's 162,000 ng/L upper range. Other entries are intervals, lower bounds, an unqualified peak, or paired quantitative troponin T and I values without a documented selection rule. The conservative parser-accepted single-assay subset is n=25, median 1,786 ng/L, IQR 1,241–4,783 ng/L. These are discrepancy diagnostics, not source-verified peaks or replacement frozen results. Exact source rows, IDs and raw entries requiring adjudication appear only in `validation.audit.private.json`.
 
 A scientific author must inspect the relevant source entries and primary publications and supply documented extraction rules or explicitly authorized source corrections. The pipeline must not silently convert a mislabeled-looking unit, turn a lower bound into an exact peak, choose an assay, or replace values with the manuscript summary to force n=33. No source changes have been authorized. Any later authorized amendment needs a recorded rationale, versioned source fingerprint and fresh complete validation; the present source remains unchanged.
 
@@ -45,6 +45,21 @@ If publication is later authorized, prepare a separately reviewed artifact with 
 
 ## Application behavior and remaining work
 
-The app must show a validation/review gate when no approved dataset is available; it must not reconstruct rows from aggregate counts or fabricate pseudonymous records. Local development may serve `atlas.review.json` only after a successful run and before publication review. Production must not consume the ignored review artifact. The current failed source therefore cannot show patient rows, patient filtering, row profiles or missingness rows.
+The app must show a validation/review gate when no approved dataset is available; it must not reconstruct rows from aggregate counts or fabricate pseudonymous records. A future local preview additionally requires explicit approval of its exact records and access method; successful validation alone does not authorize serving `atlas.review.json`. Production must not consume the ignored review artifact. The current failed source therefore cannot show patient rows, patient filtering, row profiles or missingness rows.
 
 After source adjudication, Phase 3A still requires a successful full pipeline rerun, review of the concrete minimal export, and patient-dependent browser checks on that actual validated data. Phase 3B can then refine visual comparisons, accessibility and controlled publication after author review, without adding unapproved clinical fields or causal/diagnostic claims.
+
+## Phase 3A.2 scoped review — no policy activation
+
+Preserve the historical full report and all previous private adjudication files when reproducing this phase:
+
+```bash
+npm run data:validate:check
+npm run data:validate:core
+npm run data:test
+npm run test:release-policy
+```
+
+The first command executes the unchanged full-study checks and writes only a new aggregate report/audit. The second independently evaluates the versioned six-field core specification; it does not drop troponin failures from the full-study checks. Current results are full-study **44/48, FAIL**, and scoped core **44/46, FAIL**, with numerical core reproduction **PASS**. Two required linked-source provenance checks remain unresolved. The [targeted source review](CORE_ATLAS_PROVENANCE_REVIEW.md) identifies the evidence and author decisions; detailed case mappings remain private.
+
+The [manuscript amendment proposal](TROPONIN_MANUSCRIPT_AMENDMENT_PROPOSAL.md) is not an applied correction. The [scope/privacy/policy review](CORE_ATLAS_PRIVACY_AND_RELEASE_REVIEW.md) defines a proposed future independent export workflow. The existing full-study-gated exporter remains active, a core export policy is **NOT_ACTIVATED**, and private-preview/publication approvals are separately **PENDING**. Neither workflow currently produces approved browser records. No component is mounted, endpoint created or patient-dependent browser interaction claimed tested. Source, membership, targets and earlier records remain unchanged.

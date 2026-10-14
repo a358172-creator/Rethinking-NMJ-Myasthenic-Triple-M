@@ -69,7 +69,7 @@ export const atlasCopy = {
   pairedInterpretation: 'These seropositive cases are physiologically unconfirmed, not electrophysiologically negative. Serology and physiological confirmation cannot be directly linked within this subgroup.',
   profileBoundary: 'This profile describes documented evidence and reporting gaps. It does not assign a clinical diagnosis. Missing information is not evidence of a negative test.',
   publicationStatus: 'Restricted local preview · Publication review pending',
-  publicationExplanation: 'Workbook-derived patient categories require a fully passed workbook validation report and are available only in local development. The patient-level export requires publication review before a public commit or deployment.',
+  publicationExplanation: 'This restricted view requires scientific and source validation for its declared scope, an approved export policy and review of the exact private artifact. Core validation does not certify the full study. Public patient-data disclosure requires a separate author decision.',
   scientificBoundary: 'Published case ascertainment, publication bias, reporting bias, and uneven testing limit interpretation. These records do not establish population incidence, diagnostic sensitivity or specificity, causality, or treatment effectiveness.',
 } as const;
 

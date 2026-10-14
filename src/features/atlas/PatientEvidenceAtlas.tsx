@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { atlasCopy } from '../../data/atlasCopy';
 import { atlasFilterDefaults, filterPatientEvidence, summarizeEvidence } from '../../data/atlasModel';
 import type { AtlasDataset, AtlasFilters, EvidenceDomain, InterpretationDomain } from '../../data/atlasModel';
+import { assessPrivateAtlasPreview, coreAtlasSpecificationVersion } from '../../data/atlasRelease';
+import type { AtlasPrivatePreviewAuthorization } from '../../data/atlasRelease';
 import { CohortSummary, FilteredEvidenceSummary } from './CohortSummary';
 import { DataSourceMetadata } from './DataSourceMetadata';
 import { EvidenceFilters } from './EvidenceFilters';
@@ -13,23 +15,37 @@ import './atlas.css';
 
 export interface PatientEvidenceAtlasProps {
   dataset: AtlasDataset;
+  authorization?: AtlasPrivatePreviewAuthorization;
+  /** Digest of the exact reviewed serialization, verified by the future local loader. */
+  artifactSha256: string;
 }
 
-/** The loader may supply records only after all mandatory workbook checks pass. */
-export function PatientEvidenceAtlas({ dataset }: PatientEvidenceAtlasProps) {
+/** Prepared only; App mounts the aggregate availability notice instead. */
+export function PatientEvidenceAtlas({ dataset, authorization, artifactSha256 }: PatientEvidenceAtlasProps) {
   const [filters, setFilters] = useState<AtlasFilters>({ ...atlasFilterDefaults });
   const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
   const [showMissing, setShowMissing] = useState(false);
   const [interpretation, setInterpretation] = useState<InterpretationDomain>('formalNmj');
 
-  // A partial or scoped validation must never produce a passed marker.
-  // The loader owns full-workbook validation; this also refuses an invalid runtime marker.
-  if (dataset.schemaVersion !== 1 || dataset.validation?.passed !== true) {
+  const isCore = dataset.schemaVersion === 2;
+  const scope = isCore ? 'CORE_NEUROMUSCULAR_ATLAS' : 'FULL_STUDY';
+  const markerPassed = dataset.schemaVersion === 1
+    ? dataset.validation?.passed === true
+    : isCore && dataset.validation?.status === 'PASS' && dataset.validation?.scope === scope;
+  const gate = assessPrivateAtlasPreview(authorization, {
+    scope,
+    sourceSha256: dataset.validation?.sourceSha256 ?? '',
+    artifactSha256,
+    specificationVersion: isCore ? dataset.validation?.specificationVersion ?? '' : coreAtlasSpecificationVersion,
+  });
+  // Status metadata is descriptive. Author approval must be verified outside the
+  // browser; no local loader, approval writer, exporter or public endpoint exists.
+  if (!markerPassed || !gate.permitted || !authorization) {
     return (
       <section className="atlas-section section-space" id="atlas" aria-labelledby="atlas-title">
         <div className="container atlas-container">
           <div className="atlas-section-heading"><span className="eyebrow">MODULE 03 / PATIENT-LEVEL EVIDENCE</span><h2 id="atlas-title">{atlasCopy.title}</h2><p className="atlas-subtitle">{atlasCopy.subtitle}</p></div>
-          <p className="atlas-source-metadata" role="status">Patient-level rendering is unavailable because the atlas validation gate has not passed. Review the data validation report before enabling this preview.</p>
+          <p className="atlas-source-metadata" role="status">Patient-level rendering is unavailable until the scoped validation, export policy and exact private-preview authorization are reviewed. A passing numerical subtotal does not authorize this preview.</p>
         </div>
       </section>
     );
@@ -66,7 +82,7 @@ export function PatientEvidenceAtlas({ dataset }: PatientEvidenceAtlasProps) {
           <p className="atlas-subtitle">{atlasCopy.subtitle}</p>
           <p className="atlas-introduction">{atlasCopy.introduction}</p>
         </div>
-        <DataSourceMetadata validation={dataset.validation} />
+        <DataSourceMetadata validation={dataset.validation} scope={scope} states={authorization.states} />
         <CohortSummary summary={fullSummary} />
         <EvidenceFilters filters={filters} onChange={changeFilter} onReset={resetFilters} onAchrPositive={selectAchrPositive} />
         <MissingnessExplorer summary={fullSummary} visibleSummary={visibleSummary} showMissing={showMissing} onToggle={() => setShowMissing((current) => !current)} />

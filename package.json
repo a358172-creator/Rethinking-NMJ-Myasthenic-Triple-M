@@ -13,7 +13,10 @@
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "data:validate": ".venv/bin/python scripts/atlas/process_workbook.py",
+    "data:validate:check": ".venv/bin/python scripts/atlas/process_workbook.py --check-only",
+    "data:validate:core": ".venv/bin/python scripts/atlas/core_validation.py --full-audit esearch_sources/_processed/core_atlas/full_study_validation.private.json",
     "data:test": ".venv/bin/python -m unittest discover -s scripts/atlas/tests -v",
+    "test:release-policy": "node --experimental-strip-types scripts/atlas/tests/atlas-release-policy.test.mjs",
     "verify:publication": "node scripts/verify-publication.mjs"
   },
   "dependencies": {

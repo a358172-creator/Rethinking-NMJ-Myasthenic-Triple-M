@@ -29,6 +29,7 @@ from normalization import SourceError, normalize_row, review_records
 REPOSITORY = Path(__file__).resolve().parents[2]
 DEFAULT_WORKBOOK = REPOSITORY / "esearch_sources/Triple_M_Master_Patient_Dataset_Expanded_N38.xlsx"
 OUTPUT_DIRECTORY = REPOSITORY / "esearch_sources/_processed"
+CHECK_ONLY_AUDIT = OUTPUT_DIRECTORY / "core_atlas/full_study_validation.private.json"
 MASTER_SHEET = "Master_Patient_Dataset_N38"
 REQUIRED_HEADERS = (
     "Patient_ID", "DOI", "Age", "MG_Phenotype", "RNS_Performed", "RNS_Result",
@@ -231,7 +232,7 @@ def atomic_json(path: Path, payload: Any) -> None:
     temporary.replace(path)
 
 
-def render_report(checks: list[Check], errors: list[str], records: list[dict], export_written: bool, timestamp: str) -> str:
+def render_report(checks: list[Check], errors: list[str], records: list[dict], export_written: bool, timestamp: str, check_only: bool = False) -> str:
     passed = bool(checks) and all(check.passed for check in checks)
     failed = [check for check in checks if not check.passed]
     core = [check for check in checks if check.dependency != "non-exported descriptive"]
@@ -243,7 +244,7 @@ def render_report(checks: list[Check], errors: list[str], records: list[dict], e
     lines = [
         "# Phase 3A data validation report", "", f"Executed at: {timestamp}.", "",
         f"**Overall frozen validation: {'PASS' if passed else 'FAIL — publication gate closed'}.**",
-        f"Core categorical and integrity checks: {'PASS' if core_passed else 'FAIL'}. "
+        f"{'Legacy frozen categorical/workbook checks' if check_only else 'Core categorical and integrity checks'}: {'PASS' if core_passed else 'FAIL'}. "
         f"Required checks: {sum(c.passed for c in checks)}/{len(checks)} passed.", "",
         "The authoritative workbook is now present in the documented `esearch_sources/` equivalent. "
         "This replaces the former workbook-availability blocker with executed ingestion and validation. "
@@ -300,7 +301,8 @@ def render_report(checks: list[Check], errors: list[str], records: list[dict], e
               "A private audit artifact and, where source IDs are unique, a provenance crosswalk are retained only "
               "in ignored `esearch_sources/_processed/`. They contain no additional published approval. "
               "Raw identifiers, source DOI, workbook metadata and record provenance are never bundled into the UI.", "",
-              ("The minimal `atlas.review.json` was written for local review only. It is not approved for publication."
+              ("Read-only revalidation wrote aggregate review outputs only. Existing private audit, crosswalk and source-adjudication records were preserved. No patient artifact was generated or revoked by this invocation."
+               if check_only else "The minimal `atlas.review.json` was written for local review only. It is not approved for publication."
                if export_written else "No browser-facing patient dataset was generated. Any stale `atlas.review.json` is removed on failure. "
                "The patient matrix must remain behind the data-validation/publication gate; aggregate context may still be displayed."), "",
               "No source correction, publication approval, Git commit, push or deployment was performed. "
@@ -310,6 +312,56 @@ def render_report(checks: list[Check], errors: list[str], records: list[dict], e
               "Python regression tests, frontend build/lint/browser checks and production exclusion checks "
               "are reported separately by the delivery workflow; their success is not implied here."]
     return "\n".join(line.rstrip() for line in lines) + "\n"
+
+
+def check_only(workbook: Path, report: Path) -> tuple[bool, list[Check]]:
+    """Execute the unchanged full-study rules without replacing prior artifacts.
+
+    The only private output is a NEW aggregate audit in the Phase 3A.2 folder.
+    This mode has no export, crosswalk or approval operation.
+    """
+    if workbook.resolve() in (report.resolve(), CHECK_ONLY_AUDIT.resolve()):
+        raise ValueError("Read-only validation outputs cannot overwrite their workbook input")
+    if report.resolve().is_relative_to((REPOSITORY / "esearch_sources").resolve()) or report.resolve().is_relative_to((REPOSITORY / "research_sources").resolve()):
+        raise ValueError("A read-only aggregate report cannot overwrite research artifacts")
+    if report.resolve() == (REPOSITORY / "DATA_VALIDATION_REPORT.md").resolve():
+        raise ValueError("Read-only revalidation preserves the historical full-study report")
+    if CHECK_ONLY_AUDIT.parent.resolve() != (OUTPUT_DIRECTORY / "core_atlas").resolve():
+        raise ValueError("Read-only audit must remain in the restricted Phase 3A.2 directory")
+    ignored = subprocess.run(["git", "check-ignore", "-q", str(CHECK_ONLY_AUDIT)], cwd=REPOSITORY, check=False)
+    tracked = subprocess.run(["git", "ls-files", "--", str(CHECK_ONLY_AUDIT)], cwd=REPOSITORY, text=True, capture_output=True, check=True)
+    if ignored.returncode != 0 or tracked.stdout.strip():
+        raise ValueError("Read-only audit destination must be ignored and untracked")
+    timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    try:
+        source_hash = hashlib.sha256(workbook.read_bytes()).hexdigest()
+    except OSError:
+        source_hash = None
+    records, checks, _, errors = load_source(workbook)
+    if records:
+        checks += validate_records(records)
+    try:
+        unchanged = source_hash is not None and hashlib.sha256(workbook.read_bytes()).hexdigest() == source_hash
+    except OSError:
+        unchanged = False
+    checks.append(Check("Original workbook unchanged during ingestion", True, unchanged, unchanged, "integrity"))
+    passed = bool(checks) and all(check.passed for check in checks)
+    CHECK_ONLY_AUDIT.parent.mkdir(parents=True, exist_ok=True)
+    CHECK_ONLY_AUDIT.parent.chmod(0o700)
+    atomic_json(CHECK_ONLY_AUDIT, {
+        "schemaVersion": 1, "mode": "CHECK_ONLY", "sourceSha256": source_hash,
+        "validatedAt": timestamp, "validationPassed": passed,
+        "checks": [asdict(check) for check in checks], "normalizationErrorCount": len(errors),
+        "patientExportGenerated": False, "originalAdjudicationRecordsRewritten": False,
+    })
+    report.parent.mkdir(parents=True, exist_ok=True)
+    text = render_report(checks, errors, records, False, timestamp, check_only=True)
+    text = text.replace("# Phase 3A data validation report", "# Full-study read-only revalidation — Phase 3A.2", 1)
+    text += "\nLegacy numerical agreement is separate from the independent core-atlas source-integrity decision. " \
+        "This full-study report does not establish CORE_ATLAS_VALIDATION or resolve linked provenance questions; " \
+        "see [the separately executed scoped report](CORE_ATLAS_VALIDATION_REPORT.md).\n"
+    report.write_text(text, encoding="utf-8")
+    return passed, checks
 
 
 def run(workbook: Path, report: Path) -> tuple[bool, list[Check]]:
@@ -367,22 +419,26 @@ def run(workbook: Path, report: Path) -> tuple[bool, list[Check]]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workbook", type=Path, default=DEFAULT_WORKBOOK)
-    parser.add_argument("--report", type=Path, default=REPOSITORY / "DATA_VALIDATION_REPORT.md")
+    parser.add_argument("--report", type=Path)
+    parser.add_argument("--check-only", action="store_true", help="Preserve prior private artifacts; write new aggregate review outputs only")
     arguments = parser.parse_args()
+    report = arguments.report or REPOSITORY / ("docs/FULL_STUDY_REVALIDATION_REPORT.md" if arguments.check_only else "DATA_VALIDATION_REPORT.md")
     try:
-        passed, checks = run(arguments.workbook.resolve(), arguments.report.resolve())
+        validator = check_only if arguments.check_only else run
+        passed, checks = validator(arguments.workbook.resolve(), report.resolve())
     except (OSError, ValueError, subprocess.SubprocessError) as exc:
         # A report/output error after validation must also revoke review data.
-        try:
-            (OUTPUT_DIRECTORY / "atlas.review.json").unlink(missing_ok=True)
-        except OSError:
-            pass
+        if not arguments.check_only:
+            try:
+                (OUTPUT_DIRECTORY / "atlas.review.json").unlink(missing_ok=True)
+            except OSError:
+                pass
         parser.exit(1, f"Validation blocked: {exc}\n")
-    print(f"{'PASS' if passed else 'FAIL'}: {sum(c.passed for c in checks)}/{len(checks)} required checks; report: {arguments.report}")
+    print(f"{'PASS' if passed else 'FAIL'}: {sum(c.passed for c in checks)}/{len(checks)} required checks; report: {report}")
     for check in checks:
         if not check.passed:
             print(f"  {check.name}: expected {check.expected!r}; observed {check.observed!r}")
-    print("Local review export written; publication remains unapproved." if passed else "No browser-facing patient export. Source review required.")
+    print("Read-only full-study checks; previous artifacts unchanged and no patient export." if arguments.check_only else "Local review export written; publication remains unapproved." if passed else "No browser-facing patient export. Source review required.")
     return 0 if passed else 1
 
 

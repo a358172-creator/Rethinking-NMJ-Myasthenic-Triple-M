@@ -16,7 +16,7 @@ The atlas asks whether an MG-like clinical phenotype establishes primary neuromu
 - Responsive layouts, reduced-motion handling, a mobile navigation menu, source links and an accessible evidence key.
 - A complete Phase 2 **Virtual Neuromuscular Diagnostic Laboratory**, with clinical muscle-region exploration, serological evidence, three electrophysiology views, and a comparative evidence board.
 - A Phase 3A workbook-processing foundation, executed numerical report, data dictionary and independently reviewed source mapping.
-- Reusable patient-atlas components prepared without loading records. The main navigation links to the validation/review status at `#patients`. Patient exploration remains blocked by unresolved troponin normalization. No patient dataset is bundled.
+- Reusable patient-atlas components prepared without loading records. The main navigation links to the aggregate-only review notice at `#patients`. Full-study troponin validation and the independent core-atlas source review remain unresolved. No patient dataset is bundled.
 
 ## Phase 2 laboratory
 
@@ -74,11 +74,24 @@ npm run data:validate
 npm run data:test
 ```
 
+For Phase 3A.2 revalidation that preserves the historical reports and private adjudication artifacts, use:
+
+```bash
+npm run data:validate:check
+npm run data:validate:core
+npm run data:test
+npm run test:release-policy
+```
+
+Both validation commands currently exit **1**. The read-only full revalidation retains **44/48** passing checks and all four troponin failures. The independently specified core workflow has **44/46** passing prerequisites: its numerical checks pass, but two required linked-source provenance checks fail. `CORE_ATLAS_VALIDATION` therefore remains **FAIL**, with private-preview and public-publication approvals **PENDING**. No new export policy is activated. See the [core specification](docs/CORE_NEUROMUSCULAR_ATLAS_VALIDATION.md), [exact scoped results](docs/CORE_ATLAS_VALIDATION_REPORT.md), [provenance questions](docs/CORE_ATLAS_PROVENANCE_REVIEW.md), [privacy/release review](docs/CORE_ATLAS_PRIVACY_AND_RELEASE_REVIEW.md) and [Phase 3A.2 delivery](docs/phase3a2-report.md).
+
+The [troponin manuscript amendment proposal](docs/TROPONIN_MANUSCRIPT_AMENDMENT_PROPOSAL.md) recommends withdrawing unsupported pooled summaries and their dependent subgroup tests pending author decisions. It does not amend the frozen manuscript or substitute the diagnostic n=25 calculation. The targeted provenance review also requires source-identity and categorical reconciliation; reproducing workbook totals does not establish independent patients or correctly attributed source facts.
+
 On the current workbook, `data:validate` exits **1**: **44/48** required checks pass, with four troponin checks unresolved. All categorical cohort, cross-domain, age and LVEF checks pass. A conservative exact single-assay calculation cannot reproduce the frozen troponin n/median/IQR/range. Its diagnostic results must not replace the frozen analysis. See [executed validation report](DATA_VALIDATION_REPORT.md), [data dictionary](DATA_DICTIONARY.md), [independent review](docs/phase3-source-review.md) and [restricted review procedure](docs/atlas-data-review.md).
 
 Private audit details and the source crosswalk remain in ignored `esearch_sources/_processed/`, with owner-only file permissions. No browser-facing `atlas.review.json` is generated until **every** required frozen check passes. A failed rerun removes a stale review artifact. Validation success would still require a separate review before public inclusion. No patient rows, record filters or profiles are currently mounted, and there is no development data endpoint. The production boundary also rejects restricted export files and checks all source identifiers available in the private crosswalk.
 
-The source owner must document the troponin peak/assay selection and unit handling, or explicitly authorize a justified source amendment. No source correction has been made. Once reconciled, the remaining Phase 3A work is to run validation again, inspect the concrete minimal export, connect a restricted local preview and test actual-record interactions. [Phase 3A delivery status](docs/phase3-report.md) records completed and blocked work.
+The source owner must resolve the biochemical methodology and linked categorical source attribution. No source correction has been made. The independent core architecture prepares a possible scoped workflow, while the legacy exporter still requires every full-study check to pass. Any new core exporter needs explicit approval of its concrete policy and implementation, then separate approval of exact records for private preview and public disclosure. No private endpoint or patient preview is enabled. [Phase 3A delivery status](docs/phase3-report.md) records that phase's historical findings; the Phase 3A.2 report documents the new scope and blockers.
 
 ## Project structure
 
@@ -172,4 +185,4 @@ Before publication, the scientific author/clinician should review the drawings, 
 
 **Phase 2 is implemented.** Its diagrams are schematic and do not reproduce raw cohort recordings. Laboratory view controls are browser-local educational state; switching views starts the selected view at its default state. They do not collect clinical input or retain patient information. See [Phase 2 delivery report](docs/phase2-report.md) for files, executed validation and limitations.
 
-**Phase 3A remains incomplete under its scientific stop condition.** Its pipeline and reusable interface components are prepared, but the full validation gate has not passed. Troponin adjudication, real-record local preview, patient-dependent browser tests and publication review remain outstanding. [Phase 3A delivery status](docs/phase3-report.md) lists the remaining work and subsequent Phase 3B objectives. No patient records or mock patients are included in the website.
+**Phase 3A remains incomplete under its scientific stop condition.** Phase 3A.2 adds a manuscript amendment proposal and an independent core specification; both full-study validation and complete core validation remain FAIL. Resolve the source questions before approving a concrete scoped export workflow or private preview. Actual-record browser tests and public disclosure review remain outstanding. No patient records or mock patients are included in the website.

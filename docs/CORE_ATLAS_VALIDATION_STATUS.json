@@ -1,0 +1,464 @@
+{
+  "schemaVersion": 1,
+  "specVersion": "1.0.0",
+  "validatedAt": "2026-10-14T00:05:58+00:00",
+  "sourceSha256": "d6ced420d83eb046559ea445422ea7a838990989ab535a2f4530ef40db674fcb",
+  "dataScope": "six-field-neuromuscular-atlas",
+  "statuses": {
+    "FULL_STUDY_VALIDATION": "FAIL",
+    "CORE_ATLAS_NUMERICAL_VALIDATION": "PASS",
+    "CORE_ATLAS_VALIDATION": "FAIL",
+    "CORE_ATLAS_PUBLICATION_APPROVAL": "PENDING",
+    "CORE_ATLAS_PRIVATE_PREVIEW_APPROVAL": "PENDING",
+    "CORE_ATLAS_EXPORT_POLICY": "NOT_ACTIVATED"
+  },
+  "fullStudyAudit": {
+    "status": "FAIL",
+    "auditVerified": true,
+    "checksPassed": 44,
+    "checksTotal": 48,
+    "failedChecks": [
+      "Supported quantitative peak troponin n",
+      "Troponin median (ng/L)",
+      "Troponin IQR (ng/L)",
+      "Troponin range (ng/L, audit)"
+    ]
+  },
+  "checksPassed": 44,
+  "checksTotal": 46,
+  "checks": [
+    {
+      "name": "Authoritative master sheet available",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "integrity",
+      "note": ""
+    },
+    {
+      "name": "Every scoped header maps exactly once",
+      "expected": 0,
+      "observed": 0,
+      "passed": true,
+      "domain": "integrity",
+      "note": ""
+    },
+    {
+      "name": "All physical master data rows",
+      "expected": 38,
+      "observed": 38,
+      "passed": true,
+      "domain": "integrity",
+      "note": ""
+    },
+    {
+      "name": "Scoped input formula cells",
+      "expected": 0,
+      "observed": 0,
+      "passed": true,
+      "domain": "integrity",
+      "note": "Cached formula values are not accepted"
+    },
+    {
+      "name": "Scoped input spreadsheet error cells",
+      "expected": 0,
+      "observed": 0,
+      "passed": true,
+      "domain": "integrity",
+      "note": ""
+    },
+    {
+      "name": "Scoped normalization errors without inference",
+      "expected": 0,
+      "observed": 0,
+      "passed": true,
+      "domain": "integrity",
+      "note": ""
+    },
+    {
+      "name": "No source rows dropped during scoped mapping",
+      "expected": 38,
+      "observed": 38,
+      "passed": true,
+      "domain": "integrity",
+      "note": ""
+    },
+    {
+      "name": "Actual normalized patient records",
+      "expected": 38,
+      "observed": 38,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Unique private patient identifiers",
+      "expected": 38,
+      "observed": 38,
+      "passed": true,
+      "domain": "integrity",
+      "note": ""
+    },
+    {
+      "name": "Unique canonical source publications",
+      "expected": 27,
+      "observed": 27,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Private source rows map one-to-one",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "integrity",
+      "note": ""
+    },
+    {
+      "name": "Private source identity fields present and typed",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "integrity",
+      "note": ""
+    },
+    {
+      "name": "Every internal core category has an allowed value",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "integrity",
+      "note": ""
+    },
+    {
+      "name": "AChR tested / positive / negative / not documented",
+      "expected": [
+        30,
+        11,
+        19,
+        8
+      ],
+      "observed": [
+        30,
+        11,
+        19,
+        8
+      ],
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "AChR availability agrees with documented result",
+      "expected": 0,
+      "observed": 0,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Unique RNS and/or SFEMG patients",
+      "expected": 4,
+      "observed": 4,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "RNS evaluated patients",
+      "expected": 4,
+      "observed": 4,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "SFEMG evaluated patients",
+      "expected": 1,
+      "observed": 1,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "SFEMG is nested in the RNS cohort",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Formal availability matches each row's RNS/SFEMG union",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Formal patient identity set equals testing union",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Performed formal studies have explicit negative results",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Abnormal formal NMJ patients / evaluated patients",
+      "expected": [
+        0,
+        4
+      ],
+      "observed": [
+        0,
+        4
+      ],
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Unperformed formal studies never gain a result",
+      "expected": 0,
+      "observed": 0,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Objective NMJ evidence categories",
+      "expected": {
+        "formal_negative": 4,
+        "indeterminate_qualitative": 2,
+        "not_documented": 32
+      },
+      "observed": {
+        "formal_negative": 4,
+        "indeterminate_qualitative": 2,
+        "not_documented": 32
+      },
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Formal-negative evidence requires explicit formal negativity",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Qualitative indeterminate evidence has no formal confirmation",
+      "expected": 0,
+      "observed": 0,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "AChR-positive and formally evaluated overlap",
+      "expected": 0,
+      "observed": 0,
+      "passed": true,
+      "domain": "numerical",
+      "note": "Unpaired evidence is not negative physiological evidence"
+    },
+    {
+      "name": "Needle EMG evaluated / not documented",
+      "expected": [
+        11,
+        27
+      ],
+      "observed": [
+        11,
+        27
+      ],
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Needle EMG categories among evaluated",
+      "expected": {
+        "myopathic": 6,
+        "neuropathic": 1,
+        "normal": 1,
+        "indeterminate": 3
+      },
+      "observed": {
+        "myopathic": 6,
+        "neuropathic": 1,
+        "normal": 1,
+        "indeterminate": 3
+      },
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Needle availability agrees with an interpretation",
+      "expected": 0,
+      "observed": 0,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Documented vital status categories",
+      "expected": {
+        "death": 16,
+        "survival": 21,
+        "unknown": 1
+      },
+      "observed": {
+        "death": 16,
+        "survival": 21,
+        "unknown": 1
+      },
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Unknown vital status remains outside known denominator",
+      "expected": 37,
+      "observed": 37,
+      "passed": true,
+      "domain": "numerical",
+      "note": ""
+    },
+    {
+      "name": "Frozen authoritative source fingerprint",
+      "expected": "d6ced420d83eb046559ea445422ea7a838990989ab535a2f4530ef40db674fcb",
+      "observed": "d6ced420d83eb046559ea445422ea7a838990989ab535a2f4530ef40db674fcb",
+      "passed": true,
+      "domain": "integrity",
+      "note": ""
+    },
+    {
+      "name": "Original workbook unchanged during scoped ingestion",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "integrity",
+      "note": ""
+    },
+    {
+      "name": "Existing private crosswalk is versioned and source-bound",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "provenance",
+      "note": ""
+    },
+    {
+      "name": "Existing labels map actual source identity and rows exactly",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "provenance",
+      "note": "Original crosswalk is read, never rewritten; no patient records are serialized"
+    },
+    {
+      "name": "Targeted Siu provenance review bound to actual frozen row",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "provenance",
+      "note": ""
+    },
+    {
+      "name": "Targeted review has evidence locations and facts",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "provenance",
+      "note": ""
+    },
+    {
+      "name": "Linked source review bound to both actual frozen mappings",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "provenance",
+      "note": ""
+    },
+    {
+      "name": "Linked source identity, possible duplication and category disagreements resolved",
+      "expected": true,
+      "observed": false,
+      "passed": false,
+      "domain": "provenance",
+      "note": "Frozen aggregate agreement cannot resolve clinical case identity or contradictory source categories"
+    },
+    {
+      "name": "Targeted Siu source mapping resolved without unauthorized membership change",
+      "expected": true,
+      "observed": false,
+      "passed": false,
+      "domain": "provenance",
+      "note": "An unresolved source mapping prevents CORE_ATLAS_VALIDATION PASS even when numerical checks pass"
+    },
+    {
+      "name": "Private crosswalk remains ignored, untracked and owner-only",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "privacy",
+      "note": ""
+    },
+    {
+      "name": "Private targeted provenance remains ignored, untracked and owner-only",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "domain": "privacy",
+      "note": ""
+    },
+    {
+      "name": "Existing patient review export remains absent",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "domain": "privacy",
+      "note": ""
+    },
+    {
+      "name": "Browser field whitelist remains exactly six scoped fields",
+      "expected": [
+        "achr",
+        "formalNmj",
+        "label",
+        "needleEmg",
+        "nmjEvidence",
+        "vitalStatus"
+      ],
+      "observed": [
+        "achr",
+        "formalNmj",
+        "label",
+        "needleEmg",
+        "nmjEvidence",
+        "vitalStatus"
+      ],
+      "passed": true,
+      "domain": "privacy",
+      "note": ""
+    }
+  ],
+  "patientExportGenerated": false,
+  "privatePreviewEnabled": false,
+  "publicReleaseEnabled": false
+}

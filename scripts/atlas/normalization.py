@@ -197,7 +197,13 @@ def quantitative_troponin(value: Any) -> TroponinValue:
     return TroponinValue(max(converted), "quantitative")
 
 
-def normalize_row(row: dict[str, Any], source_row: int) -> dict[str, Any]:
+def normalize_core_row(row: dict[str, Any], source_row: int) -> dict[str, Any]:
+    """Normalize only scoped atlas fields and private source linkage.
+
+    The independent core workflow never reads or parses biochemical,
+    demographic, treatment or cardiac fields. The full workflow shares these
+    categorical mappings and adds its own required descriptive fields below.
+    """
     patient_id = source_text(row["Patient_ID"])
     doi = source_text(row["DOI"])
     if not patient_id or not doi:
@@ -221,6 +227,13 @@ def normalize_row(row: dict[str, Any], source_row: int) -> dict[str, Any]:
         "achr_status": achr,
         "achr_result": achr_result(row["AChR_Positive"]),
         "vital_status": vital_status(row["Outcome_Survival"]),
+    }
+
+
+def normalize_row(row: dict[str, Any], source_row: int) -> dict[str, Any]:
+    """Full-study normalization retains all existing required fields."""
+    return {
+        **normalize_core_row(row, source_row),
         "age": numeric_age(row["Age"]),
         "troponin": quantitative_troponin(row["Troponin_Max"]),
         "troponin_raw_value": source_text(row["Troponin_Max"]),  # Private adjudication only.
