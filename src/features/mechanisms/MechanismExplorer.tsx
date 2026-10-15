@@ -22,7 +22,7 @@ export function MechanismExplorer({ selected, onSelect }: Props) {
       {mode === 'anatomy' ? <><div className="explorer-grid">
         <div className="anatomy-column">
           <div className="structure-controls" role="group" aria-label="Select an anatomical structure">{structures.map((structure) => <button key={structure.id} aria-pressed={selected === structure.id} onClick={() => onSelect(structure.id)}><span aria-hidden="true">{structure.number}</span>{structure.label}</button>)}</div>
-          <figure className="atlas-figure"><AnatomicalFigure selected={selected} onSelect={onSelect} /><figcaption><span>FIGURE 01</span> Select a tissue to explore its anatomy. Dashed connections indicate possible involvement, not a demonstrated shared target. <a href="#anatomy-detail">Explore the enlarged tissue detail below.</a></figcaption></figure>
+          <figure className="atlas-figure"><AnatomicalFigure selected={selected} onSelect={onSelect} /><figcaption><span>FIGURE 01</span> Select a tissue to explore its anatomy. These normal anatomical models do not establish a shared injury target. <a href="#anatomy-detail">Explore the enlarged tissue detail below.</a></figcaption></figure>
           <EvidenceKey />
         </div>
         <div aria-live="polite" aria-atomic="false"><MechanismPanel selected={selected} /></div>

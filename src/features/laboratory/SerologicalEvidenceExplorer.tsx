@@ -5,6 +5,7 @@ import { frozenStudy } from '../../data/science';
 import { laboratoryUi } from '../../data/laboratoryUi';
 import { NmjDetail } from '../mechanisms/NmjDetail';
 import { ScientificResultPanel } from './ScientificResultPanel';
+import { SerologyMolecularIllustration } from './SerologyMolecularIllustration';
 
 const options: { id: SerologyId; label: string }[] = [
   { id: 'achr', label: 'AChR antibodies' },
@@ -23,9 +24,10 @@ export function SerologicalEvidenceExplorer() {
       </div>
       <div className="laboratory-split serology-split">
         <div className="serology-visual">
-          <NmjDetail impaired={false} context="serology" />
+          <SerologyMolecularIllustration selected={selected} />
           <div className="serology-domains"><span>Antibody detection</span><span aria-hidden="true">≠</span><span>Demonstrated transmission failure</span></div>
           <div className="lab-cohort-callout"><span className="eyebrow">PRESENT ANALYSIS · SEROLOGY</span><p className="lab-cohort-value">{frozenStudy.achr.result}<small>({frozenStudy.achr.percentage})</small></p><p>AChR-positive among those evaluated.</p><p className="lab-paired-gap">None of the {frozenStudy.pairedAchrNmj.achrPositive} AChR-positive patients had documented formal RNS or SFEMG. This is missing paired physiological evidence, not normal formal testing.</p></div>
+          <details className="nmj-serology-anatomy"><summary>Compare with normal NMJ anatomy</summary><NmjDetail impaired={false} context="serology" /></details>
         </div>
         <ScientificResultPanel title={panel.title} eyebrow="BIOLOGICAL EVIDENCE" summary={panel.summary} items={[
           { label: 'What detection measures', text: panel.measures },

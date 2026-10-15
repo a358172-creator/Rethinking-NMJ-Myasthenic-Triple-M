@@ -1,0 +1,10 @@
+.medical-artwork { display: block; width: 100%; height: auto; object-fit: contain; background: #FAFBFA; }
+.medical-artwork-frame { position: relative; min-width: 0; overflow: hidden; background: #FAFBFA; }
+.medical-artwork-caption { color: var(--muted); font-size: 10px; line-height: 1.8; margin-top: 12px; }
+.medical-artwork-caption strong { color: var(--slate); font-weight: 600; }
+
+/* The artwork collection shares typography without changing other site sections. */
+.myocardium-explorer .myocardium-heading h3,
+.muscle-explorer .muscle-explorer-heading h3 { font-family: var(--font-body); font-weight: 600; font-size: clamp(23px, 2.6vw, 32px); }
+.cardiac-section-inset, .muscle-artwork-caption, .nmj-artwork-panel,
+.editorial-phenotype, .serology-molecular-figure, .electrophysiology-procedure { font-family: var(--font-body); }

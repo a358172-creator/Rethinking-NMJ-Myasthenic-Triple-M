@@ -1,0 +1,31 @@
+.electrophysiology-procedure { margin-bottom: 24px; border: 1px solid #C2D7D1; background: #FAFBFA; min-width: 0; }
+.procedure-editorial-heading { padding: 19px 22px 0; }
+.procedure-editorial-heading > span { display: block; color: #526B66; font-size: 9px; letter-spacing: .08em; }
+.procedure-editorial-heading h4 { margin-top: 8px; font-size: 21px; line-height: 1.4; font-weight: 500; color: #2C3439; }
+.procedure-editorial-grid { display: grid; grid-template-columns: 1.12fr 1fr; gap: 22px; align-items: center; padding: 12px 22px 20px; }
+.procedure-motor-unit { margin: 0; min-width: 0; }
+.procedure-motor-unit .medical-artwork { width: 100%; background: #FAFBFA; }
+.procedure-motor-unit figcaption { padding: 9px 8px 0; color: #58656A; font-size: 10px; line-height: 1.7; }
+.procedure-sampling-panel { min-width: 0; }
+.procedure-recording-label { font-size: 10px; font-weight: 600; color: #4A625D; }
+.procedure-sampling-svg { display: block; width: 100%; height: auto; margin-top: 9px; overflow: visible; font-family: var(--font-body, sans-serif); font-size: 16px; fill: #2C3439; }
+.procedure-sampling-note { font-size: 13px; fill: #61706F; }
+.procedure-reading-key { display: flex; flex-wrap: wrap; gap: 8px 14px; list-style: none; margin: 5px 0 0; padding: 0; }
+.procedure-reading-key li { display: flex; align-items: baseline; gap: 6px; font-size: 10px; line-height: 1.6; color: #445455; }
+.procedure-reading-key li > span { color: #526B66; font-weight: 600; }
+.procedure-explanation { display: grid; grid-template-columns: 1.12fr 1fr; gap: 22px; border-top: 1px solid #C2D7D1; background: #EAF4F0; padding: 16px 22px; }
+.procedure-explanation p { font-size: 11px; line-height: 1.8; color: #445455; }
+.procedure-explanation strong { color: #2C3439; }
+@media (max-width: 850px) {
+  .procedure-editorial-grid { grid-template-columns: 1fr; gap: 15px; }
+  .procedure-motor-unit .medical-artwork { max-height: 400px; object-fit: contain; }
+  .procedure-sampling-panel { border-top: 1px solid #D7E3DE; padding-top: 16px; }
+  .procedure-sampling-svg { max-width: 620px; margin-inline: auto; }
+  .procedure-explanation { grid-template-columns: 1fr; gap: 10px; }
+}
+@media (max-width: 540px) {
+  .procedure-editorial-heading { padding: 17px 13px 0; }
+  .procedure-editorial-heading h4 { font-size: 19px; }
+  .procedure-editorial-grid { padding: 12px 13px 16px; }
+  .procedure-explanation { padding: 14px; }
+}

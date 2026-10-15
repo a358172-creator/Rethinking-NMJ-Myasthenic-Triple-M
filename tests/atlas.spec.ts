@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 
 const runtimeIssues = new WeakMap<Page, string[]>();
 const structureNames = ['Heart / myocardium', 'Skeletal muscle', 'Neuromuscular junction'] as const;
@@ -9,6 +9,14 @@ const evidenceLabels = [
   'Emerging or proposed mechanisms',
   'Present N=38 analysis',
 ] as const;
+
+async function checkMedicalArtwork(image: Locator) {
+  await expect(image).toBeVisible();
+  await image.scrollIntoViewIfNeeded();
+  await expect(image).toHaveAttribute('alt', /.+/);
+  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete), { message: 'Editorial artwork must finish loading' }).toBe(true);
+  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.naturalWidth), { message: 'Editorial artwork must be a real high-resolution raster asset' }).toBeGreaterThanOrEqual(1024);
+}
 
 async function checkMechanisticEvidence(page: Page) {
   const evidence = page.locator('#mechanism-panel').getByRole('region', { name: 'Mechanistic Evidence', exact: true });
@@ -89,8 +97,23 @@ test('hero and every internal reference navigate to an existing target', async (
     expect(href).toMatch(/^https:\/\/doi\.org\/10\.\d{4,9}\/.+/);
   }
 
+  const artwork = page.locator('img[data-medical-artwork]');
+  expect(await artwork.count()).toBeGreaterThan(0);
+  const assetChecks = await artwork.evaluateAll(async images => {
+    const urls = [...new Set(images.map(image => (image as HTMLImageElement).src))];
+    return Promise.all(urls.map(async src => {
+      const image = new Image(); image.src = src;
+      await image.decode();
+      return { width: image.naturalWidth, height: image.naturalHeight };
+    }));
+  });
+  for (const image of assetChecks) {
+    expect(image.width).toBeGreaterThanOrEqual(1024);
+    expect(image.height).toBeGreaterThanOrEqual(1024);
+  }
+  for (const image of await artwork.all()) if (await image.isVisible()) await checkMedicalArtwork(image);
   const brokenImages = await page.locator('img').evaluateAll((images) => images.filter((image) =>
-    !image.complete || image.naturalWidth === 0).map((image) => image.src));
+    image.checkVisibility() && (!image.complete || image.naturalWidth === 0)).map((image) => image.src));
   expect(brokenImages).toEqual([]);
   await expect(page.locator('button:disabled, [aria-disabled="true"]')).toHaveCount(0);
 });
@@ -113,28 +136,29 @@ test('all text anatomy controls update interpretation and visibly distinguish ev
   }
 });
 
-test('original anatomy SVG responds to mouse selection and hero activation', async ({ page }) => {
+test('editorial anatomy cards respond to mouse selection and hero activation', async ({ page }) => {
   const explorer = page.locator('#explorer');
-  const targets = explorer.locator('.atlas-figure svg [role="button"]');
+  const targets = explorer.locator('.atlas-figure button.anatomy-hit-target');
   for (const index of [1, 2, 0]) {
     await targets.nth(index).click();
+    await checkMedicalArtwork(targets.nth(index).locator('img[data-medical-artwork]'));
     await expect(targets.nth(index)).toHaveAttribute('aria-pressed', 'true');
     await expect(explorer.getByRole('button', { name: structureNames[index], exact: true })).toHaveAttribute('aria-pressed', 'true');
   }
 
-  await page.locator('.hero-art svg [role="button"]').nth(1).click();
+  await page.locator('.hero-art button.anatomy-hit-target').nth(1).click();
   await expect(explorer.getByRole('button', { name: 'Skeletal muscle', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await expect(explorer).toBeInViewport();
   await expect(page.locator('#mechanism-panel')).toContainText('Muscle fibers');
 });
 
-test('anatomical SVG supports Enter and Space selection with synchronized pressed states', async ({ page }) => {
+test('editorial anatomy cards support Enter and Space with synchronized pressed states', async ({ page }) => {
   const explorer = page.locator('#explorer');
-  const targets = explorer.locator('.atlas-figure svg [role="button"]');
+  const targets = explorer.locator('.atlas-figure button.anatomy-hit-target');
   await expect(targets).toHaveCount(3);
   for (let index = 0; index < structureNames.length; index += 1) {
     const target = targets.nth(index);
-    await expect(target).toHaveAttribute('tabindex', '0');
+    expect(await target.evaluate((element) => ({ tag: element.tagName, tabIndex: (element as HTMLButtonElement).tabIndex }))).toEqual({ tag: 'BUTTON', tabIndex: 0 });
     await expect(target).toHaveAttribute('aria-label', /.+/);
     await target.focus();
     await expect(target).toBeFocused();
@@ -284,7 +308,7 @@ test('reduced-motion preference suppresses transitions while retaining interacti
   expect(motion.preference).toBe(true);
   expect(motion.scroll).toBe('auto');
   for (const duration of motion.transitions) expect(duration).toBeLessThanOrEqual(0.0001);
-  await page.locator('.hero-art svg [role="button"]').nth(2).click();
+  await page.locator('.hero-art button.anatomy-hit-target').nth(2).click();
   await expect(page.locator('#explorer')).toBeInViewport();
   await expect(page.locator('#explorer').getByRole('button', { name: 'Neuromuscular junction', exact: true })).toHaveAttribute('aria-pressed', 'true');
 });

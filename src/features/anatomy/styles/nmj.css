@@ -1,6 +1,6 @@
 .nmj-explorer { padding: 26px; background: var(--white); border: 1px solid var(--line); }
 .nmj-explorer-heading { display: flex; align-items: start; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
-.nmj-explorer-heading h3 { margin: 7px 0 0; color: var(--navy); font-family: var(--font-display); font-size: clamp(25px, 3vw, 34px); font-weight: 500; }
+.nmj-explorer-heading h3 { margin: 7px 0 0; color: #2c3439; font-family: var(--font-body); font-size: clamp(24px, 3vw, 32px); font-weight: 600; }
 .nmj-explorer-heading > p { max-width: 330px; color: var(--muted); font-size: 13px; line-height: 1.65; }
 .nmj-explorer .nmj-advanced-state-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
 .nmj-explorer .nmj-advanced-state-controls button, .nmj-compartment-controls button, .nmj-sequence-controls button { background: var(--white); border: 1px solid var(--line); color: var(--slate); font: inherit; font-size: 12px; line-height: 1.5; cursor: pointer; min-height: 44px; }
@@ -11,34 +11,71 @@
 .nmj-artwork-toolbar { display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 10px; }
 .nmj-artwork-viewport { width: 100%; overflow-x: auto; }
 .nmj-artwork-viewport.is-enlarged .nmj-illustration { min-width: 720px; max-width: none; }
-.nmj-enlarge-control { display: none; margin: 10px 12px 0; padding: 8px 10px; min-height: 36px; border: 1px solid var(--line); border-radius: 4px; background: var(--white); color: var(--slate); font: inherit; font-size: 12px; cursor: pointer; }
+.nmj-enlarge-control { display: block; margin: 10px 12px 0; padding: 8px 10px; min-height: 36px; border: 1px solid var(--line); border-radius: 4px; background: var(--white); color: var(--slate); font: inherit; font-size: 12px; cursor: pointer; }
 .nmj-enlarge-control[aria-pressed="true"] { border-color: var(--teal-text); background: var(--teal-light); color: var(--navy); }
 .nmj-evidence-tier { display: block; padding: 12px 16px 0; color: var(--teal-text); font-size: 10px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; }
 .nmj-evidence-tier--transmission-impaired { color: var(--amber-text); }
 .nmj-evidence-tier--muscle-injury { color: var(--burgundy); }
 .nmj-illustration { display: block; width: 100%; height: auto; }
-.nmj-symbol-key { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 12px 16px; border-top: 1px solid var(--line); color: var(--slate); font-size: 11px; }
-.nmj-symbol-key > span { display: flex; gap: 7px; align-items: center; }
-.nmj-symbol-key i { display: inline-block; flex-shrink: 0; }
-.nmj-key-ach { width: 6px; height: 6px; background: var(--amber); border-radius: 50%; }
-.nmj-key-ache { width: 11px; height: 11px; background: #E5DFC9; border: 1px solid #8F815D; border-radius: 4px; }
-.nmj-key-lamina { width: 17px; border-top: 2px dotted #8F8E75; }
+.nmj-illustration .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.nmj-raster-frame { position: relative; background: #fafbfa; isolation: isolate; }
+.nmj-anatomy-overlay { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.nmj-hit-target { outline: none; pointer-events: none; }
+.nmj-hit-target[role="button"] { cursor: pointer; pointer-events: all; }
+.nmj-compartment-shape { fill: transparent; stroke: transparent; stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; }
+.nmj-compartment-shape--muscle { pointer-events: stroke; }
+.nmj-compartment-shape--receptors { stroke-width: 54; stroke-opacity: .001; }
+.nmj-hit-target.is-selected .nmj-compartment-shape { fill: rgb(131 169 199 / .07); stroke: #456e8d; stroke-width: 4; stroke-dasharray: 12 7; stroke-opacity: 1; }
+.nmj-hit-target.is-selected .nmj-compartment-shape--receptors { fill: none; stroke-width: 14; stroke-opacity: .75; }
+.nmj-hit-target.is-selected .nmj-compartment-shape--muscle { fill: none; stroke-width: 7; }
+.nmj-hit-target[role="button"]:hover .nmj-compartment-shape { stroke: #456e8d; stroke-width: 5; stroke-opacity: 1; }
+.nmj-hit-target[role="button"]:focus-visible .nmj-compartment-shape { stroke: #263f55; stroke-width: 7; stroke-dasharray: 10 6; stroke-opacity: 1; }
+.nmj-coordinate-marker circle { fill: #fafbfa; stroke: #456e8d; stroke-width: 3; }
+.nmj-coordinate-marker text { fill: #2c3439; font-family: var(--font-body); font-size: 26px; font-weight: 650; }
+.nmj-hit-target.is-selected .nmj-coordinate-marker circle { fill: #ddefea; stroke: #263f55; }
+.nmj-hit-target:focus-visible .nmj-coordinate-marker circle { stroke-width: 6; }
+.nmj-teaching-marks { pointer-events: none; }
+.nmj-step-path, .nmj-state-signal { fill: none; stroke: #306b72; stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; }
+.nmj-signal-stage { color: #306b72; }
+.nmj-step-ring { fill: rgb(221 239 234 / .45); stroke: #306b72; stroke-width: 5; }
+.nmj-ach-symbol { fill: #a986bb; stroke: #72588d; stroke-width: 2; }
+.nmj-reduced-activation { color: #936331; }
+.nmj-state-receptor-line { fill: none; stroke: #936331; stroke-width: 13; stroke-dasharray: 16 12; opacity: .8; }
+.nmj-activation-mark { fill: none; stroke: #936331; stroke-width: 7; stroke-linecap: round; }
+.nmj-activation-mark--limited { opacity: .35; stroke-dasharray: 5 9; }
+.nmj-state-signal { stroke-dasharray: 17 13; stroke-width: 7; }
+.nmj-state-signal-stop { fill: none; stroke: #936331; stroke-width: 6; }
+.nmj-injury-focus { fill: #e4b2b4; fill-opacity: .45; stroke: #a75e6b; stroke-width: 2; stroke-dasharray: 7 5; }
+.nmj-injury-myofibril { fill: none; stroke: #a75e6b; stroke-width: 5; stroke-linecap: round; opacity: .85; }
+.nmj-preserved-synapse { fill: none; stroke: #60928b; stroke-width: 5; stroke-dasharray: 11 9; }
+.nmj-conceptual-state-label { position: absolute; bottom: 12px; left: 12px; padding: 7px 10px; max-width: calc(100% - 24px); background: rgb(250 251 250 / .95); border: 1px solid #d7c7c5; color: #754650; font-size: 11px; line-height: 1.5; }
+.nmj-symbol-key { margin: 0; padding: 11px 14px; color: #4d5b62; background: #fafbfa; border-top: 1px solid #e1e5e2; font-size: 10px; line-height: 1.75; }
+.nmj-symbol-key > span { display: inline-block; vertical-align: baseline; margin-right: 4px; width: 8px; height: 8px; border-radius: 50%; }
+.nmj-symbol-key-ach { background: #efaf44; border: 1px solid #c68b27; }
+.nmj-symbol-key-ache { background: #b9a0cc; border: 1px solid #8c74a0; margin-left: 8px; }
+.nmj-stage-label { position: absolute; top: 12px; left: 12px; max-width: calc(100% - 24px); padding: 9px 12px; border: 1px solid var(--line); border-radius: 3px; background: rgb(255 255 255 / .95); color: var(--navy); }
+.nmj-stage-label > span { display: block; font-size: 8px; letter-spacing: .08em; color: var(--muted); }
+.nmj-stage-label > strong { display: block; margin-top: 3px; font-size: 12px; font-weight: 600; }
+.nmj-artwork-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; padding: 12px; border-top: 1px solid var(--line); background: var(--white); }
+.nmj-artwork-compartment { display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 7px 8px; border: 1px solid transparent; border-radius: 3px; color: var(--slate); font: inherit; font-size: 11px; line-height: 1.5; text-align: left; background: none; }
+button.nmj-artwork-compartment { cursor: pointer; border-color: var(--line); }
+button.nmj-artwork-compartment:hover { border-color: var(--teal); }
+.nmj-artwork-compartment.is-selected { border-color: var(--teal); background: var(--teal-light); color: var(--navy); }
+.nmj-number-marker { display: grid; place-items: center; width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--navy); color: var(--navy); font-size: 11px; font-weight: 600; }
+.nmj-artwork-compartment.is-selected .nmj-number-marker { color: var(--white); background: var(--navy); }
+.nmj-artwork-legend--compact { gap: 2px; padding: 8px; }
+.nmj-artwork-legend--compact .nmj-artwork-compartment { min-height: 34px; padding: 4px; font-size: 10px; }
 .nmj-scale-note { padding: 0 16px 13px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.65; }
 .nmj-compartment-panel > h4 { margin: 0 0 10px; font-size: 13px; font-weight: 650; color: var(--navy); }
 .nmj-compartment-controls { display: grid; gap: 7px; }
 .nmj-compartment-controls button { display: flex; gap: 10px; align-items: center; padding: 8px 11px; text-align: left; border-radius: 4px; }
-.nmj-compartment-controls button > span, .nmj-detail-legend li > span { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--navy); color: var(--navy); flex-shrink: 0; font-weight: 600; }
+.nmj-compartment-controls button > span { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--navy); color: var(--navy); flex-shrink: 0; font-weight: 600; }
 .nmj-compartment-controls button[aria-pressed="true"] { border-color: var(--teal); background: var(--teal-light); color: var(--navy); }
 .nmj-compartment-controls button[aria-pressed="true"] > span { background: var(--navy); color: var(--white); }
 .nmj-compartment-explanation { margin-top: 16px; padding: 14px; border-left: 2px solid var(--teal); background: var(--background); }
 .nmj-compartment-explanation h4 { margin: 0 0 6px; color: var(--navy); font-size: 14px; }
 .nmj-compartment-explanation p { margin: 0; color: var(--slate); font-size: 12px; line-height: 1.75; }
 .nmj-explorer .nmj-state-description { margin: 18px 0; padding-left: 14px; border-left: 2px solid var(--line); color: var(--slate); font-size: 13px; line-height: 1.75; }
-.nmj-compartment-hit { cursor: pointer; }
-.nmj-selection-outline { stroke: transparent; stroke-width: 2; transition: stroke .15s ease; }
-.nmj-compartment-hit.is-selected .nmj-selection-outline { stroke: var(--teal-text); stroke-dasharray: 5 4; }
-.nmj-compartment-hit:focus-visible { outline: none; }
-.nmj-compartment-hit:focus-visible .nmj-selection-outline { stroke: var(--navy); stroke-width: 3; stroke-dasharray: none; }
 .nmj-transmission-sequence { border-top: 1px solid var(--line); padding-top: 18px; }
 .nmj-sequence-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin-bottom: 12px; }
 .nmj-sequence-heading h4 { margin: 0; font-size: 14px; color: var(--navy); }
@@ -56,13 +93,12 @@
 .nmj-detail.nmj-detail { width: 100%; margin: 10px 0 0; background: var(--white); border: 1px solid var(--line); }
 .serology-visual figure.nmj-detail { max-height: none; }
 .nmj-detail-tier { margin: 0; padding: 14px 16px 0; color: var(--teal-text); font-size: 10px; line-height: 1.6; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
-.nmj-detail-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; list-style: none; padding: 12px 16px; margin: 0; border-top: 1px solid var(--line); }
-.nmj-detail-legend li { display: flex; align-items: center; gap: 8px; font-size: 11px; line-height: 1.5; color: var(--slate); }
-.nmj-detail-legend li > span { width: 22px; height: 22px; }
 .nmj-assay-note { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--line); background: var(--background); }
-.nmj-assay-note > svg { width: 60px; height: 48px; flex-shrink: 0; }
+.nmj-assay-note > .medical-artwork { width: 130px; height: auto; flex-shrink: 0; border: 1px solid var(--line); }
 .nmj-assay-note strong { display: block; font-size: 12px; line-height: 1.6; color: var(--navy); }
 .nmj-assay-note p { margin: 4px 0 0; font-size: 11px; line-height: 1.6; color: var(--muted); }
+.nmj-serology-anatomy { margin-top: 18px; border: 1px solid var(--line); background: var(--white); }
+.nmj-serology-anatomy > summary { cursor: pointer; padding: 12px 16px; min-height: 44px; color: var(--slate); font-size: 12px; font-weight: 600; }
 .nmj-detail figcaption { padding: 10px 16px 14px; color: var(--muted); font-size: 10px; line-height: 1.7; }
 @media (max-width: 1050px) {
   .nmj-enlarge-control { display: block; }
@@ -76,9 +112,8 @@
   .nmj-explorer-heading > p { margin-top: 10px; }
   .nmj-explorer .nmj-advanced-state-controls button { flex: 1 1 130px; padding-inline: 9px; }
   .nmj-compartment-controls, .nmj-sequence-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .nmj-direct-labels { display: none; }
-  .nmj-artwork-viewport.is-enlarged .nmj-direct-labels { display: inline; }
   .nmj-detail.nmj-detail { max-height: none; }
-  .nmj-detail-legend { gap: 8px; padding-inline: 12px; }
   .nmj-assay-note { padding-inline: 12px; }
+  .nmj-assay-note > .medical-artwork { width: 100px; }
+  .nmj-artwork-compartment { font-size: 10px; padding-inline: 4px; gap: 6px; }
 }

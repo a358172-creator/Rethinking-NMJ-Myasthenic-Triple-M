@@ -1,0 +1,34 @@
+/* Tissue navigation surrounds rendered artwork; no anatomical forms are drawn in CSS. */
+.editorial-anatomy { padding-block: 14px 10px; }
+.editorial-anatomy .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.editorial-anatomy-context { color: var(--muted); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
+.editorial-anatomy-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.editorial-tissue-card { display: flex; flex-direction: column; min-width: 0; padding: 0; border: 1px solid var(--line); background: white; text-align: left; overflow: hidden; transition: border-color .18s; }
+.editorial-tissue-card:hover, .editorial-tissue-card.is-selected { border-color: var(--teal-text); }
+.editorial-tissue-card.is-selected { box-shadow: inset 0 -2px var(--teal-text); }
+.editorial-tissue-card--heart.is-selected { border-color: var(--burgundy); box-shadow: inset 0 -2px var(--burgundy); }
+.editorial-tissue-art { display: block; width: 100%; background: #FAFBFA; overflow: hidden; }
+.editorial-tissue-art .medical-artwork { width: 100%; aspect-ratio: 3 / 2; object-fit: contain; }
+.editorial-tissue-label { display: flex; align-items: baseline; gap: 9px; width: 100%; padding: 13px 12px 14px; }
+.editorial-tissue-number { font-size: 9px; color: var(--muted); }
+.editorial-tissue-label strong { display: block; font-size: 12px; line-height: 1.45; font-weight: 600; }
+.editorial-tissue-label small { display: block; font-size: 9px; color: var(--muted); line-height: 1.6; margin-top: 4px; }
+.editorial-tissue-arrow { margin-left: auto; color: var(--teal-text); font-size: 16px; }
+.editorial-tissue-card--nmj { grid-column: 1 / -1; display: grid; grid-template-columns: 1.15fr 1fr; align-items: center; }
+.editorial-tissue-card--nmj .editorial-tissue-label { padding-inline: 15px; }
+.editorial-anatomy-footnote { color: var(--muted); font-size: 9px; text-align: center; margin-top: 13px; }
+.hero-art .anatomical-figure.editorial-anatomy, .atlas-figure .anatomical-figure.editorial-anatomy { max-height: none; }
+.hero-art .editorial-anatomy-context { display: none; }
+.hero-art .editorial-tissue-label small { display: none; }
+.hero-art .editorial-tissue-label { padding-block: 10px 12px; }
+.hero-art .editorial-anatomy-grid { gap: 10px; }
+@media (max-width: 540px) {
+  .editorial-anatomy-grid { gap: 9px; }
+  .editorial-tissue-label { gap: 6px; padding: 10px 8px 12px; }
+  .editorial-tissue-label strong { font-size: 11px; }
+  .editorial-tissue-label small { font-size: 9px; }
+  .editorial-tissue-arrow { display: none; }
+  .editorial-tissue-card--nmj { grid-template-columns: 1fr 1fr; }
+  .editorial-tissue-card--nmj .editorial-tissue-label { padding-inline: 10px; }
+}
+@media (prefers-reduced-motion: reduce) { .editorial-tissue-card { transition: none; } }

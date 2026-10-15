@@ -2,18 +2,6 @@
   align-items: stretch;
 }
 
-.mechanism-figure-scroll-hint { display: none; }
-
-@media (max-width: 620px) {
-  .mechanism-figure-scroll-hint {
-    display: block;
-    margin: -8px 0 18px;
-    color: var(--sfn-accent-cyan);
-    font-size: 12px;
-    line-height: 1.7;
-  }
-}
-
 .mechanism-figure-panel {
   display: flex;
   flex-direction: column;
@@ -47,20 +35,21 @@
 
 .mechanism-model-state { display: block; margin-bottom: 10px; font-size: 12px; font-weight: 600; line-height: 1.6; color: var(--mechanism-accent); }
 
-.mechanism-figure-scroll {
+.mechanism-figure-artwork {
   margin-inline: -0.25rem;
+  min-width: 0;
 }
 
 .mechanism-figure-svg {
   display: block;
   width: 100%;
-  min-width: 560px;
   height: auto;
   font-family: var(--font-body);
 }
 
-.mechanism-figure-scroll > .skeletal-muscle-svg { min-width: 560px; min-height: 358px; }
-.mechanism-figure-scroll > .nmj-illustration { min-width: 560px; }
+.mechanism-figure-artwork > .skeletal-muscle-svg,
+.mechanism-figure-artwork > .nmj-illustration { min-width: 0; }
+.mechanism-artwork-reading-key { margin: 10px 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
 
 .mechanism-figure-evaluation {
   margin: 0.5rem 0 0.9rem;
@@ -89,3 +78,20 @@
     transition: none;
   }
 }
+
+/* Match the comparison's canvas, rhythm and illustration scale. */
+.mechanism-figure-artwork { position: relative; background: #FAFBFA; }
+.mechanism-figure-artwork .medical-artwork { aspect-ratio: 3 / 2; width: 100%; object-fit: contain; background: #FAFBFA; }
+.mechanism-figure-artwork .nmj-artwork-legend, .mechanism-figure-artwork .nmj-artwork-caption, .mechanism-figure-artwork .nmj-symbol-key { display: none; }
+.mechanism-figure-artwork .nmj-raster-frame { aspect-ratio: 3 / 2; }
+.mechanism-artwork-reading-key { min-height: 5.1em; font-size: 11px; line-height: 1.7; }
+.mechanism-figure-panel .sfn-panel-heading { min-height: 2.6em; }
+.mechanism-figure-intro { min-height: 8.1em; }
+.myocardial-comparison-context { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 24px; border: 1px solid #C7DCD5; margin-top: 22px; padding: 20px; background: #F6FAF8; }
+.myocardial-comparison-art { min-width: 0; }
+.myocardial-comparison-art .medical-artwork { aspect-ratio: 3 / 2; object-fit: contain; background: #FAFBFA; }
+.myocardial-comparison-copy h4 { color: #2C3439; margin: 8px 0 12px; font-size: 20px; line-height: 1.4; }
+.myocardial-comparison-copy > p { color: var(--slate); font-size: 13px; line-height: 1.8; margin: 10px 0; }
+.myocardial-comparison-copy .myocardial-comparison-boundary { font-size: 11px; color: var(--muted); border-top: 1px solid #D6E4DF; padding-top: 12px; }
+.myocardial-comparison-boundary a { text-decoration: underline; text-underline-offset: 2px; color: var(--teal-text); }
+@media (max-width: 780px) { .myocardial-comparison-context { grid-template-columns: 1fr; gap: 15px; padding: 14px; } .mechanism-figure-panel .sfn-panel-heading, .mechanism-figure-intro, .mechanism-artwork-reading-key { min-height: 0; } }

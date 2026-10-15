@@ -1,0 +1,67 @@
+.serology-molecular-figure { margin: 0; border: 1px solid #d5dedc; background: #fafbfa; color: #2c3439; }
+.serology-molecular-heading { padding: 18px 20px 0; }
+.serology-molecular-heading .eyebrow { color: #526a69; font-size: 9px; }
+.serology-molecular-heading h4 { margin: 8px 0 6px; font-size: clamp(18px, 2.5vw, 24px); font-weight: 600; line-height: 1.3; }
+.serology-molecular-heading p { margin: 0; font-size: 12px; color: #56646a; line-height: 1.65; }
+.serology-molecular-art { position: relative; }
+.serology-molecular-art-frame { position: relative; }
+.serology-molecular-art .medical-artwork { background: #fafbfa; }
+.serology-artwork-connectors { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.serology-artwork-connectors > path { fill: none; stroke: #46555d; stroke-width: 2.5; }
+.serology-artwork-connectors circle { fill: #fafbfa; stroke: #46555d; stroke-width: 2.5; }
+.serology-artwork-connectors .serology-connector-dot { fill: #46555d; stroke: #fafbfa; stroke-width: 1.5; }
+.serology-artwork-connectors text { fill: #2c3439; font: 600 27px var(--font-body); }
+.serology-molecular-reading-key { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; padding: 0 16px 14px; font-size: 11px; color: #46565c; }
+.serology-molecular-reading-key span { display: inline-flex; gap: 6px; align-items: center; }
+.serology-molecular-reading-key b { display: grid; place-items: center; width: 18px; height: 18px; border: 1px solid #8c74a0; background: #eee5f3; color: #59486a; border-radius: 50%; font-size: 10px; font-weight: 600; }
+.serology-molecular-reading-key span:nth-child(2) b { border-color: #587e9c; background: #e4eff5; color: #3d5c73; }
+.serology-molecular-reading-key span:nth-child(3) b { border-color: #b27882; background: #f9e8e7; color: #854b58; }
+.serology-generic-antigen-note { margin: 0; padding: 0 18px 16px; color: #56646a; font-size: 10px; line-height: 1.7; }
+.serology-target-inset { margin: 0 18px 18px; padding: 14px; background: #eef5f1; border: 1px solid #c0d6cf; }
+.serology-inset-label { display: block; font-size: 12px; font-weight: 650; color: #3b5554; }
+.serology-target-concept-label { display: block; margin-top: 4px; font-size: 10px; color: #56646a; }
+.serology-target-concept { display: block; width: 100%; max-height: 175px; margin: 6px auto 0; }
+.serology-target-concept text, .serology-example svg text { fill: #2c3439; font-family: var(--font-body); font-size: 14px; }
+.serology-target-inset > p { font-size: 11px; color: #42545a; line-height: 1.65; margin: 4px 0 0; }
+.serology-membrane { fill: none; stroke: #bb6974; stroke-width: 3; opacity: .7; }
+.serology-channel-subunit { fill: #a8c5d5; stroke: #587e9c; stroke-width: 2; }
+.serology-channel-subunit--1, .serology-channel-subunit--2 { fill: #83a9c7; }
+.serology-channel-pore { fill: none; stroke: #fafbfa; stroke-width: 4; }
+.serology-channel-opening { fill: #fafbfa; stroke: #587e9c; stroke-width: 2; }
+.serology-ion-arrow { fill: none; stroke: #526f81; stroke-width: 2; stroke-dasharray: 4 3; }
+.serology-ion { fill: #b9a0cc; stroke: #8c74a0; stroke-width: 1.5; }
+.serology-single-pass { fill: none; stroke: #587e9c; stroke-width: 11; }
+.serology-musk-extracellular { fill: #a8c5d5; stroke: #587e9c; stroke-width: 2; }
+.serology-kinase { fill: #b9a0cc; stroke: #8c74a0; stroke-width: 2; }
+.serology-organization-link { fill: none; stroke: #6c8e87; stroke-width: 2.5; stroke-dasharray: 5 4; }
+.serology-context-link { fill: none; stroke: #759c93; stroke-width: 3; stroke-dasharray: 7 5; }
+.serology-sample-tube { fill: #fafbfa; stroke: #587e9c; stroke-width: 2.5; }
+.serology-sample-fill { fill: #dfa2a0; stroke: #bb6974; stroke-width: 1.5; }
+.serology-correlation-frame { fill: #fafbfa; stroke: #587e9c; stroke-width: 2; }
+.serology-context-trace { fill: none; stroke: #587e9c; stroke-width: 2; }
+.serology-result-examples { padding: 18px; background: #fff; border-top: 1px solid #d5dedc; }
+.serology-result-examples > h4 { margin: 0 0 5px; font-size: 14px; color: #2c3439; font-weight: 650; }
+.serology-example-note { margin: 0 0 12px; color: #56646a; font-size: 11px; line-height: 1.65; }
+.serology-result-controls { display: flex; flex-wrap: wrap; gap: 7px; }
+.serology-result-controls button { min-height: 44px; flex: 1 1 90px; padding: 9px 12px; background: #fafbfa; color: #2c3439; border: 1px solid #cbd6d6; border-radius: 3px; font: inherit; font-size: 12px; cursor: pointer; }
+.serology-result-controls button[aria-pressed="true"] { background: #ddefea; border-color: #6d968e; font-weight: 650; }
+.serology-example { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 14px; align-items: center; margin-top: 15px; padding: 13px 0 0; border-top: 1px solid #e4e8e6; }
+.serology-example > svg { display: block; width: 100%; }
+.serology-antibody-symbol path { fill: none; stroke: #8c74a0; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+.serology-assay-antigen { fill: #a8c5d5; stroke: #587e9c; stroke-width: 2; }
+.serology-binding-connector { fill: none; stroke: #527e73; stroke-width: 3; }
+.serology-negative-connector { fill: none; stroke: #7e8990; stroke-width: 2.5; }
+.serology-no-detection { fill: none; stroke: #7e8990; stroke-width: 2; }
+.serology-uncertain-connector { fill: none; stroke: #98704d; stroke-width: 2.5; stroke-dasharray: 4 5; }
+.serology-example svg .serology-uncertain-sign { font-size: 25px; fill: #805c36; }
+.serology-example strong { font-size: 12px; font-weight: 650; color: #2c3439; }
+.serology-example p { margin: 5px 0 0; color: #46575e; font-size: 11px; line-height: 1.7; }
+.serology-molecular-figure > figcaption { margin: 0; padding: 12px 18px; border-top: 1px solid #d5dedc; color: #56646a; font-size: 10px; line-height: 1.7; }
+@media (max-width: 600px) {
+  .serology-molecular-heading { padding-inline: 14px; }
+  .serology-target-inset { margin-inline: 12px; padding: 12px; }
+  .serology-result-examples { padding: 14px 12px; }
+  .serology-example { grid-template-columns: 110px minmax(0, 1fr); gap: 10px; }
+  .serology-result-controls button { padding-inline: 6px; }
+  .serology-target-concept { max-height: none; }
+}

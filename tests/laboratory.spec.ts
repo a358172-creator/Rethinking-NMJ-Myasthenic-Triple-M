@@ -46,6 +46,18 @@ async function checkEvidence(panel: Locator) {
   expect(missingTargets, 'Laboratory citations must resolve to visible reference entries').toEqual([]);
 }
 
+async function checkMedicalArtwork(image: Locator) {
+  await expect(image).toBeVisible();
+  await image.scrollIntoViewIfNeeded();
+  await expect(image).toHaveAttribute('alt', /.+/);
+  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete), { message: 'Editorial artwork must finish loading' }).toBe(true);
+  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.naturalWidth), { message: 'Editorial artwork must have at least 1,024 pixels of source detail' }).toBeGreaterThanOrEqual(1024);
+  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.naturalHeight)).toBeGreaterThanOrEqual(1024);
+  const source = new URL((await image.getAttribute('src'))!, image.page().url());
+  const appPath = new URL(image.page().url()).pathname;
+  expect(source.pathname.startsWith(`${appPath}media/editorial/`), 'Artwork must respect the app publication base path').toBe(true);
+}
+
 async function waveformPaths(page: Page) {
   return laboratory(page).locator('.electrophysiology-svg path[d]').evaluateAll((paths) => paths.map((path) => path.getAttribute('d')));
 }
@@ -111,22 +123,23 @@ test('laboratory navigation exposes each evidence domain and preserves valid anc
 
 test('all five clinical selections synchronize anatomy, manifestations, mechanisms and evidence', async ({ page }) => {
   const controls = laboratory(page).getByRole('group', { name: 'Clinical muscle regions', exact: true });
-  const targets = laboratory(page).locator('.phenotype-hit-target');
-  const labels = phenotypeRegions.map((region) => region.label);
+  const targets = laboratory(page).locator('.phenotype-anatomical-overlay [role="button"]');
+  const labels = phenotypeRegions.map((region) => `Select ${region.id} region`);
   await expect(controls.getByRole('button')).toHaveCount(5);
   await expect(targets).toHaveCount(5);
   const panel = interpretation(page);
+  await checkMedicalArtwork(laboratory(page).locator('img[data-medical-artwork="clinical-distribution"]'));
   for (const region of phenotypeRegions) {
-    await controls.getByRole('button', { name: region.label, exact: true }).click();
-    await checkPressed(controls, labels, region.label);
-    await expect(laboratory(page).locator(`.phenotype-hit-target[aria-label="Select ${region.id} region"]`)).toHaveAttribute('aria-pressed', 'true');
+    await controls.getByRole('button', { name: `Select ${region.id} region`, exact: true }).click();
+    await checkPressed(controls, labels, `Select ${region.id} region`);
+    await expect(laboratory(page).getByRole('button', { name: `Select ${region.id} anatomy`, exact: true })).toHaveAttribute('aria-pressed', 'true');
     await expect(panel.getByRole('heading', { name: region.label, exact: true })).toBeVisible();
     for (const manifestation of region.manifestations) await expect(panel.locator('dd').first()).toContainText(manifestation);
     await expect(panel.locator('dt')).toHaveText(['Clinical manifestations', 'Possible muscle mechanism', 'Possible NMJ mechanism', 'What distribution cannot establish']);
     await expect(panel.locator('dd').nth(1)).toHaveText(region.muscleMechanism);
     await expect(panel.locator('dd').nth(2)).toHaveText(region.nmjMechanism);
     await expect(panel.locator('dd').nth(3)).toHaveText(region.boundary);
-    await expect(laboratory(page).locator('.phenotype-hit-target[aria-pressed="true"]')).toHaveCount(1);
+    await expect(laboratory(page).locator('.phenotype-anatomical-target[aria-pressed="true"]')).toHaveCount(1);
     await checkEvidence(panel);
   }
 });
@@ -135,26 +148,23 @@ test('clinical anatomy supports mouse, Enter and Space with visible keyboard foc
   const lab = laboratory(page);
   const controls = lab.getByRole('group', { name: 'Clinical muscle regions', exact: true });
   for (const region of phenotypeRegions) {
-    const target = lab.locator(`.phenotype-hit-target[aria-label="Select ${region.id} region"]`);
-    await expect(target).toHaveAttribute('tabindex', '0');
-    await target.locator('circle').first().click();
-    await expect(controls.getByRole('button', { name: region.label, exact: true })).toHaveAttribute('aria-pressed', 'true');
+    const target = lab.getByRole('button', { name: `Select ${region.id} anatomy`, exact: true });
+    expect(await target.evaluate((element) => ({ tag: element.tagName.toLowerCase(), tabIndex: element.getAttribute('tabindex') }))).toEqual({ tag: 'g', tabIndex: '0' });
+    await target.locator('.phenotype-anatomical-dot').click();
+    await expect(controls.getByRole('button', { name: `Select ${region.id} region`, exact: true })).toHaveAttribute('aria-pressed', 'true');
     for (const key of ['Enter', 'Space']) {
       const other = phenotypeRegions.find((candidate) => candidate.id !== region.id)!;
-      await controls.getByRole('button', { name: other.label, exact: true }).click();
+      await controls.getByRole('button', { name: `Select ${other.id} region`, exact: true }).click();
       await page.keyboard.press('Tab');
       await target.focus();
       await expect(target).toBeFocused();
       expect(await target.evaluate((element) => element.matches(':focus-visible')), 'Keyboard anatomy focus must be visible').toBe(true);
-      const focusStyle = await target.evaluate((element) => ({
-        shadow: getComputedStyle(element).filter,
-        strokeWidth: getComputedStyle(element.querySelector('.phenotype-region')!).strokeWidth,
-      }));
-      expect(focusStyle.shadow).not.toBe('none');
-      expect(parseFloat(focusStyle.strokeWidth)).toBeGreaterThanOrEqual(3);
+      const focusStyle = await target.locator('.phenotype-anatomical-label').evaluate((element) => ({ stroke: getComputedStyle(element).stroke, width: parseFloat(getComputedStyle(element).strokeWidth) }));
+      expect(focusStyle.stroke).not.toBe('none');
+      expect(focusStyle.width, 'SVG anatomical focus must visibly strengthen the callout outline').toBeGreaterThanOrEqual(4);
       await target.press(key);
       await expect(target).toHaveAttribute('aria-pressed', 'true');
-      await expect(controls.getByRole('button', { name: region.label, exact: true })).toHaveAttribute('aria-pressed', 'true');
+      await expect(controls.getByRole('button', { name: `Select ${region.id} region`, exact: true })).toHaveAttribute('aria-pressed', 'true');
     }
   }
 });
@@ -168,6 +178,7 @@ test('serology preserves the evaluated denominator and distinguishes missing pai
     { label: 'MuSK antibodies', id: 'musk' as const },
     { label: 'Pretreatment & correlation', id: 'context' as const },
   ];
+  await lab.getByText('Compare with normal NMJ anatomy', { exact: true }).click();
   for (const option of options) {
     await controls.getByRole('button', { name: option.label, exact: true }).click();
     await checkPressed(controls, options.map((candidate) => candidate.label), option.label);
@@ -181,9 +192,45 @@ test('serology preserves the evaluated denominator and distinguishes missing pai
     await expect(lab.locator('.lab-paired-gap')).toContainText('missing paired physiological evidence, not normal formal testing');
     await expect(lab.locator('.serology-domains')).toContainText('Antibody detection');
     await expect(lab.locator('.serology-domains')).toContainText('Demonstrated transmission failure');
-    await expect(lab.locator('.serology-visual svg.nmj-illustration')).toHaveCount(1);
-    await expect(lab.getByRole('img', { name: 'Separate generic antibody-binding schematic', exact: true })).toBeVisible();
+    await expect(lab.locator('.serology-visual .nmj-illustration')).toHaveCount(1);
+    await expect(lab.locator('.serology-target-concept')).toHaveAttribute('data-serology-target', option.id);
+    await checkMedicalArtwork(lab.locator('.serology-visual img[data-medical-artwork="nmj-normal"]'));
+    await checkMedicalArtwork(lab.locator('.serology-visual img[data-medical-artwork="antibody-binding"]'));
   }
+});
+
+test('qualitative serology examples remain independent of study results and NMJ anatomy', async ({ page }) => {
+  await selectView(page, 'Serological evidence');
+  const lab = laboratory(page);
+  await lab.getByText('Compare with normal NMJ anatomy', { exact: true }).click();
+  const nmj = lab.locator('.nmj-illustration');
+  const normalArt = lab.locator('img[data-medical-artwork="nmj-normal"]');
+  const originalSource = await normalArt.getAttribute('src');
+  const controls = lab.getByRole('group', { name: 'Qualitative serology examples', exact: true });
+  const examples = [
+    { label: 'Positive', id: 'positive', text: /does not independently.*transmission.*MG/i },
+    { label: 'Negative', id: 'negative', text: /does not automatically exclude an NMJ disorder/i },
+    { label: 'Indeterminate', id: 'indeterminate', text: /differs from a negative result/i },
+  ];
+  const markings: string[][] = [];
+  for (const example of examples) {
+    const button = controls.getByRole('button', { name: example.label, exact: true });
+    await button.focus();
+    await button.press(example.id === 'negative' ? 'Space' : 'Enter');
+    await checkPressed(controls, examples.map(item => item.label), example.label);
+    const result = lab.locator('[data-assay-example]');
+    await expect(result).toHaveAttribute('data-assay-example', example.id);
+    await expect(result).toContainText(example.text);
+    markings.push(await result.locator('svg path[d]').evaluateAll(paths => paths.map(path => path.getAttribute('d')!)));
+    await expect(lab.locator('.lab-cohort-value')).toHaveText('11/30(36.7%)');
+    await expect(nmj).toHaveAttribute('data-nmj-state', 'normal');
+    await expect(normalArt).toHaveAttribute('src', originalSource!);
+  }
+  expect(new Set(markings.map(paths => JSON.stringify(paths))).size, 'Each qualitative interpretation must change the schematic assay marks').toBe(3);
+  await lab.getByRole('button', { name: 'MuSK antibodies', exact: true }).click();
+  await expect(lab.locator('[data-assay-example]')).toHaveAttribute('data-assay-example', 'indeterminate');
+  await expect(lab.locator('.serology-target-concept')).toHaveAttribute('data-serology-target', 'musk');
+  await expect(nmj).toHaveAttribute('data-nmj-state', 'normal');
 });
 
 test('RNS, SFEMG and needle EMG controls change deterministic SVG traces and restore comparison states', async ({ page }) => {
@@ -195,6 +242,7 @@ test('RNS, SFEMG and needle EMG controls change deterministic SVG traces and res
 
   await checkPressed(modalities, modalityNames, modalityNames[0]);
   await checkPressed(comparison, ['Without significant decrement', 'Decremental response'], 'Without significant decrement');
+  await checkMedicalArtwork(lab.locator('img[data-medical-artwork="rns-procedure"]'));
   const normalRns = await waveformPaths(page);
   await lab.getByRole('button', { name: 'Decremental response', exact: true }).click();
   await checkPressed(comparison, ['Without significant decrement', 'Decremental response'], 'Decremental response');
@@ -213,6 +261,7 @@ test('RNS, SFEMG and needle EMG controls change deterministic SVG traces and res
   await checkPressed(modalities, modalityNames, modalityNames[1]);
   const checkbox = lab.getByRole('checkbox', { name: 'Show possible impulse blocking', exact: true });
   await expect(checkbox).toHaveCount(0);
+  await checkMedicalArtwork(lab.locator('img[data-medical-artwork="sfemg-procedure"]'));
   const normalSfemg = await waveformPaths(page);
   await lab.getByRole('button', { name: 'Increased jitter', exact: true }).click();
   await checkPressed(comparison, ['Conceptual normal variability', 'Increased jitter'], 'Increased jitter');
@@ -239,6 +288,7 @@ test('RNS, SFEMG and needle EMG controls change deterministic SVG traces and res
 
   await modalities.getByRole('button', { name: modalityNames[2], exact: true }).click();
   await checkPressed(modalities, modalityNames, modalityNames[2]);
+  await checkMedicalArtwork(lab.locator('img[data-medical-artwork="needle-procedure"]'));
   const usualNeedle = await waveformPaths(page);
   await lab.getByRole('button', { name: 'Myopathic pattern', exact: true }).click();
   await checkPressed(comparison, ['Usual motor-unit pattern', 'Myopathic pattern'], 'Myopathic pattern');
@@ -334,8 +384,8 @@ test('every laboratory view fits phone and tablet widths including abnormal wave
       await selectView(page, view);
       const dimensions = await page.evaluate(() => ({ viewport: document.documentElement.clientWidth, content: document.documentElement.scrollWidth }));
       expect(dimensions.content, `${view} should fit ${width}px`).toBeLessThanOrEqual(dimensions.viewport + 1);
-      const svgBounds = await laboratory(page).locator('svg:not(.electrophysiology-svg)').evaluateAll((svgs) => svgs.map((svg) => ({ left: svg.getBoundingClientRect().left, right: svg.getBoundingClientRect().right })));
-      for (const bounds of svgBounds) {
+      const illustrationBounds = await laboratory(page).locator('img[data-medical-artwork], svg:not(.electrophysiology-svg)').evaluateAll((images) => images.map((image) => ({ left: image.getBoundingClientRect().left, right: image.getBoundingClientRect().right })));
+      for (const bounds of illustrationBounds) {
         expect(bounds.left).toBeGreaterThanOrEqual(-1);
         expect(bounds.right).toBeLessThanOrEqual(width + 1);
       }
@@ -392,7 +442,7 @@ test('laboratory controls retain keyboard operation and reduced-motion support',
     await checkPressed(navigation, viewNames, name);
   }
   await selectView(page, 'Clinical phenotype');
-  const motion = await lab.locator('.phenotype-region').first().evaluate((element) => ({
+  const motion = await lab.locator('.phenotype-hit-target').first().evaluate((element) => ({
     preference: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
     scroll: getComputedStyle(document.documentElement).scrollBehavior,
     durations: getComputedStyle(element).transitionDuration.split(',').map((value) => value.trim().endsWith('ms') ? parseFloat(value) / 1000 : parseFloat(value)),
@@ -400,7 +450,7 @@ test('laboratory controls retain keyboard operation and reduced-motion support',
   expect(motion.preference).toBe(true);
   expect(motion.scroll).toBe('auto');
   for (const duration of motion.durations) expect(duration).toBeLessThanOrEqual(0.0001);
-  const respiratory = lab.getByRole('group', { name: 'Clinical muscle regions', exact: true }).getByRole('button', { name: 'Respiratory muscles & diaphragm', exact: true });
+  const respiratory = lab.getByRole('group', { name: 'Clinical muscle regions', exact: true }).getByRole('button', { name: 'Select respiratory region', exact: true });
   await respiratory.focus();
   await respiratory.press('Enter');
   await expect(respiratory).toHaveAttribute('aria-pressed', 'true');
@@ -416,6 +466,11 @@ test('all four laboratory views and abnormal signal states satisfy automated WCA
   await audit('Clinical phenotype');
   await selectView(page, 'Serological evidence');
   await audit('Serological evidence');
+  await laboratory(page).getByText('Compare with normal NMJ anatomy', { exact: true }).click();
+  for (const name of ['Positive', 'Negative', 'Indeterminate']) {
+    await laboratory(page).getByRole('group', { name: 'Qualitative serology examples', exact: true }).getByRole('button', { name, exact: true }).click();
+    await audit(`Serological ${name.toLowerCase()} example with normal NMJ reference`);
+  }
   await selectView(page, 'Electrophysiology');
   await audit('RNS without decrement');
   await laboratory(page).getByRole('button', { name: 'Decremental response', exact: true }).click();

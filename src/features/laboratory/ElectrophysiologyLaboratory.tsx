@@ -6,6 +6,7 @@ import { frozenStudy } from '../../data/science';
 import { EducationalTooltip } from '../../components/ui/EducationalTooltip';
 import { RnsTrace, SfemgTrace, NeedleEmgTrace } from './ElectrophysiologyTraces';
 import { ScientificResultPanel } from './ScientificResultPanel';
+import { ElectrophysiologyProcedure } from './ElectrophysiologyProcedure';
 
 const modalities: { id: ElectrophysiologyId; label: string; detail: string }[] = [
   { id: 'rns', label: 'Repetitive nerve stimulation', detail: 'RNS · serial CMAP responses' },
@@ -33,6 +34,7 @@ export function ElectrophysiologyLaboratory() {
     <section className="lab-view electrophysiology-laboratory" aria-labelledby="electrophysiology-title">
       <div className="lab-view-heading"><h3 id="electrophysiology-title">{laboratoryUi.electrophysiology.title}</h3><p>{laboratoryUi.electrophysiology.summary}</p></div>
       <div className="modality-controls" role="group" aria-label="Electrophysiology modalities">{modalities.map((modality) => <button key={modality.id} type="button" aria-label={modality.label} aria-pressed={selected === modality.id} onClick={() => setSelected(modality.id)}><strong>{modality.label}</strong><small>{modality.detail}</small></button>)}</div>
+      <ElectrophysiologyProcedure modality={selected} />
       <div className="trace-workbench">
         <div className="trace-workbench-header"><span className="eyebrow">SCHEMATIC SIGNAL EXPLORER</span><EducationalTooltip term={glossary.term} text={glossary.text} /></div>
         <div className="trace-state-controls lab-option-controls" role="group" aria-label="Waveform comparison">
