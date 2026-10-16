@@ -1,5 +1,6 @@
 import { useId, useState, type KeyboardEvent } from 'react';
 import { medicalArtwork, medicalArtworkUrl } from '../../data/medicalArtwork';
+import { PhenotypeMuscleDetail } from './PhenotypeMuscleDetail';
 import './editorial-phenotype.css';
 
 export type PhenotypeRegion = 'ocular' | 'bulbar' | 'cervical' | 'proximal' | 'respiratory';
@@ -12,43 +13,43 @@ interface PhenotypeFigureProps {
 }
 
 const regions: { id: PhenotypeRegion; number: string; label: string; anatomy: string; note: string }[] = [
-  { id: 'ocular', number: '01', label: 'Ocular', anatomy: 'Extraocular muscles and eyelid', note: 'The regional marker locates the eye and eyelid. Extraocular muscles and the eyelid levator lie deeper than the surface anatomy shown.' },
-  { id: 'bulbar', number: '02', label: 'Bulbar', anatomy: 'Tongue and pharyngeal musculature', note: 'The mouth and upper-neck markers locate the region. Tongue and pharyngeal muscles are deep structures, not the superficial facial muscles displayed.' },
-  { id: 'cervical', number: '03', label: 'Cervical', anatomy: 'Anterior and posterior neck regions', note: 'Anterior neck and posterior cervical regions can be compared. The surface illustration does not expose every deep cervical flexor or extensor.' },
-  { id: 'proximal', number: '04', label: 'Proximal', anatomy: 'Shoulder, upper arm and visible thigh', note: 'Shoulder, upper-arm and visible thigh muscles orient the proximal category. Shorts cover the hip and much of the proximal thigh; those muscles are not exposed. The outlines are regional landmarks, not a map of observed injury.' },
-  { id: 'respiratory', number: '05', label: 'Respiratory', anatomy: 'Intercostal region and deep diaphragm', note: 'The thoracic regions orient the intercostal muscles. The diaphragm lies deep and is not fully exposed; no view establishes respiratory-muscle function.' },
+  { id: 'ocular', number: '01', label: 'Ocular', anatomy: 'Extraocular muscles and eyelid', note: 'The eye and eyelid outlines are surface landmarks. The detail below highlights the deeper extraocular muscles and eyelid levator.' },
+  { id: 'bulbar', number: '02', label: 'Bulbar', anatomy: 'Tongue and pharyngeal musculature', note: 'The mouth and upper-neck outlines are surface landmarks. The detail below highlights the deeper tongue and pharyngeal muscles; the superficial facial muscles are not the bulbar muscle group.' },
+  { id: 'cervical', number: '03', label: 'Cervical', anatomy: 'Anterior and posterior neck muscles', note: 'The visible neck muscles retain their color while the remaining anatomy fades. The detail below includes deeper cervical muscles that are not exposed in the full-body plate.' },
+  { id: 'proximal', number: '04', label: 'Proximal', anatomy: 'Shoulder, upper arm, hip, gluteal and thigh muscles', note: 'The exposed proximal muscle groups retain their color in the anterior, posterior and lateral views. These teaching highlights do not map observed injury in an individual patient.' },
+  { id: 'respiratory', number: '05', label: 'Respiratory', anatomy: 'Intercostal muscles and diaphragm', note: 'The thoracic outlines locate the respiratory muscle compartment. Superficial back muscles overlie the posterior intercostal region and remain subdued. The detail below highlights the intercostal muscles and the deep diaphragm; the heart is not included in this muscle group.' },
 ];
 
 const views: { id: AnatomicalView; label: string; box: string }[] = [
-  { id: 'all', label: 'All views', box: '0 0 1536 1024' },
-  { id: 'anterior', label: 'Anterior', box: '110 0 500 1024' },
-  { id: 'posterior', label: 'Posterior', box: '590 0 500 1024' },
-  { id: 'lateral', label: 'Lateral', box: '1036 0 500 1024' },
+  { id: 'all', label: 'All views', box: '0 0 1312 1199' },
+  { id: 'anterior', label: 'Anterior', box: '0 0 515 1199' },
+  { id: 'posterior', label: 'Posterior', box: '515 0 490 1199' },
+  { id: 'lateral', label: 'Lateral', box: '1014 0 298 1199' },
 ];
 
 type RegionGeometry = { highlight: string; dot: [number, number]; badge: [number, number] };
-// These regions are calibrated to the project-owned 1,536 × 1,024 three-view plate.
-// A regional outline does not imply that the depicted superficial muscle is the
-// anatomical source of ocular, bulbar or respiratory dysfunction.
+// Coordinates refer to the exact, unmodified 1,312 × 1,199 reference plate.
+// Deep ocular, bulbar and respiratory structures have separate muscle details;
+// their full-body outlines are regional landmarks, not substitute anatomy.
 const geometry: Record<IndividualView, Partial<Record<PhenotypeRegion, RegionGeometry>>> = {
   anterior: {
-    ocular: { highlight: 'M328 69 a18 12 0 1 0 36 0 a18 12 0 1 0 -36 0 M365 69 a18 12 0 1 0 36 0 a18 12 0 1 0 -36 0', dot: [346, 69], badge: [273, 46] },
-    bulbar: { highlight: 'M337 105 Q359 94 384 105 L379 132 Q361 143 341 131Z', dot: [379, 116], badge: [416, 100] },
-    cervical: { highlight: 'M328 125 L342 136 Q343 159 356 183 L340 174 Q328 154 325 138Z M391 125 L379 136 Q376 158 366 183 L382 174 Q393 153 396 138Z', dot: [332, 155], badge: [263, 143] },
-    proximal: { highlight: 'M247 187 Q220 194 217 227 L225 267 Q245 257 267 236 L279 192Z M468 188 Q497 196 506 229 L498 266 Q474 255 454 236 L443 194Z M220 267 Q212 298 217 334 L241 350 L256 307 L254 266Z M474 265 Q497 267 512 300 L509 338 L487 350 L470 306Z M255 579 L338 582 L328 652 L308 672 L274 658Z M384 581 L466 577 L453 659 L420 675 L393 649Z', dot: [236, 222], badge: [125, 207] },
-    respiratory: { highlight: 'M288 213 Q272 239 279 276 L292 312 L310 328 L320 309 Q299 292 297 266 L305 226Z M425 215 Q448 236 446 275 L434 312 L420 326 L409 309 Q428 289 429 263 L416 227Z', dot: [438, 285], badge: [539, 286] },
+    ocular: { highlight: 'M214 80 a19 12 0 1 0 38 0 a19 12 0 1 0 -38 0 M260 80 a19 12 0 1 0 38 0 a19 12 0 1 0 -38 0', dot: [233, 80], badge: [132, 51] },
+    bulbar: { highlight: 'M230 113 Q255 105 280 113 L286 142 L273 167 L241 167 L222 144Z', dot: [272, 135], badge: [327, 109] },
+    cervical: { highlight: 'M216 143 L230 154 Q232 178 247 207 L228 198 Q218 178 210 155Z M291 143 L278 154 Q276 179 262 207 L281 198 Q294 175 299 155Z', dot: [223, 180], badge: [121, 150] },
+    proximal: { highlight: 'M154 214 Q114 217 99 249 L89 300 L112 322 Q147 294 166 247Z M354 215 Q395 217 408 252 L418 300 L396 321 Q362 293 342 248Z M95 310 Q107 320 128 315 L137 359 L125 412 L106 428 L85 405 L86 357Z M383 315 Q402 324 416 312 L426 363 L424 405 L404 430 L385 413 L375 358Z M164 504 L204 521 L193 576 L213 625 L185 650 L161 600 L153 553Z M343 505 L303 522 L315 577 L294 626 L324 652 L349 601 L358 551Z M173 604 Q201 609 224 641 L222 708 L205 780 L180 798 L153 777 L151 705Z M332 605 Q305 610 284 642 L285 709 L300 781 L325 799 L350 778 L355 706Z', dot: [120, 269], badge: [17, 240] },
+    respiratory: { highlight: 'M189 236 Q168 263 169 301 Q174 334 199 358 L222 373 L230 354 Q202 336 197 307 L206 248Z M332 238 Q350 262 347 301 Q344 334 332 357 L324 370 L322 356 Q332 331 333 308 L333 283 L326 253Z', dot: [340, 306], badge: [437, 286] },
   },
   posterior: {
-    cervical: { highlight: 'M799 109 Q816 123 826 152 L826 183 L792 165 L779 178 L783 153Z M859 109 Q846 123 835 152 L835 183 L869 166 L882 179 L876 150Z', dot: [849, 147], badge: [931, 108] },
-    proximal: { highlight: 'M722 188 Q692 196 688 229 L698 268 Q721 256 743 235 L753 196Z M938 190 Q966 197 974 228 L966 266 Q944 258 923 235 L912 196Z M686 269 L715 267 L727 304 L711 350 L686 337 L675 305Z M946 267 L976 272 L992 310 L980 344 L958 350 L942 303Z M733 581 L809 583 L795 656 L768 678 L742 657Z M850 582 L925 577 L913 661 L883 681 L858 655Z', dot: [712, 223], badge: [605, 207] },
-    respiratory: { highlight: 'M735 251 Q756 266 768 294 L773 343 L755 374 L741 345 L729 287Z M923 252 Q904 265 894 294 L888 344 L903 374 L920 344 L932 286Z', dot: [913, 294], badge: [1000, 289] },
+    cervical: { highlight: 'M700 138 Q712 145 724 165 L730 199 L685 222 L670 213 L698 184Z M773 138 Q762 146 750 166 L744 199 L788 222 L805 213 L777 184Z', dot: [760, 178], badge: [831, 146] },
+    proximal: { highlight: 'M643 215 Q603 216 587 251 L578 295 L600 316 Q636 295 654 253Z M828 215 Q870 219 884 253 L893 296 L871 315 Q839 295 817 253Z M582 308 L603 313 L617 353 L604 415 L585 435 L566 413 L567 358Z M869 313 L891 309 L904 361 L903 414 L884 436 L864 416 L854 354Z M670 500 Q698 497 729 533 L729 591 Q714 627 673 640 L644 627 L640 582Z M801 500 Q775 498 744 533 L744 591 Q760 627 801 640 L831 627 L833 581Z M651 630 Q685 647 723 614 L724 703 L708 782 L686 803 L658 782 L639 704Z M819 630 Q787 649 748 615 L747 704 L764 783 L787 803 L814 781 L832 704Z', dot: [607, 267], badge: [520, 238] },
+    respiratory: { highlight: 'M640 286 Q658 309 674 341 L679 390 L665 414 L646 390 L630 335Z M833 286 Q815 308 799 341 L794 389 L809 413 L828 389 L844 336Z', dot: [824, 352], badge: [928, 329] },
   },
   lateral: {
-    ocular: { highlight: 'M1309 70 a17 12 0 1 0 34 0 a17 12 0 1 0 -34 0', dot: [1326, 70], badge: [1401, 47] },
-    bulbar: { highlight: 'M1301 105 Q1319 103 1336 111 L1331 136 L1308 148 L1296 132Z', dot: [1330, 119], badge: [1394, 109] },
-    cervical: { highlight: 'M1269 111 Q1270 143 1293 173 L1282 184 Q1256 153 1251 120Z M1304 137 L1317 155 L1319 177 L1304 172Z', dot: [1271, 145], badge: [1120, 124] },
-    proximal: { highlight: 'M1223 179 Q1200 183 1197 217 L1208 255 Q1229 259 1250 240 L1272 198 L1250 182Z M1215 264 Q1230 275 1253 268 L1277 309 L1273 340 L1252 357 L1229 323Z M1247 577 L1334 576 Q1339 614 1313 657 L1291 682 L1258 663Z', dot: [1220, 218], badge: [1098, 210] },
-    respiratory: { highlight: 'M1302 210 Q1334 231 1346 264 L1346 305 L1329 337 L1316 317 Q1330 289 1325 267 L1294 237Z', dot: [1336, 279], badge: [1402, 273] },
+    ocular: { highlight: 'M1194 79 a15 12 0 1 0 30 0 a15 12 0 1 0 -30 0', dot: [1210, 79], badge: [1251, 47] },
+    bulbar: { highlight: 'M1184 110 L1224 113 L1211 137 L1193 161 L1178 145Z', dot: [1204, 132], badge: [1250, 116] },
+    cervical: { highlight: 'M1120 137 L1140 145 Q1138 170 1165 199 L1143 210 Q1123 180 1111 154Z M1186 151 L1203 164 L1194 203 L1176 193Z', dot: [1134, 176], badge: [1022, 147] },
+    proximal: { highlight: 'M1111 207 Q1079 213 1072 245 L1074 292 L1095 319 Q1128 306 1141 272 L1139 232Z M1081 316 Q1104 327 1123 309 L1138 360 L1137 413 L1122 443 L1096 424 L1080 370Z M1094 514 L1125 538 L1134 580 L1126 620 L1096 643 L1063 622 L1055 572 L1067 540Z M1134 607 L1170 622 L1207 646 L1215 707 L1191 777 L1167 812 L1145 792 L1134 736 L1139 675 L1121 642Z', dot: [1095, 265], badge: [1020, 235] },
+    respiratory: { highlight: 'M1149 241 Q1186 259 1204 293 L1217 345 L1207 397 L1187 419 L1175 395 Q1187 358 1178 328 L1146 285Z', dot: [1202, 333], badge: [1250, 312] },
   },
 };
 
@@ -59,6 +60,14 @@ export function PhenotypeFigure({ selected, onSelect }: PhenotypeFigureProps) {
   const region = regions.find((item) => item.id === selected)!;
   const activeView = views.find((item) => item.id === view)!;
   const visibleViews: IndividualView[] = view === 'all' ? ['anterior', 'posterior', 'lateral'] : [view];
+  const selectedShapes = visibleViews.flatMap(orientation => {
+    // The posterior plate exposes back muscles over the ribs. Keep them subdued
+    // rather than restoring them as a substitute for deeper intercostal anatomy.
+    if (selected === 'respiratory' && orientation === 'posterior') return [];
+    const shape = geometry[orientation][selected];
+    return shape ? [{ ...shape, orientation }] : [];
+  });
+  const clipId = `${id}-selected-muscles`;
   const selectRegion = (target: PhenotypeRegion) => {
     if (view === 'posterior' && (target === 'ocular' || target === 'bulbar')) setView('anterior');
     onSelect(target);
@@ -75,10 +84,16 @@ export function PhenotypeFigure({ selected, onSelect }: PhenotypeFigureProps) {
       {views.map(item => <button key={item.id} type="button" aria-pressed={view === item.id} onClick={() => setView(item.id)}>{item.label}</button>)}
     </div>
     <div className={`editorial-phenotype-art${view === 'all' ? ' is-all-views' : ' is-single-view'}`} data-phenotype-view={view}>
-      <svg className="phenotype-anatomical-overlay" viewBox={activeView.box} role="group" aria-label="Select anatomical regions">
+      <svg className="phenotype-anatomical-overlay" viewBox={activeView.box} role="group" aria-label="Select anatomical regions" data-selected-muscles={selected}>
         <title>{activeView.label}: regional skeletal-muscle anatomy</title>
-        <desc>Original pastel medical illustration with anterior, posterior and right lateral views. Select the numbered region markers or use the clinical-region controls below. Deep structures are described separately.</desc>
-        <image href={medicalArtworkUrl('clinical-distribution')} width="1536" height="1024" data-medical-artwork="clinical-distribution" role="img" aria-label={medicalArtwork['clinical-distribution'].alt} />
+        <desc>The supplied anatomical reference is shown without changes, with anterior, posterior and right lateral views. The selected muscle region retains its original color while surrounding anatomy is slightly transparent. Eye, mouth and thoracic outlines locate surface landmarks; the detail below shows the corresponding deeper muscles.</desc>
+        <defs>
+          <clipPath id={clipId} clipPathUnits="userSpaceOnUse" data-muscle-clip={selected}>
+            {selectedShapes.map(shape => <path key={shape.orientation} data-anatomical-view={shape.orientation} d={shape.highlight} />)}
+          </clipPath>
+        </defs>
+        <image className="phenotype-context-art" href={medicalArtworkUrl('clinical-distribution')} width="1312" height="1199" data-medical-artwork="clinical-distribution" role="img" aria-label={medicalArtwork['clinical-distribution'].alt} />
+        <image className="phenotype-focused-art" href={medicalArtworkUrl('clinical-distribution')} width="1312" height="1199" clipPath={`url(#${clipId})`} aria-hidden="true" />
         {regions.map(item => {
           const shapes = visibleViews.flatMap(orientation => {
             const shape = geometry[orientation][item.id];
@@ -107,6 +122,7 @@ export function PhenotypeFigure({ selected, onSelect }: PhenotypeFigureProps) {
       </button>)}
     </div>
     <p className="editorial-phenotype-selection" aria-live="polite"><strong>{region.label}:</strong> {region.anatomy}. {region.note} {view === 'posterior' && (selected === 'ocular' || selected === 'bulbar') ? 'This region is not visible from behind; choose the anterior or lateral view to locate it. ' : ''}{view === 'posterior' && selected === 'respiratory' ? 'The posterior outline locates the thorax; superficial back muscles overlie the intercostal compartment. ' : ''}Select a region to read its clinical manifestations and mechanistic limits.</p>
+    <PhenotypeMuscleDetail selected={selected} />
     <p className="editorial-phenotype-heart-note">The anterior thoracic window shows cardiac context. The heart is separate from the five clinical muscle-distribution categories.</p>
   </div>;
 }

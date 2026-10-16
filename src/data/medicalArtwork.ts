@@ -1,4 +1,4 @@
-/** Original editorial 2D raster artwork. SVG annotations are separate, editable layers.
+/** Editorial 2D raster artwork. SVG annotations are separate, editable layers.
  * Shared base plates keep anatomy consistent between conceptual states/methods.
  */
 export const medicalArtwork = {
@@ -11,7 +11,7 @@ export const medicalArtwork = {
   'nmj-normal': { file: 'nmj-reference.webp', alt: 'Pastel 2D motor axon and lavender nerve terminal with acetylcholine vesicles, mitochondria and calcium channels, a basal-lamina mesh, blue crest receptors and a folded pink muscle endplate above striated myofibrils.', width: 1536, height: 1024 },
   'nmj-impaired': { file: 'nmj-reference.webp', alt: 'Shared pastel endplate anatomy with a separate conceptual reduced-activation overlay; it does not assign a mechanism to a patient.', width: 1536, height: 1024 },
   'nmj-muscle-injury': { file: 'nmj-reference.webp', alt: 'Shared pastel synaptic anatomy with a separate focal downstream muscle-injury annotation; functional transmission remains unresolved.', width: 1536, height: 1024 },
-  'clinical-distribution': { file: 'clinical-three-view.webp', alt: 'Pastel 2D male muscle atlas in anterior, posterior and right lateral views, with covered pelvis, superficial face and neck muscles, limbs and an anterior rib-cage window showing cardiac context.', width: 1536, height: 1024 },
+  'clinical-distribution': { file: 'clinical-reference.png', alt: 'User-supplied anatomical muscle atlas in anterior, posterior and right lateral views, showing face, neck, trunk, shoulder, hip, gluteal and limb anatomy without clothing, with an anterior cardiac window.', width: 1312, height: 1199 },
   'antibody-binding': { file: 'antibody-binding.webp', alt: 'Editorial immunoglobulin with paired Fab arms and Fc stem binding a generic membrane antigen, separate from evidence of synaptic function.', width: 1536, height: 1024 },
   'rns-procedure': { file: 'motor-unit.webp', alt: 'Editorial motor-unit anatomy: one motor axon branches to endplates on three striated skeletal-muscle fibers. Surface RNS sampling is explained in the adjacent diagram.', width: 1536, height: 1024 },
   'sfemg-procedure': { file: 'motor-unit.webp', alt: 'Editorial motor-unit anatomy: one axon innervates different muscle fibers through separate endplates. Intramuscular single-fiber sampling is shown separately.', width: 1536, height: 1024 },

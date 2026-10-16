@@ -1,5 +1,7 @@
 # NMJ and clinical phenotype reference refresh
 
+The clinical figure described in this historical delivery has since been replaced by the exact user-supplied image and selective muscle focus. See [the current clinical-figure implementation](CLINICAL_MUSCLE_FOCUS.md). The NMJ delivery below is unchanged.
+
 The supplied references have been recreated as two original pastel editorial 2D plates and integrated into the existing interactive page.
 
 ## Delivered artwork and coverage

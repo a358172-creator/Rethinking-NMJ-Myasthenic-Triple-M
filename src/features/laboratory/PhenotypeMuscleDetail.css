@@ -1,0 +1,220 @@
+.phenotype-muscle-detail {
+  margin: 1rem 0;
+  padding: 1rem 1.15rem;
+  border: 1px solid #bfd2ce;
+  border-radius: 8px;
+  background: #f8faf7;
+  color: #263e40;
+}
+
+.phenotype-muscle-detail-heading h4 {
+  margin: 0;
+  color: #244b4e;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.phenotype-muscle-detail-heading > p,
+.phenotype-muscle-detail-note,
+.phenotype-muscle-detail-sources {
+  margin: .4rem 0 0;
+  color: #4d6264;
+  font-size: .78rem;
+  line-height: 1.55;
+}
+
+.phenotype-muscle-detail-body {
+  margin: .6rem 0;
+}
+
+.phenotype-muscle-detail.has-inset .phenotype-muscle-detail-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+}
+
+.phenotype-muscle-detail-drawing {
+  display: block;
+  width: 100%;
+  max-height: 300px;
+  overflow: visible;
+}
+
+.phenotype-muscle-detail-drawing path,
+.phenotype-muscle-detail-drawing circle {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.phenotype-muscle-detail-context {
+  opacity: .4;
+}
+
+.phenotype-muscle-detail-tissue {
+  fill: #eee2d4;
+  stroke: #948579;
+  stroke-width: 1.3;
+}
+
+.phenotype-muscle-detail-bone,
+.phenotype-muscle-detail-rib {
+  fill: #f3e8d1;
+  stroke: #9d9685;
+  stroke-width: 1.1;
+}
+
+.phenotype-muscle-detail-rib {
+  fill: none;
+  stroke: #c5bdaa;
+  stroke-width: 6;
+}
+
+.phenotype-muscle-detail-globe,
+.phenotype-muscle-detail-airway {
+  fill: #fffef9;
+  stroke: #819293;
+  stroke-width: 1.3;
+}
+
+.phenotype-muscle-detail-cornea,
+.phenotype-muscle-detail-lung {
+  fill: #c6dce0;
+  stroke: #739197;
+  stroke-width: 1.3;
+}
+
+.phenotype-muscle-detail-cartilage {
+  fill: #d5e0d5;
+  stroke: #7b928c;
+  stroke-width: 1.2;
+}
+
+.phenotype-muscle-detail-context-line {
+  fill: none;
+  stroke: #7f9294;
+  stroke-width: 1.5;
+}
+
+.phenotype-muscle-detail-selected {
+  fill: #df9e95;
+  stroke: #526f6d;
+  stroke-width: 1.4;
+}
+
+.phenotype-muscle-detail-selected--secondary {
+  fill: #b7d5ce;
+  stroke: #3e7473;
+}
+
+.phenotype-muscle-detail-fibers {
+  fill: none;
+  stroke: #9d635d;
+  stroke-width: .8;
+  opacity: .65;
+}
+
+.phenotype-muscle-detail-tendon,
+.phenotype-muscle-detail-trochlea {
+  fill: #faf3df;
+  stroke: #7a8d87;
+  stroke-width: 1;
+}
+
+.phenotype-muscle-detail-hidden-muscle {
+  fill: none;
+  stroke: #b16c67;
+  stroke-width: 3;
+  stroke-dasharray: 5 4;
+}
+
+.phenotype-muscle-detail-marker circle {
+  fill: #244f53;
+  stroke: #fffdf6;
+  stroke-width: 1.2;
+}
+
+.phenotype-muscle-detail-marker text {
+  fill: #fff;
+  font-family: var(--font-sans, Arial, sans-serif);
+  font-size: 24px;
+  font-weight: 600;
+  stroke: none;
+}
+
+.phenotype-muscle-detail-key {
+  display: grid;
+  gap: .75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.phenotype-muscle-detail-key li {
+  display: flex;
+  align-items: flex-start;
+  gap: .55rem;
+  min-width: 0;
+  font-size: .83rem;
+  line-height: 1.45;
+}
+
+.phenotype-muscle-detail-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 1.5rem;
+  height: 1.5rem;
+  margin-top: .05rem;
+  border: 1px solid #afc5c1;
+  border-radius: 50%;
+  color: #244f53;
+  font-size: .78rem;
+  font-weight: 600;
+}
+
+.phenotype-muscle-detail-key strong {
+  color: #294e50;
+  font-weight: 600;
+}
+
+.phenotype-muscle-detail-key p {
+  margin: .15rem 0 0;
+  color: #4b6062;
+  font-size: .78rem;
+  line-height: 1.5;
+}
+
+.phenotype-muscle-detail-sources {
+  margin-top: .6rem;
+  font-size: .72rem;
+}
+
+.phenotype-muscle-detail-sources a {
+  color: #285e64;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.phenotype-muscle-detail-sources a:focus-visible {
+  outline: 2px solid #285e64;
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .phenotype-muscle-detail {
+    padding: .9rem;
+  }
+
+  .phenotype-muscle-detail.has-inset .phenotype-muscle-detail-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: .6rem;
+  }
+
+  .phenotype-muscle-detail-drawing {
+    max-height: 270px;
+  }
+}

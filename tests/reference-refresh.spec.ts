@@ -1,7 +1,9 @@
-import { mkdir } from 'node:fs/promises';
+import { mkdir, readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { expect, test, type Locator, type Page, type TestInfo } from '@playwright/test';
 
-const artifactDirectory = '.artifacts/nmj-phenotype-refresh/screenshots';
+const artifactDirectory = '.artifacts/clinical-muscle-focus/screenshots';
+const clinicalReferencePath = resolve('src/components/figures/dd3e741a-7cb3-4b7c-8ee7-a003a2bc1036.png');
 const clinicalRegions = ['ocular', 'bulbar', 'cervical', 'proximal', 'respiratory'] as const;
 const anatomicalViews = ['All views', 'Anterior', 'Posterior', 'Lateral'] as const;
 
@@ -35,7 +37,7 @@ async function checkClinicalArtwork(figure: Locator, expectedSource?: string) {
   await expect(image).toHaveCount(1);
   await expect(image).toHaveAttribute('role', 'img');
   await expect(image).toHaveAttribute('aria-label', /.+/);
-  await expect(image).toHaveAttribute('href', /\/media\/editorial\/clinical-three-view\.webp$/);
+  await expect(image).toHaveAttribute('href', /\/media\/editorial\/clinical-reference\.png$/);
   const source = (await image.getAttribute('href'))!;
   if (expectedSource) expect(source, 'Changing anatomical views must preserve the same original plate').toBe(expectedSource);
   const decoded = await image.evaluate(async element => {
@@ -44,8 +46,13 @@ async function checkClinicalArtwork(figure: Locator, expectedSource?: string) {
     await artwork.decode();
     return { width: artwork.naturalWidth, height: artwork.naturalHeight };
   });
-  expect(decoded.width).toBeGreaterThanOrEqual(1024);
-  expect(decoded.height).toBeGreaterThanOrEqual(1024);
+  expect(decoded).toEqual({ width: 1312, height: 1199 });
+  if (!expectedSource) {
+    const response = await figure.page().request.get(new URL(source, figure.page().url()).href);
+    expect(response.ok(), 'The provided clinical plate must be available at the publication base path').toBe(true);
+    const servedPlate = await response.body();
+    expect(servedPlate.equals(await readFile(clinicalReferencePath)), 'The served plate must match the attached PNG byte for byte, preserving all three unclothed anatomical views').toBe(true);
+  }
   return source;
 }
 
@@ -148,6 +155,8 @@ for (const width of [1440, 768, 390]) {
       await expect(clinical.getByRole('button', { name: `Select ${region} anatomy`, exact: true })).toHaveAttribute('aria-pressed', 'true');
       await expect(clinical.locator('.phenotype-anatomical-target[aria-pressed="true"]')).toHaveCount(1);
       await expect(clinical.locator('image[data-medical-artwork="clinical-distribution"]')).toHaveAttribute('href', originalClinicalSource);
+      await expect(clinical.locator('.phenotype-anatomical-overlay')).toHaveAttribute('data-selected-muscles', region);
+      await capture(page, clinical, `clinical-muscle-${region}`, width, testInfo);
     }
     // Cervical anatomy is visible in all three orientations, so every captured
     // view retains a visible highlight for the same selected clinical category.

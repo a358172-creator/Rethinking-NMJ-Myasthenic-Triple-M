@@ -64,6 +64,64 @@ async function checkMedicalArtwork(image: Locator) {
   expect(source.pathname.startsWith(`${appPath}media/editorial/`), 'Artwork must respect the app publication base path').toBe(true);
 }
 
+async function checkSelectedMuscleFocus(figure: Locator, selected: string) {
+  const anatomy = figure.locator('.phenotype-anatomical-overlay');
+  const base = anatomy.locator('image[data-medical-artwork="clinical-distribution"]');
+  const focus = anatomy.locator('.phenotype-focused-art');
+  await expect(anatomy).toHaveAttribute('data-selected-muscles', selected);
+  await expect(focus).toHaveCount(1);
+  await expect(focus).toHaveAttribute('aria-hidden', 'true');
+  await expect(focus).toHaveAttribute('href', (await base.getAttribute('href'))!);
+  const detail = await focus.evaluate(element => {
+    const clipped = element.closest('[clip-path]');
+    const reference = clipped?.getAttribute('clip-path')?.match(/^url\(#(.+)\)$/)?.[1];
+    const clip = reference ? document.getElementById(reference) : null;
+    const source = element.closest('svg')?.querySelector('.phenotype-context-art');
+    return {
+      reference,
+      clipTag: clip?.tagName,
+      selected: clip?.getAttribute('data-muscle-clip'),
+      paths: [...(clip?.querySelectorAll('path') ?? [])].map(path => path.getAttribute('d') || '').filter(Boolean),
+      focusOpacity: Number(getComputedStyle(element).opacity),
+      surroundingOpacity: source ? Number(getComputedStyle(source).opacity) : 1,
+    };
+  });
+  expect(detail.reference, 'Selected muscle detail must be clipped to a real anatomical mask').toBeTruthy();
+  expect(detail.clipTag).toBe('clipPath');
+  expect(detail.selected).toBe(selected);
+  expect(detail.paths.length, `${selected} must reveal selected anatomy`).toBeGreaterThan(0);
+  expect(detail.surroundingOpacity, 'Other muscles must remain visible with reduced opacity').toBeGreaterThan(0);
+  expect(detail.surroundingOpacity).toBeLessThan(1);
+  expect(detail.focusOpacity, 'Selected muscle detail must retain full opacity').toBe(1);
+  return JSON.stringify(detail.paths);
+}
+
+async function checkSelectedMuscleDetail(figure: Locator, selected: string) {
+  const detail = figure.locator(`[data-deep-anatomy="${selected}"]`);
+  await expect(figure.locator('[data-deep-anatomy]')).toHaveCount(1);
+  await expect(detail).toBeVisible();
+  const insetLabels: Record<string, readonly string[]> = {
+    ocular: ['Rectus muscles', 'Oblique muscles', 'Levator palpebrae superioris'],
+    bulbar: ['Tongue muscles', 'Soft-palate muscles', 'Pharyngeal constrictors'],
+    respiratory: ['Diaphragm', 'Intercostal muscles'],
+  };
+  const labels = insetLabels[selected];
+  await expect(detail.getByRole('img')).toHaveCount(labels ? 1 : 0);
+  if (!labels) return;
+  await expect(detail.getByRole('img')).toHaveAccessibleName(/selected muscles highlighted/i);
+  for (const label of labels) await expect(detail.getByText(label, { exact: true })).toBeVisible();
+  const highlightedMuscles = detail.locator('[data-highlighted-muscle]');
+  await expect(highlightedMuscles).toHaveCount(labels.length);
+  for (const muscle of await highlightedMuscles.all()) {
+    expect(await muscle.locator('path[d]').count(), 'A named deep muscle group must have actual highlighted anatomy').toBeGreaterThan(0);
+    expect(await muscle.evaluate(element => Number(getComputedStyle(element).opacity))).toBe(1);
+  }
+  for (const context of await detail.locator('.phenotype-muscle-detail-context').all()) {
+    expect(await context.evaluate(element => Number(getComputedStyle(element).opacity)), 'Deep muscle insets must also subdue surrounding anatomy').toBeLessThan(1);
+  }
+  if (selected === 'bulbar') await expect(detail).toContainText(/deep muscles are distinct from the superficial facial muscles/i);
+}
+
 async function waveformPaths(page: Page) {
   return laboratory(page).locator('.electrophysiology-svg path[d]').evaluateAll((paths) => paths.map((path) => path.getAttribute('d')));
 }
@@ -135,6 +193,7 @@ test('all five clinical selections synchronize anatomy, manifestations, mechanis
   await expect(targets).toHaveCount(5);
   const panel = interpretation(page);
   await checkMedicalArtwork(laboratory(page).locator('image[data-medical-artwork="clinical-distribution"]'));
+  const muscleMasks: string[] = [];
   for (const region of phenotypeRegions) {
     await controls.getByRole('button', { name: `Select ${region.id} region`, exact: true }).click();
     await checkPressed(controls, labels, `Select ${region.id} region`);
@@ -146,8 +205,11 @@ test('all five clinical selections synchronize anatomy, manifestations, mechanis
     await expect(panel.locator('dd').nth(2)).toHaveText(region.nmjMechanism);
     await expect(panel.locator('dd').nth(3)).toHaveText(region.boundary);
     await expect(laboratory(page).locator('.phenotype-anatomical-target[aria-pressed="true"]')).toHaveCount(1);
+    muscleMasks.push(await checkSelectedMuscleFocus(laboratory(page), region.id));
+    await checkSelectedMuscleDetail(laboratory(page), region.id);
     await checkEvidence(panel);
   }
+  expect(new Set(muscleMasks).size, 'Each clinical category must reveal different muscles while dimming the rest').toBe(5);
 });
 
 test('clinical anatomy supports mouse, Enter and Space with visible keyboard focus', async ({ page }) => {
@@ -158,6 +220,7 @@ test('clinical anatomy supports mouse, Enter and Space with visible keyboard foc
     expect(await target.evaluate((element) => ({ tag: element.tagName.toLowerCase(), tabIndex: element.getAttribute('tabindex') }))).toEqual({ tag: 'g', tabIndex: '0' });
     await target.locator('.phenotype-anatomical-dot').click();
     await expect(controls.getByRole('button', { name: `Select ${region.id} region`, exact: true })).toHaveAttribute('aria-pressed', 'true');
+    const clickedMuscles = await checkSelectedMuscleFocus(lab, region.id);
     for (const key of ['Enter', 'Space']) {
       const other = phenotypeRegions.find((candidate) => candidate.id !== region.id)!;
       await controls.getByRole('button', { name: `Select ${other.id} region`, exact: true }).click();
@@ -171,6 +234,7 @@ test('clinical anatomy supports mouse, Enter and Space with visible keyboard foc
       await target.press(key);
       await expect(target).toHaveAttribute('aria-pressed', 'true');
       await expect(controls.getByRole('button', { name: `Select ${region.id} region`, exact: true })).toHaveAttribute('aria-pressed', 'true');
+      expect(await checkSelectedMuscleFocus(lab, region.id), 'Keyboard activation must reveal the same muscles as mouse activation').toBe(clickedMuscles);
     }
   }
 });
@@ -205,6 +269,35 @@ test('clinical views preserve region selection and localize hidden anterior regi
   await regions.getByRole('button', { name: 'Select bulbar region', exact: true }).click();
   await expect(frame).toHaveAttribute('data-phenotype-view', 'anterior');
   await expect(lab.locator('.phenotype-anatomical-target')).toHaveCount(5);
+
+  await regions.getByRole('button', { name: 'Select respiratory region', exact: true }).click();
+  await views.getByRole('button', { name: 'All views', exact: true }).click();
+  const respiratoryMask = lab.locator('clipPath[data-muscle-clip="respiratory"]');
+  const restoredAnatomy = await respiratoryMask.evaluate(element => {
+    const paths = [...element.querySelectorAll('path')];
+    const includes = (x: number, y: number) => paths.some(path => path.isPointInFill(new DOMPoint(x, y)));
+    return {
+      heartCenter: includes(287, 320),
+      heartMargin: includes(310, 337),
+      superficialBack: includes(650, 352),
+      rightIntercostalRegion: includes(337, 300),
+    };
+  });
+  expect(restoredAnatomy, 'Respiratory focus must preserve the intercostal region without restoring cardiac or superficial back muscles').toEqual({
+    heartCenter: false,
+    heartMargin: false,
+    superficialBack: false,
+    rightIntercostalRegion: true,
+  });
+  await expect(lab.locator('.editorial-phenotype-selection')).toContainText(/superficial back muscles/i);
+  await checkSelectedMuscleDetail(lab, 'respiratory');
+
+  await views.getByRole('button', { name: 'Posterior', exact: true }).click();
+  await expect(lab.locator('.phenotype-anatomical-target')).toHaveCount(3);
+  await expect(lab.getByRole('button', { name: 'Select respiratory anatomy', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(respiratoryMask.locator('path')).toHaveCount(0);
+  await expect(lab.locator('.editorial-phenotype-selection')).toContainText(/superficial back muscles.*intercostal compartment/i);
+  await checkSelectedMuscleDetail(lab, 'respiratory');
 });
 
 test('serology preserves the evaluated denominator and distinguishes missing paired physiology', async ({ page }) => {
@@ -501,7 +594,11 @@ test('all four laboratory views and abnormal signal states satisfy automated WCA
     const result = await new AxeBuilder({ page }).include('#laboratory').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
     expect(result.violations, `${name} accessibility violations`).toEqual([]);
   };
-  await audit('Clinical phenotype');
+  const clinicalRegions = laboratory(page).getByRole('group', { name: 'Clinical muscle regions', exact: true });
+  for (const region of phenotypeRegions) {
+    await clinicalRegions.getByRole('button', { name: `Select ${region.id} region`, exact: true }).click();
+    await audit(`Clinical phenotype: ${region.label}`);
+  }
   await selectView(page, 'Serological evidence');
   await audit('Serological evidence');
   await laboratory(page).getByText('Compare with normal NMJ anatomy', { exact: true }).click();
