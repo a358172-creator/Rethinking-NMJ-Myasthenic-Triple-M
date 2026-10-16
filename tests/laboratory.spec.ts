@@ -49,11 +49,17 @@ async function checkEvidence(panel: Locator) {
 async function checkMedicalArtwork(image: Locator) {
   await expect(image).toBeVisible();
   await image.scrollIntoViewIfNeeded();
-  await expect(image).toHaveAttribute('alt', /.+/);
-  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete), { message: 'Editorial artwork must finish loading' }).toBe(true);
-  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.naturalWidth), { message: 'Editorial artwork must have at least 1,024 pixels of source detail' }).toBeGreaterThanOrEqual(1024);
-  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.naturalHeight)).toBeGreaterThanOrEqual(1024);
-  const source = new URL((await image.getAttribute('src'))!, image.page().url());
+  const isSvg = await image.evaluate(element => element instanceof SVGImageElement);
+  await expect(image).toHaveAttribute(isSvg ? 'aria-label' : 'alt', /.+/);
+  const dimensions = await image.evaluate(async element => {
+    const picture = element instanceof HTMLImageElement ? element : new Image();
+    if (element instanceof SVGImageElement) picture.src = element.href.baseVal;
+    await picture.decode();
+    return { width: picture.naturalWidth, height: picture.naturalHeight };
+  });
+  expect(dimensions.width, 'Editorial artwork must have at least 1,024 pixels of source detail').toBeGreaterThanOrEqual(1024);
+  expect(dimensions.height).toBeGreaterThanOrEqual(1024);
+  const source = new URL((await image.getAttribute(isSvg ? 'href' : 'src'))!, image.page().url());
   const appPath = new URL(image.page().url()).pathname;
   expect(source.pathname.startsWith(`${appPath}media/editorial/`), 'Artwork must respect the app publication base path').toBe(true);
 }
@@ -128,7 +134,7 @@ test('all five clinical selections synchronize anatomy, manifestations, mechanis
   await expect(controls.getByRole('button')).toHaveCount(5);
   await expect(targets).toHaveCount(5);
   const panel = interpretation(page);
-  await checkMedicalArtwork(laboratory(page).locator('img[data-medical-artwork="clinical-distribution"]'));
+  await checkMedicalArtwork(laboratory(page).locator('image[data-medical-artwork="clinical-distribution"]'));
   for (const region of phenotypeRegions) {
     await controls.getByRole('button', { name: `Select ${region.id} region`, exact: true }).click();
     await checkPressed(controls, labels, `Select ${region.id} region`);
@@ -167,6 +173,38 @@ test('clinical anatomy supports mouse, Enter and Space with visible keyboard foc
       await expect(controls.getByRole('button', { name: `Select ${region.id} region`, exact: true })).toHaveAttribute('aria-pressed', 'true');
     }
   }
+});
+
+test('clinical views preserve region selection and localize hidden anterior regions without posterior substitutes', async ({ page }, testInfo) => {
+  const lab = laboratory(page);
+  const views = lab.getByRole('group', { name: 'Anatomical views', exact: true });
+  const regions = lab.getByRole('group', { name: 'Clinical muscle regions', exact: true });
+  const frame = lab.locator('[data-phenotype-view]');
+  await expect(frame).toHaveAttribute('data-phenotype-view', testInfo.project.name === 'mobile' ? 'anterior' : 'all');
+  await regions.getByRole('button', { name: 'Select proximal region', exact: true }).click();
+  for (const [name, value] of [['All views', 'all'], ['Anterior', 'anterior'], ['Posterior', 'posterior'], ['Lateral', 'lateral']]) {
+    const button = views.getByRole('button', { name, exact: true });
+    await button.focus();
+    await button.press('Enter');
+    await expect(button).toHaveAttribute('aria-pressed', 'true');
+    await expect(views.locator('[aria-pressed="true"]')).toHaveCount(1);
+    await expect(frame).toHaveAttribute('data-phenotype-view', value);
+    await expect(regions.getByRole('button', { name: 'Select proximal region', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await expect(lab.getByRole('button', { name: 'Select proximal anatomy', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await expect(interpretation(page).getByRole('heading', { name: phenotypeRegions.find(region => region.id === 'proximal')!.label, exact: true })).toBeVisible();
+    expect(await frame.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
+  }
+  await views.getByRole('button', { name: 'Posterior', exact: true }).click();
+  await expect(lab.locator('.phenotype-anatomical-target')).toHaveCount(3);
+  await expect(lab.getByRole('button', { name: 'Select ocular anatomy', exact: true })).toHaveCount(0);
+  await regions.getByRole('button', { name: 'Select ocular region', exact: true }).click();
+  await expect(frame).toHaveAttribute('data-phenotype-view', 'anterior');
+  await expect(lab.getByRole('button', { name: 'Select ocular anatomy', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await views.getByRole('button', { name: 'Posterior', exact: true }).click();
+  await expect(lab.locator('.editorial-phenotype-selection')).toContainText('not visible from behind');
+  await regions.getByRole('button', { name: 'Select bulbar region', exact: true }).click();
+  await expect(frame).toHaveAttribute('data-phenotype-view', 'anterior');
+  await expect(lab.locator('.phenotype-anatomical-target')).toHaveCount(5);
 });
 
 test('serology preserves the evaluated denominator and distinguishes missing paired physiology', async ({ page }) => {

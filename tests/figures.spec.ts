@@ -26,7 +26,7 @@ test('editorial mechanism figures preserve equivalent artwork frames and readabl
       expect(await panel.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
     }
     await expect(figure.locator('.mechanism-artwork-reading-key').first()).toContainText('synaptic cleft');
-    await expect(figure.locator('.mechanism-artwork-reading-key').first()).toContainText('AChE symbols');
+    await expect(figure.locator('.mechanism-artwork-reading-key').first()).toContainText('basal-lamina');
     await expect(figure.locator('.mechanism-artwork-reading-key').last()).toContainText('sarcolemma');
     const canvases = await figure.locator('.mechanism-figure-artwork img').evaluateAll(images => images.map(image => {
       const bounds = image.getBoundingClientRect();

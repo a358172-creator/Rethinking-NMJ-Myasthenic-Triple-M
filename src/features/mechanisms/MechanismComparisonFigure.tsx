@@ -26,7 +26,7 @@ export function MechanismComparisonFigure({ focus }: Props) {
         <div className="mechanism-figure-artwork">
           <NeuromuscularJunction className="mechanism-figure-svg" state={focus === 'muscle' ? 'normal' : 'transmission-impaired'} showLabels={false} />
         </div>
-        <p className="mechanism-artwork-reading-key">Nerve terminal · synaptic cleft · postsynaptic receptors · muscle membrane. Orange dots: ACh; violet extracellular clusters: AChE symbols. Conceptual transmission model.</p>
+        <p className="mechanism-artwork-reading-key">Nerve terminal · synaptic cleft · postsynaptic receptors · muscle membrane. Orange dots: ACh; the fine basal-lamina network marks the extracellular location of AChE. Conceptual transmission model.</p>
         <p className="mechanism-figure-evaluation">Physiological evaluation: RNS / SFEMG</p>
         <div className="sfn-metric mechanism-figure-metric">
           <strong className="sfn-metric-value">{frozenStudy.formalNmj.abnormal}</strong>

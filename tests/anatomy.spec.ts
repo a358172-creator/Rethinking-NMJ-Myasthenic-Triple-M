@@ -9,6 +9,7 @@ async function artwork(container: Locator, id: string) {
   const source = await image.getAttribute('src');
   const basePath = new URL('.', container.page().url()).pathname;
   expect(source).toMatch(/\/media\/editorial\/[^/?#]+\.webp$/);
+  if (id.startsWith('nmj-')) expect(source).toMatch(/\/nmj-reference\.webp$/);
   expect(new URL(source!, container.page().url()).pathname.startsWith(`${basePath}media/editorial/`)).toBe(true);
   await expect.poll(() => image.evaluate(element => {
     const picture = element as HTMLImageElement;

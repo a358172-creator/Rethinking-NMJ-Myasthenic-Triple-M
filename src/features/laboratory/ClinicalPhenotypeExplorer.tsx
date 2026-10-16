@@ -16,7 +16,7 @@ export function ClinicalPhenotypeExplorer() {
     <section className="lab-view" aria-labelledby="phenotype-title">
       <div className="lab-view-heading"><h3 id="phenotype-title">{laboratoryUi.phenotype.title}</h3><p>{laboratoryUi.phenotype.summary}</p></div>
       <div className="laboratory-split phenotype-split">
-        <figure className="phenotype-illustration"><PhenotypeFigure selected={selected} onSelect={setSelected} /><figcaption>Conceptual muscle atlas, not a patient portrait. The regional distribution illustrates clinical manifestations; it does not establish their mechanism. Not to scale.</figcaption></figure>
+        <figure className="phenotype-illustration"><PhenotypeFigure selected={selected} onSelect={setSelected} /><figcaption>Conceptual muscle atlas with anterior, posterior and right lateral views. The regional distribution illustrates clinical manifestations; it does not establish their mechanism or depict an individual patient. Not to scale.</figcaption></figure>
         <ScientificResultPanel title={region.label} eyebrow="CLINICAL DISTRIBUTION" items={[
           { label: 'Clinical manifestations', text: region.manifestations.join(' · ') },
           { label: 'Possible muscle mechanism', text: region.muscleMechanism },

@@ -1,14 +1,16 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import { dirname } from 'node:path';
 import { chromium } from '@playwright/test';
 
 // Format encoding only: preserve the generator's canvas, pixels and alpha.
 // No cropping, retouching, background replacement or anatomical edits occur here.
 const sourceFile = process.argv[2];
 if (!sourceFile) throw new Error('Pass the local generated-asset source manifest.');
+const validationFile = process.argv[3] ?? '.artifacts/editorial-artwork/asset-validation.json';
 const sources = JSON.parse(await readFile(sourceFile, 'utf8'));
 await mkdir('public/media/editorial', { recursive: true });
-await mkdir('.artifacts/editorial-artwork', { recursive: true });
+await mkdir(dirname(validationFile), { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const output = {};
 try {
@@ -42,4 +44,4 @@ try {
 } finally {
   await browser.close();
 }
-await writeFile('.artifacts/editorial-artwork/asset-validation.json', `${JSON.stringify(output, null, 2)}\n`);
+await writeFile(validationFile, `${JSON.stringify(output, null, 2)}\n`);
