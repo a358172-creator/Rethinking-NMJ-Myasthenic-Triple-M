@@ -23,11 +23,12 @@ h4 { font-size: 12px; font-weight: 650; letter-spacing: .06em; }
 .skip-link:focus { top: 12px; }
 .site-header { background: #fffffffa; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10; }
 .header-inner { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 25px; }
-.wordmark { display: flex; gap: 13px; align-items: center; text-decoration: none; font-size: 16px; letter-spacing: -.02em; }
+.wordmark { display: flex; flex-shrink: 0; gap: 13px; align-items: center; text-decoration: none; font-size: 16px; letter-spacing: -.02em; }
 .wordmark strong { font-weight: 600; }
 .wordmark small { display: block; margin-top: 1px; font-size: 8px; letter-spacing: .14em; }
-.main-navigation { display: flex; align-items: center; gap: 32px; }
-.main-navigation a { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; text-decoration: none; padding-block: 10px; }
+.main-navigation { display: flex; align-items: center; gap: 22px; }
+.main-navigation a { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; text-decoration: none; padding-block: 10px; white-space: nowrap; }
+.main-navigation .nav-profile { padding: 10px 13px; border: 1px solid #c8dedc; background: var(--teal-light); color: var(--teal-text); }
 .main-navigation a:hover, .research-navigation a:hover, .footer-right a:hover { color: var(--teal-text); }
 .menu-toggle { display: none; }
 .hero { display: grid; grid-template-columns: 1fr 1.04fr; align-items: center; gap: 64px; min-height: 690px; padding-block: 64px 58px; }
@@ -220,7 +221,11 @@ details[open] .details-plus { transform: rotate(45deg); }
 @media (max-width: 1100px) {
   .container { width: calc(100% - 64px); }
   .hero { gap: 30px; min-height: 630px; }
-  .main-navigation { gap: 22px; }
+  .menu-toggle { display: flex; gap: 12px; align-items: center; border: 1px solid var(--line); padding: 6px 11px; font-size: 11px; background: white; }
+  .menu-toggle > span { font-size: 18px; }
+  .main-navigation { display: none; position: absolute; top: 100%; right: 0; left: 0; background: white; padding: 14px 32px 20px; border-bottom: 1px solid var(--line); }
+  .main-navigation.is-open { display: grid; gap: 3px; }
+  .main-navigation a { font-size: 13px; padding: 10px 12px; }
   .hero-kicker { font-size: 8px; }
   .context-inner, .research-section { gap: 50px; }
   .explorer-grid { gap: 20px; grid-template-columns: 1fr 1fr; }
@@ -277,7 +282,7 @@ details[open] .details-plus { transform: rotate(45deg); }
   .wordmark small { letter-spacing: .08em; font-size: 6px; }
   .menu-toggle { display: flex; gap: 12px; align-items: center; border: 1px solid var(--line); padding: 6px 11px; font-size: 11px; background: white; }
   .menu-toggle > span { font-size: 18px; }
-  .main-navigation { display: none; position: absolute; top: 70px; right: 0; left: 0; background: white; padding: 14px 20px 20px; border-bottom: 1px solid var(--line); }
+  .main-navigation { padding: 14px 20px 20px; }
   .main-navigation.is-open { display: grid; gap: 3px; }
   .main-navigation a { font-size: 13px; padding: 10px 12px; }
   .hero { grid-template-columns: 1fr; gap: 40px; padding-block: 44px 38px; }

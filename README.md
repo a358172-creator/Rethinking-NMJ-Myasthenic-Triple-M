@@ -14,6 +14,7 @@ The atlas asks whether an MG-like clinical phenotype establishes primary neuromu
 - A normal NMJ illustration and an explicitly conceptual possible-impairment state, with vesicles, acetylcholine release, cleft, ACh receptors, postsynaptic folds and muscle membrane.
 - Side-by-side mechanism comparison with primary NMJ, muscle-predominant injury and potential-overlap interpretations. All converge on overlapping possible manifestations without classifying a patient.
 - Responsive layouts, reduced-motion handling, a mobile navigation menu, source links and an accessible evidence key.
+- A highlighted **CV & Contact** menu entry at `#about`, also linked from the homepage and footer. The author profile includes research interests, direct email links, an expandable English CV and the original Word download.
 - A complete Phase 2 **Virtual Neuromuscular Diagnostic Laboratory**, with clinical muscle-region exploration, serological evidence, three electrophysiology views, and a comparative evidence board.
 - A Phase 3B **Scientific Evidence Explorer** at `#evidence`: interactive aggregate testing coverage, serology/physiology comparison, objective NMJ evidence categories and conventional needle EMG, followed by scientific synthesis and secondary outcome context.
 - Centralized aggregate values explicitly marked provisional pending final source-provenance reconciliation. No unsupported troponin distribution or subgroup comparisons are displayed.
@@ -73,7 +74,7 @@ npm test
 
 Linux hosts without browser system libraries may require `npx playwright install --with-deps chromium`. The test configuration starts and stops its own production-preview server. Tests cover desktop and mobile interactions, exact frozen statistics, evidence categories, asset loading, internal links, responsive overflow and automated axe accessibility checks. See [test plan](docs/test-plan.md). Browser reports and screenshots are ignored by Git.
 
-`npm run build` executes TypeScript validation, Vite compilation and the publication-boundary check. `npm run verify:publication` rejects tracked research documents, raw document files in `dist`, internal source paths and known patient-record markers. The workflow uploads **only `dist/`**. This check supplements author review; it is not a general-purpose privacy scanner.
+`npm run build` executes TypeScript validation, Vite compilation and the publication-boundary check. `npm run verify:publication` rejects tracked research documents, raw document files in `dist`, internal source paths and known patient-record markers. The sole document exception is the author-supplied `public/cv/CV_Arturo_Lopez_EN.docx` (and its exact build copy), verified by path and SHA-256. When replacing the public CV, update the expected hash in `scripts/verify-publication.mjs` after reviewing the replacement. The workflow uploads **only `dist/`**. This check supplements author review; it is not a general-purpose privacy scanner.
 
 ## Retained private Phase 3A data validation
 
@@ -117,6 +118,7 @@ src/
   features/laboratory/       Four laboratory views, trace graphics and scoped styles
   features/evidenceExplorer/ Four aggregate charts, interpretation and scoped styles
   features/atlas/            Unmounted patient evidence components; no patient data
+  features/author/           Author profile, contact links and expandable CV
   features/ScientificModules Three working module links
   components/anatomy/        Shared editable NMJ geometry
   data/aggregateEvidence.ts Typed provisional aggregate counts and intervals
@@ -127,7 +129,7 @@ src/
   data/atlasModel.ts         Minimal categorical types and filter/summary functions
   data/atlasCopy.ts          Evidence category labels and interpretation text
   styles/                   Palette, typography, spacing and responsive behavior
-public/                     Original favicon only
+public/                     Favicon, editorial artwork and approved author CV
 tests/                      Playwright desktop/mobile checks
 scripts/                    Publication-boundary verification and Python atlas pipeline/tests
 docs/                       Scientific source review and verification record

@@ -22,6 +22,8 @@ __pycache__/
 /research_sources/
 /esearch_sources/
 *.docx
+# Author-supplied CV explicitly approved for the site's public download.
+!/public/cv/CV_Arturo_Lopez_EN.docx
 *.xlsx
 *.xls
 *.pdf

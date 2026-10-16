@@ -12,7 +12,7 @@ export function Header() {
       </a>
       <button className="menu-toggle" aria-expanded={menuOpen} aria-controls="main-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? 'Close menu' : 'Menu'}<span aria-hidden="true">{menuOpen ? '−' : '+'}</span></button>
       <nav id="main-navigation" className={`main-navigation ${menuOpen ? 'is-open' : ''}`} aria-label="Main navigation">
-        {en.navigation.map(({ href, label }) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}{href === '#explorer' && <Arrow diagonal />}</a>)}
+        {en.navigation.map(({ href, label }) => <a key={href} href={href} className={href === '#about' ? 'nav-profile' : undefined} onClick={() => setMenuOpen(false)}>{label}{(href === '#explorer' || href === '#about') && <Arrow diagonal />}</a>)}
       </nav>
     </div>
   </header>;

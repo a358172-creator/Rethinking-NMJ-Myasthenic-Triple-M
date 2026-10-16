@@ -10,5 +10,6 @@ export const en = {
     { href: '#evidence', label: 'Evidence Explorer' },
     { href: '#study', label: 'About the Study' },
     { href: '#references', label: 'References' },
+    { href: '#about', label: 'CV & Contact' },
   ],
 } as const;

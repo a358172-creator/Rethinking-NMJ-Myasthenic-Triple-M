@@ -1,11 +1,23 @@
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 // Patient exports stay closed until a separate, explicit publication review.
 const privatePath = /(^|\/)(research_sources|esearch_sources|data_review|_processed)(\/|$)|\.(docx|xlsx?|xlsm|pdf)$|atlas\.(review|approved|provenance)(\.|$)|validation\.audit\.private/i;
+// The user requested publication of this specific CV. Match both its exact path
+// and contents so this exception cannot admit another research document.
+const publicCvPaths = new Set(['public/cv/CV_Arturo_Lopez_EN.docx', 'dist/cv/CV_Arturo_Lopez_EN.docx']);
+const publicCvHash = 'b0bfe1b6d3bd82164666e72ba31547974ade714e44f8d1de6d649c5a335d777f';
+function isApprovedPublicCv(file) {
+  if (!publicCvPaths.has(file)) return false;
+  if (createHash('sha256').update(readFileSync(file)).digest('hex') !== publicCvHash) {
+    throw new Error(`Public CV differs from the author-approved document: ${file}`);
+  }
+  return true;
+}
 const tracked = execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8' }).split('\0').filter(Boolean);
-const badTracked = tracked.filter((file) => privatePath.test(file));
+const badTracked = tracked.filter((file) => privatePath.test(file) && !isApprovedPublicCv(file));
 if (badTracked.length) throw new Error(`Unpublished source files are tracked: ${badTracked.join(', ')}`);
 
 // When the local crosswalk exists, check every actual source identifier without
@@ -26,7 +38,7 @@ function filesAt(dir) {
 }
 const assets = filesAt('dist');
 for (const file of assets) {
-  if (privatePath.test(file)) throw new Error(`Private source file in build: ${file}`);
+  if (privatePath.test(file) && !isApprovedPublicCv(file)) throw new Error(`Private source file in build: ${file}`);
   if (/\.(html|js|css|json)$/i.test(file)) {
     const content = readFileSync(file, 'utf8');
     if (/research_sources\/|esearch_sources\/|data_review\/|atlas\.review\.json|\b(?:Patient_ID|sourceId|sourceDoi|sourceRow)\b|Case\s+0[1-9]/.test(content)
